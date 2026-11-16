@@ -1,0 +1,89 @@
+<!--
+title: Маршрути Карпатами — каталог «Карпатський шлях»
+description: 12 маршрутів у Чорногорі, Горганах, на Свидовці, Боржаві та в Бескидах. Фільтри за регіоном, складністю й тривалістю.
+nav: routes
+libs: gsap
+script: routes.js
+-->
+<main id="main">
+  <section class="relative isolate overflow-hidden" aria-labelledby="page-title">
+    <img src="assets/img/photos/valley.jpg" alt="" width="1020" height="440" fetchpriority="high"
+      class="absolute inset-y-0 right-0 -z-10 h-full w-full object-cover opacity-30 md:w-[58%] md:opacity-100 md:mask-fade-left">
+    <div class="container-site pb-24 pt-14 md:pb-28 md:pt-20">
+      <p class="eyebrow">Каталог</p>
+      <h1 id="page-title" class="mt-4 text-page">Маршрути Карпатами</h1>
+      <p class="mt-4 max-w-md text-lg">Підібрали маршрути для першого походу — від прогулянки до озера до триденного траверсу.</p>
+    </div>
+  </section>
+
+  <section class="container-site -mt-12 pb-16 md:pb-20" aria-label="Каталог маршрутів">
+    <form id="route-filters" class="card relative z-10 flex flex-wrap items-end gap-x-6 gap-y-4 p-4 md:p-5" role="search" aria-label="Фільтри маршрутів">
+      <div class="w-full sm:w-56">
+        <label for="f-search" class="sr-only">Пошук маршруту</label>
+        <div class="relative">
+          <svg class="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="f-search" name="q" type="search" class="field rounded-full py-2.5 pl-10" placeholder="Пошук маршруту…" autocomplete="off">
+        </div>
+      </div>
+      <div class="w-full sm:w-auto">
+        <label for="f-region" class="sr-only">Регіон</label>
+        <select id="f-region" name="region" class="field rounded-full py-2.5 pr-10">
+          <option value="all">Регіон: усі</option>
+          <option value="chornohora">Чорногора</option>
+          <option value="gorgany">Горгани</option>
+          <option value="svydovets">Свидовець</option>
+          <option value="borzhava">Боржава</option>
+          <option value="beskydy">Бескиди</option>
+        </select>
+      </div>
+      <fieldset>
+        <legend class="mb-2 text-xs font-semibold text-heading">Складність:</legend>
+        <div class="flex flex-wrap gap-2">
+          <label class="chip"><input type="radio" name="difficulty" value="all" checked>Усі</label>
+          <label class="chip"><input type="radio" name="difficulty" value="easy">Легкий</label>
+          <label class="chip"><input type="radio" name="difficulty" value="medium">Середній</label>
+          <label class="chip"><input type="radio" name="difficulty" value="hard">Складний</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend class="mb-2 text-xs font-semibold text-heading">Тривалість:</legend>
+        <div class="flex flex-wrap gap-2">
+          <label class="chip"><input type="radio" name="days" value="all" checked>Будь-яка</label>
+          <label class="chip"><input type="radio" name="days" value="1">1 день</label>
+          <label class="chip"><input type="radio" name="days" value="2-3">2–3 дні</label>
+        </div>
+      </fieldset>
+      <div>
+        <label for="f-budget" class="mb-2 block text-xs font-semibold text-heading">Бюджет на особу:</label>
+        <select id="f-budget" name="budget" class="field rounded-full py-2 pr-10 text-sm" aria-describedby="f-budget-hint">
+          <option value="all">Будь-який</option>
+          <option value="2000">до 2 000 грн</option>
+          <option value="3500">до 3 500 грн</option>
+          <option value="5000">до 5 000 грн</option>
+        </select>
+        <p id="f-budget-hint" class="sr-only">Орієнтовно: їжа, колиба й трансфер для групи з двох людей, як у конструкторі походу.</p>
+      </div>
+      <button type="reset" class="ml-auto pb-2 text-sm font-semibold text-accent underline underline-offset-4 hover:no-underline">Скинути фільтри</button>
+    </form>
+
+    <div class="mt-8 flex flex-wrap items-center justify-between gap-4">
+      <p id="routes-status" class="font-semibold text-heading" role="status" aria-live="polite">Завантажуємо маршрути…</p>
+      <div>
+        <label for="f-sort" class="sr-only">Сортування</label>
+        <select id="f-sort" form="route-filters" name="sort" class="field rounded-full py-2 pr-10 text-sm">
+          <option value="popular">Сортувати: за популярністю</option>
+          <option value="days">Спершу коротші</option>
+          <option value="distance">Спершу ближчі за відстанню</option>
+          <option value="peak">Спершу найвищі</option>
+        </select>
+      </div>
+    </div>
+
+    <ul id="routes-grid" class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3" aria-busy="true"></ul>
+
+    <div class="mt-10 text-center">
+      <button type="button" id="routes-more" class="btn-primary" hidden>Показати ще</button>
+      <p class="mt-4 text-sm">Не знайшов свій маршрут? <a href="planner.html" class="font-semibold text-accent underline underline-offset-4 hover:no-underline">Склади його в конструкторі →</a></p>
+    </div>
+  </section>
+</main>

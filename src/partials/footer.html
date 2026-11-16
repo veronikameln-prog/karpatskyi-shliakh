@@ -1,0 +1,35 @@
+  <!-- Світлий футер: темно-зелений текст, а внизу — смереки в тумані (фон .site-footer) -->
+  <footer class="site-footer mt-auto text-ink">
+    <div class="container-site pb-[clamp(6rem,13vw,16rem)] pt-6 md:pt-8">
+      <div class="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+        <a href="index.html" class="flex items-center gap-4 md:border-r md:border-line md:pr-10" aria-label="Карпатський шлях — на головну">
+          {{logo}}
+          <span class="font-serif text-xl font-bold leading-[1.1] text-heading">Карпатський<br>шлях</span>
+        </a>
+        <nav aria-label="Меню у футері" class="md:flex-1">
+          <ul class="flex flex-wrap gap-x-8 gap-y-2">
+            <li><a class="text-ink transition-colors hover:text-accent hover:underline" href="routes.html">Маршрути</a></li>
+            <li><a class="text-ink transition-colors hover:text-accent hover:underline" href="regions.html">Регіони</a></li>
+            <li><a class="text-ink transition-colors hover:text-accent hover:underline" href="planner.html">Конструктор походу</a></li>
+            <li><a class="text-ink transition-colors hover:text-accent hover:underline" href="tips.html">Поради</a></li>
+            <li><a class="text-ink transition-colors hover:text-accent hover:underline" href="about.html">Про нас</a></li>
+          </ul>
+        </nav>
+        <ul class="flex items-center gap-3" aria-label="Ми в соцмережах">
+          <li><a href="https://t.me/" target="_blank" rel="noopener" aria-label="Telegram (нова вкладка)" class="grid h-12 w-12 place-items-center rounded-full bg-surface-2 text-heading transition-colors hover:bg-primary hover:text-on-primary">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.5 3.6 2.9 10.8c-1.3.5-1.2 1.2-.2 1.5l4.8 1.5 1.8 5.6c.2.6.4.8.9.8.4 0 .6-.2.9-.4l2.3-2.2 4.7 3.5c.9.5 1.5.2 1.7-.8l3.1-14.6c.3-1.3-.5-1.9-1.4-1.5ZM9.2 13.3l9.3-5.9c.4-.3.8-.1.5.2l-7.6 6.9-.3 3.3-1.9-4.5Z"/></svg>
+          </a></li>
+          <li><a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram (нова вкладка)" class="grid h-12 w-12 place-items-center rounded-full bg-surface-2 text-heading transition-colors hover:bg-primary hover:text-on-primary">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+          </a></li>
+          <li><a href="https://www.youtube.com/" target="_blank" rel="noopener" aria-label="YouTube (нова вкладка)" class="grid h-12 w-12 place-items-center rounded-full bg-surface-2 text-heading transition-colors hover:bg-primary hover:text-on-primary">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 8.2a3 3 0 0 0-2.1-2.1C18 5.6 12 5.6 12 5.6s-6 0-7.9.5A3 3 0 0 0 2 8.2 31 31 0 0 0 1.6 12c0 1.3.1 2.6.4 3.8a3 3 0 0 0 2.1 2.1c1.9.5 7.9.5 7.9.5s6 0 7.9-.5a3 3 0 0 0 2.1-2.1c.3-1.2.4-2.5.4-3.8s-.1-2.6-.4-3.8ZM10 15.2V8.8l5.2 3.2-5.2 3.2Z"/></svg>
+          </a></li>
+        </ul>
+      </div>
+      <div class="mt-8 flex flex-col gap-2 border-t border-line pt-6 text-sm text-heading sm:flex-row sm:justify-between">
+        <p>© <span data-year>2026</span> Карпатський шлях. Всі права захищено.</p>
+        <p>Навчальний проєкт · ціни в конструкторі орієнтовні</p>
+      </div>
+    </div>
+  </footer>

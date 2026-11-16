@@ -2,53 +2,51 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ===== Дизайн-токени (docs/04-design.md) =====
+/* ===== Дизайн-токени: палітра «Хвоя й туман» (за референсом героя) =====
    Значення — RGB-трійки, щоб Tailwind міг додавати прозорість: bg-accent/20 */
 @layer base {
   :root {
-    /* День — «Туман і хвоя» */
-    --bg: 233 236 232;
-    --surface: 246 247 244;
-    --text: 29 43 36;
-    --text-muted: 79 92 85;
-    --stone: 138 147 140;
-    --forest: 47 74 58;
-    --accent: 160 85 42;
-    --accent-soft: 200 116 58;
-
-    /* Шари гір на сценах */
-    --sky: 233 236 232;
-    --m-far: 185 194 188;
-    --m-mid: 127 145 133;
-    --m-near: 47 74 58;
-    --m-front: 31 52 40;
-    --mist: 246 247 244;
-    --light: 231 194 154; /* сонце */
-    --water: 168 186 184;
-    --stars: 0; /* зорі видно лише вночі */
+    --bg: 243 245 241;          /* #F3F5F1 — туманний фон */
+    --surface: 255 255 255;
+    --surface-2: 230 238 232;   /* #E6EEE8 — шавлієва підкладка (статистика, підказки) */
+    --text: 30 42 36;           /* #1E2A24 */
+    --text-muted: 86 100 92;
+    --line: 218 226 220;
+    --heading: 22 52 40;        /* #163428 — темна хвоя, заголовки */
+    --primary: 47 106 72;       /* #2F6A48 — кнопки (контраст з білим 6:1) */
+    --on-primary: 255 255 255;
+    --accent: 52 112 78;        /* #34704E — посилання, активні стани */
+    --sky: 120 168 130;         /* #78A882 — світла шавлія, акценти */
+    --footer: 22 52 40;
+    /* Кольори логотипа в зеленій гамі */
+    --logo-mountain: 22 52 40;
+    --logo-snow: 255 255 255;
+    --logo-face-a: 31 74 55;
+    --logo-face-b: 47 106 72;
+    --logo-light: 120 168 130;
+    --logo-sun: 120 168 130;
     color-scheme: light;
   }
 
   .dark {
-    /* Ніч — «Нічні Карпати» */
-    --bg: 14 26 36;
-    --surface: 22 37 50;
-    --text: 230 225 211;
-    --text-muted: 169 179 176;
-    --stone: 52 82 82;
-    --forest: 30 49 64;
-    --accent: 224 164 88;
-    --accent-soft: 217 199 160;
-
-    --sky: 14 26 36;
-    --m-far: 30 49 64;
-    --m-mid: 31 58 58;
-    --m-near: 18 36 40;
-    --m-front: 10 20 24;
-    --mist: 70 92 108;
-    --light: 217 199 160; /* місяць */
-    --water: 24 44 56;
-    --stars: 1;
+    --bg: 13 22 18;
+    --surface: 21 34 28;
+    --surface-2: 29 47 38;
+    --text: 228 236 230;
+    --text-muted: 165 182 172;
+    --line: 45 64 54;
+    --heading: 226 238 229;
+    --primary: 134 196 154;     /* #86C49A */
+    --on-primary: 12 32 22;
+    --accent: 140 200 160;
+    --sky: 134 196 154;
+    --footer: 9 20 15;
+    --logo-mountain: 255 255 255;
+    --logo-snow: 200 226 208;
+    --logo-face-a: 222 236 226;
+    --logo-face-b: 176 212 186;
+    --logo-light: 134 196 154;
+    --logo-sun: 134 196 154;
     color-scheme: dark;
   }
 
@@ -62,20 +60,25 @@
     }
   }
   body {
-    @apply font-sans text-base leading-relaxed;
-    min-height: 100vh;
+    @apply flex min-h-screen flex-col font-sans text-base leading-relaxed;
+  }
+  main {
+    @apply flex-1;
   }
   h1, h2, h3 {
-    @apply font-serif font-semibold tracking-tight;
+    @apply font-serif font-bold text-heading;
     text-wrap: balance;
   }
   :focus-visible {
     outline: 2px solid rgb(var(--accent));
     outline-offset: 3px;
-    border-radius: 4px;
+    border-radius: 6px;
   }
   ::selection {
-    background: rgb(var(--accent) / 0.25);
+    background: rgb(var(--sky) / 0.3);
+  }
+  [hidden] {
+    display: none !important;
   }
 }
 
@@ -87,166 +90,325 @@
   }
 
   .skip-link {
-    @apply absolute left-4 top-4 z-[100] -translate-y-24 rounded-full bg-accent px-5 py-2 font-medium text-bg transition-transform;
+    @apply absolute left-4 top-4 z-[100] -translate-y-24 rounded-full bg-primary px-5 py-2 font-medium text-on-primary transition-transform;
   }
   .skip-link:focus {
     @apply translate-y-0;
   }
 
-  .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-medium transition-colors duration-200;
-  }
-  .btn-primary {
-    @apply btn bg-accent text-bg hover:bg-ink;
-  }
-  .btn-ghost {
-    @apply btn border border-ink/25 text-ink hover:border-accent hover:text-accent;
+  /* Логотип: кольори з токенів, тому він сам перефарбовується в нічній темі */
+  .logo .m { fill: rgb(var(--logo-mountain)); }
+  .logo .s { fill: rgb(var(--logo-snow)); }
+  .logo .a { fill: rgb(var(--logo-face-a)); }
+  .logo .b { fill: rgb(var(--logo-face-b)); }
+  .logo .l { fill: rgb(var(--logo-light)); }
+  .logo .sun { fill: rgb(var(--logo-sun)); }
+  .logo-on-dark {
+    --logo-mountain: 255 255 255;
+    --logo-snow: 200 226 208;
+    --logo-face-a: 222 236 226;
+    --logo-face-b: 176 212 186;
+    --logo-light: 134 196 154;
+    --logo-sun: 134 196 154;
   }
 
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition duration-200;
+  }
+  .btn-primary {
+    @apply btn bg-primary text-on-primary shadow-sm hover:-translate-y-0.5 hover:shadow-md;
+  }
+  .btn-ghost {
+    @apply btn border border-primary/40 text-heading hover:border-primary hover:bg-primary/5;
+  }
+  .btn-white {
+    @apply btn bg-white text-[#163428] hover:-translate-y-0.5 hover:shadow-md;
+  }
+  .btn-sm {
+    @apply px-4 py-2 text-sm;
+  }
+
+  /* Пункти меню: активний — темно-зелена «пігулка», як у референсі */
   .nav-link {
-    @apply relative py-1 text-sm font-medium text-ink/80 transition-colors hover:text-accent;
+    @apply relative rounded-full px-4 py-2.5 text-sm font-medium text-ink/85 transition-colors hover:bg-surface-2 hover:text-heading;
   }
   .nav-link[aria-current='page'] {
-    @apply text-accent;
-  }
-  .nav-link[aria-current='page']::after {
-    content: '';
-    @apply absolute inset-x-0 -bottom-0.5 h-px bg-accent;
+    @apply bg-heading text-bg hover:bg-heading hover:text-bg;
   }
 
   .eyebrow {
-    @apply text-xs font-semibold uppercase tracking-[0.2em] text-accent;
+    @apply inline-flex items-center gap-3 text-sm font-medium text-accent;
+  }
+  .eyebrow::before {
+    content: '';
+    @apply h-px w-8 bg-current;
+  }
+  .pill-label {
+    @apply inline-block rounded-full bg-surface-2 px-3 py-1 text-xs font-semibold text-heading;
+  }
+
+  .section {
+    @apply py-12 md:py-16;
+  }
+  .section-title {
+    @apply flex items-center gap-6 text-3xl md:text-4xl;
+  }
+  .section-title::after {
+    content: '';
+    @apply hidden h-px flex-1 bg-line sm:block;
   }
 
   .card {
-    @apply rounded-xl border border-stone/30 bg-surface;
+    @apply rounded-2xl border border-line bg-surface shadow-[0_6px_24px_-12px_rgb(22_52_40/0.18)];
+  }
+  .card-hover {
+    @apply transition duration-300 hover:-translate-y-1 hover:shadow-[0_16px_32px_-16px_rgb(22_52_40/0.35)];
   }
 
   .field-label {
-    @apply mb-1.5 block text-sm font-medium;
+    @apply mb-1.5 block text-sm font-semibold text-heading;
   }
   .field {
-    @apply w-full rounded-lg border border-stone/50 bg-surface px-4 py-3 text-ink placeholder:text-muted/70 transition-colors;
+    @apply w-full rounded-xl border border-line bg-surface px-4 py-3 text-ink placeholder:text-muted/70 transition-colors;
   }
   .field:hover {
-    @apply border-stone;
+    @apply border-accent/50;
   }
   .field:focus {
-    @apply border-accent outline-none ring-2 ring-accent/30;
+    @apply border-accent outline-none ring-2 ring-accent/25;
   }
   .field[aria-invalid='true'] {
-    @apply border-red-700 dark:border-red-400;
+    @apply border-red-600 dark:border-red-400;
   }
   .field-error {
-    @apply mt-1.5 min-h-[1.25rem] text-sm text-red-800 dark:text-red-300;
+    @apply mt-1.5 min-h-[1.25rem] text-sm text-red-700 dark:text-red-300;
   }
 
   /* Кнопка-«пігулка» для radio / checkbox */
   .chip {
-    @apply relative inline-flex cursor-pointer select-none items-center gap-2 rounded-full border border-stone/50 px-4 py-2 text-sm font-medium transition-colors hover:border-accent;
+    @apply relative inline-flex cursor-pointer select-none items-center gap-2 rounded-full border border-line bg-surface px-4 py-2 text-sm font-medium transition-colors hover:border-accent;
   }
   .chip input {
     @apply absolute inset-0 cursor-pointer opacity-0;
   }
   .chip:has(input:checked) {
-    @apply border-accent bg-accent text-bg;
+    @apply border-primary bg-primary text-on-primary;
   }
-  .chip:has(input:focus-visible) {
+  .chip:has(input:focus-visible),
+  .option:has(input:focus-visible) {
     outline: 2px solid rgb(var(--accent));
     outline-offset: 3px;
   }
 
+  /* Велика плитка вибору (житло, складність у конструкторі) */
+  .option {
+    @apply relative flex cursor-pointer select-none flex-col items-center justify-center gap-2 rounded-2xl border border-line bg-surface px-3 py-4 text-sm font-medium transition-colors hover:border-accent;
+  }
+  .option input {
+    @apply absolute inset-0 cursor-pointer opacity-0;
+  }
+  .option:has(input:checked) {
+    @apply border-accent bg-surface-2 text-heading ring-1 ring-accent;
+  }
+  /* Складність: кольори як у бейджах, вибрана плитка — насиченіша й з обвідкою */
+  .option-easy { @apply bg-emerald-50 dark:bg-emerald-400/5; }
+  .option-medium { @apply bg-amber-50 dark:bg-amber-400/5; }
+  .option-hard { @apply bg-red-50 dark:bg-red-400/5; }
+  .option-easy:has(input:checked) { @apply border-emerald-500 bg-emerald-200/70 ring-emerald-500 dark:bg-emerald-400/25; }
+  .option-medium:has(input:checked) { @apply border-amber-500 bg-amber-200/80 ring-amber-500 dark:bg-amber-400/25; }
+  .option-hard:has(input:checked) { @apply border-red-400 bg-red-200/80 ring-red-400 dark:bg-red-400/25; }
+
   .badge {
-    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold;
+    @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold;
   }
   .badge-easy {
-    @apply bg-forest/15 text-forest dark:bg-emerald-300/15 dark:text-emerald-200;
+    @apply bg-emerald-100 text-emerald-800 dark:bg-emerald-400/20 dark:text-emerald-200;
   }
   .badge-medium {
-    @apply bg-accent/15 text-accent;
+    @apply bg-amber-100 text-amber-800 dark:bg-amber-400/20 dark:text-amber-200;
   }
   .badge-hard {
-    @apply bg-red-800/10 text-red-800 dark:bg-red-300/15 dark:text-red-200;
+    @apply bg-red-100 text-red-800 dark:bg-red-400/20 dark:text-red-200;
+  }
+
+  .icon-circle {
+    @apply grid h-12 w-12 shrink-0 place-items-center rounded-full bg-surface-2 text-accent;
+  }
+
+  .checkbox {
+    @apply h-5 w-5 shrink-0 cursor-pointer rounded;
+    accent-color: rgb(var(--primary));
   }
 
   .dialog {
-    @apply m-auto w-[min(56rem,calc(100%-2rem))] max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-2xl border border-stone/30 bg-surface p-0 text-ink;
+    @apply m-auto w-[min(32rem,calc(100%-2rem))] rounded-2xl border border-line bg-surface p-8 text-ink;
   }
   .dialog::backdrop {
-    background: rgb(var(--m-front) / 0.6);
+    background: rgb(22 52 40 / 0.55);
     backdrop-filter: blur(4px);
   }
 }
 
-/* ===== Шари гір (SVG) ===== */
-.f-sky { fill: rgb(var(--sky)); }
-.f-far { fill: rgb(var(--m-far)); }
-.f-mid { fill: rgb(var(--m-mid)); }
-.f-near { fill: rgb(var(--m-near)); }
-.f-front { fill: rgb(var(--m-front)); }
-.f-mist { fill: rgb(var(--mist)); }
-.f-light { fill: rgb(var(--light)); }
-.f-water { fill: rgb(var(--water)); }
-.f-stars { fill: rgb(var(--accent-soft)); opacity: var(--stars); transition: opacity 0.6s; }
-.f-sky, .f-far, .f-mid, .f-near, .f-front, .f-mist, .f-light, .f-water {
-  transition: fill 0.6s ease;
+/* Градієнти, щоб текст читався поверх фото */
+.hero-fade {
+  background: linear-gradient(90deg, rgb(var(--bg)) 0%, rgb(var(--bg) / 0.9) 40%, rgb(var(--bg) / 0) 72%);
+}
+.photo-shade {
+  background: linear-gradient(0deg, rgb(10 28 20 / 0.8) 0%, rgb(10 28 20 / 0.25) 55%, rgb(10 28 20 / 0) 100%);
+}
+@layer utilities {
+  /* ===== Заклик до дії: смуга на всю ширину ===== */
+  .cta-band {
+    @apply relative isolate overflow-hidden text-white;
+    background: linear-gradient(120deg, #163428 0%, #23513A 45%, #3C7C55 100%);
+  }
+  .dark .cta-band {
+    background: linear-gradient(120deg, #0B1912 0%, #163428 50%, #23513A 100%);
+  }
+  /* Два м'які кола, як у референсі */
+  .cta-band::before,
+  .cta-band::after {
+    content: '';
+    @apply pointer-events-none absolute -z-10 rounded-full;
+    background: rgb(255 255 255 / 0.06);
+  }
+  .cta-band::before {
+    width: 26rem; height: 26rem; left: -9rem; top: -10rem;
+  }
+  .cta-band::after {
+    width: 22rem; height: 22rem; right: -7rem; bottom: -9rem;
+  }
+  /* Силует хребта знизу */
+  .cta-ridge {
+    @apply pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-24 w-full md:h-32;
+    fill: rgb(255 255 255 / 0.05);
+  }
+  .cta-pill {
+    @apply inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm font-semibold text-white backdrop-blur-sm;
+  }
+  /* Головна кнопка: світла «лучна» зелень з темною тінню-зсувом */
+  .btn-cta {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl px-8 py-4 text-base font-bold transition duration-200;
+    background: #B9E4A0;
+    color: #163428;
+    border: 2px solid #0B1F16;
+    box-shadow: 0 5px 0 #0B1F16;
+  }
+  .btn-cta:hover {
+    transform: translateY(2px);
+    box-shadow: 0 3px 0 #0B1F16;
+  }
+  .btn-cta:active {
+    transform: translateY(5px);
+    box-shadow: 0 0 0 #0B1F16;
+  }
+  .btn-outline-light {
+    @apply inline-flex items-center justify-center rounded-2xl border-2 border-white/70 px-8 py-4 text-base font-bold text-white transition duration-200 hover:border-white hover:bg-white/10;
+  }
+  .cta-link {
+    @apply inline-flex items-center gap-2 font-semibold text-white underline decoration-white/50 underline-offset-4 transition hover:decoration-white;
+  }
+  .cta-band :focus-visible {
+    outline-color: #fff;
+  }
+
+  .mask-fade-left {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 30%);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 30%);
+  }
 }
 
-/* ===== Головна: сцени ===== */
-.stage {
-  @apply fixed inset-0 -z-10 overflow-hidden bg-bg;
+/* Футер: світлий, внизу смереки в тумані. Зверху — плавний перехід від кольору сторінки до білого неба на фото */
+.site-footer {
+  background-color: #fff;
+  background-image:
+    linear-gradient(to bottom, rgb(var(--bg)) 0, rgb(255 255 255 / 0) 9rem),
+    url('../assets/img/photos/footer-forest-mist.webp');
+  background-repeat: no-repeat;
+  background-position: top center, bottom center;
+  background-size: 100% auto, max(100%, 56rem) auto;
 }
-.scene-art {
-  @apply absolute inset-0 h-full w-full;
+/* Нічна тема: те саме фото, «помножене» на темну хвою — біле небо стає темним, смереки ледь видно */
+.dark .site-footer {
+  background-color: rgb(var(--footer));
+  background-image: linear-gradient(to bottom, rgb(var(--bg)) 0, rgb(var(--bg) / 0) 9rem), url('../assets/img/photos/footer-forest-mist.webp');
+  background-blend-mode: normal, multiply;
+}
+
+/* Анімація появи: клас .js ставиться в <head>, .is-in додає GSAP / IntersectionObserver */
+.js [data-reveal] {
   opacity: 0;
-  transition: opacity 0.9s ease;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
 }
-.scene-art.is-active {
+.js [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* «Як це працює»: без JS усі кроки звичайні; з JS (.how-live) підсвічується лише поточний крок */
+.how-step,
+.how-ico,
+.how-title,
+.how-arrow {
+  transition: opacity 0.45s ease, color 0.45s ease, background-color 0.45s ease, transform 0.45s ease, box-shadow 0.45s ease;
+}
+.how-ico {
+  background-color: rgb(var(--surface-2));
+  color: rgb(var(--accent));
+}
+.how-arrow {
+  color: rgb(var(--primary) / 0.55);
+}
+.how-live .how-step {
+  opacity: 0.45;
+}
+.how-live .how-step.is-active {
   opacity: 1;
 }
-.scene-art svg {
-  @apply absolute inset-0 h-full w-full;
+.how-live .how-step.is-active .how-ico {
+  background-color: rgb(var(--primary));
+  color: rgb(var(--on-primary));
+  transform: scale(1.1);
+  box-shadow: 0 0 0 10px rgb(var(--primary) / 0.12), 0 14px 30px -12px rgb(var(--primary) / 0.6);
 }
-.layer {
-  will-change: transform;
+.how-live .how-step.is-active .how-title {
+  color: rgb(var(--accent));
 }
-.scene {
-  @apply relative flex min-h-[100svh] items-center;
-}
-.scene-text {
-  text-shadow: 0 1px 24px rgb(var(--bg) / 0.6);
-}
-
-.altimeter {
-  @apply fixed bottom-6 left-[clamp(1rem,4vw,3rem)] z-30 font-sans tabular-nums;
+.how-live .how-step.is-done .how-arrow {
+  color: rgb(var(--primary));
 }
 
-.scene-dots {
-  @apply fixed right-[clamp(0.75rem,2.5vw,2rem)] top-1/2 z-30 hidden -translate-y-1/2 flex-col gap-4 sm:flex;
+/* Відгуки: безперервна стрічка, як на PrompterMind. Список повторено двічі, тож зсув на -50% замикає коло без стрибка */
+.reviews-marquee {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%);
 }
-.scene-dots a {
-  @apply relative block h-2.5 w-2.5 rounded-full border border-ink/60 transition-all duration-300;
+.reviews-track {
+  animation: reviews-scroll 70s linear infinite;
 }
-.scene-dots a[aria-current='true'] {
-  @apply h-6 border-accent bg-accent;
+/* Пауза: мишка над стрічкою або фокус на відгуку */
+.reviews-marquee:hover .reviews-track,
+.reviews-marquee:focus-within .reviews-track {
+  animation-play-state: paused;
 }
-.scene-dots a span {
-  @apply pointer-events-none absolute right-6 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-surface px-3 py-1 text-xs font-medium opacity-0 transition-opacity;
-}
-.scene-dots a:hover span,
-.scene-dots a:focus-visible span {
-  @apply opacity-100;
+@keyframes reviews-scroll {
+  to {
+    transform: translateX(-50%);
+  }
 }
 
-/* Swiper (відгуки) у кольорах сайту */
-.swiper {
-  --swiper-theme-color: rgb(var(--accent));
-  --swiper-pagination-bullet-inactive-color: rgb(var(--text));
-  --swiper-pagination-bullet-inactive-opacity: 0.3;
-}
-.swiper-button-disabled {
-  opacity: 0.35;
-  pointer-events: none;
+/* Друк чек-листа («Завантажити PDF» відкриває діалог друку → «Зберегти як PDF») */
+@media print {
+  .no-print,
+  body > header,
+  body > footer {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+    color: #000;
+  }
 }
 
 /* Повага до налаштувань людини: без руху */
@@ -256,5 +418,16 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  .js [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+  /* Без руху: відгуки не їдуть самі, їх можна прогорнути вручну */
+  .reviews-track {
+    animation: none;
+  }
+  .reviews-marquee {
+    overflow-x: auto;
   }
 }

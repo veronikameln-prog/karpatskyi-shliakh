@@ -1,0 +1,47 @@
+<!--
+title: Регіони Карпат — Чорногора, Горгани, Свидовець, Боржава, Бескиди
+description: П'ять гірських масивів для першого походу: найвищі вершини, сезон, складність, звідки стартувати й популярні маршрути.
+nav: regions
+libs: gsap
+script: regions.js
+-->
+<main id="main">
+  <section class="relative isolate overflow-hidden" aria-labelledby="page-title">
+    <img src="assets/img/photos/hero-home.jpg" alt="" width="680" height="728" fetchpriority="high"
+      class="absolute inset-y-0 right-0 -z-10 h-full w-full object-cover opacity-25 md:w-[55%] md:opacity-100 md:mask-fade-left">
+    <div class="container-site grid items-center gap-8 py-14 md:grid-cols-2 md:py-16">
+      <div>
+        <p class="eyebrow">Регіони</p>
+        <h1 id="page-title" class="mt-4 text-page">Регіони Карпат</h1>
+        <p class="mt-4 max-w-md text-lg">П'ять масивів, які найкраще підходять для першого походу: від легких полонин до найвищих вершин.</p>
+        <nav aria-label="Перейти до регіону" class="mt-8">
+          <ul class="flex flex-wrap gap-2">
+            <li><a class="chip" href="#chornohora">Чорногора</a></li>
+            <li><a class="chip" href="#gorgany">Горгани</a></li>
+            <li><a class="chip" href="#svydovets">Свидовець</a></li>
+            <li><a class="chip" href="#borzhava">Полонинський хребет</a></li>
+            <li><a class="chip" href="#beskydy">Бескиди</a></li>
+          </ul>
+        </nav>
+      </div>
+      <!-- Схема розташування масивів (спрощено) -->
+      <figure class="mx-auto w-full max-w-md rounded-3xl bg-bg/70 p-4 backdrop-blur-sm">
+        <svg viewBox="0 0 400 260" class="h-auto w-full" role="img" aria-labelledby="regions-map-title">
+          <title id="regions-map-title">Схема: Бескиди на північному заході, Боржава на заході, Горгани в центрі, Свидовець на півдні, Чорногора на південному сході Українських Карпат</title>
+          <path d="M20 70 C 90 40, 170 50, 240 90 S 350 150, 385 215 L 330 240 C 280 200, 210 170, 150 160 S 50 140, 20 120 Z" fill="rgb(var(--surface-2))" stroke="rgb(var(--accent))" stroke-width="1.5" stroke-dasharray="4 4"/>
+          <g font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="rgb(var(--heading))">
+            <a href="#beskydy"><circle cx="70" cy="75" r="7" fill="rgb(var(--primary))"/><text x="82" y="70">Бескиди</text></a>
+            <a href="#borzhava"><circle cx="70" cy="128" r="7" fill="rgb(var(--primary))"/><text x="40" y="155">Боржава</text></a>
+            <a href="#gorgany"><circle cx="200" cy="105" r="7" fill="rgb(var(--primary))"/><text x="212" y="100">Горгани</text></a>
+            <a href="#svydovets"><circle cx="230" cy="165" r="7" fill="rgb(var(--primary))"/><text x="160" y="195">Свидовець</text></a>
+            <a href="#chornohora"><circle cx="300" cy="175" r="7" fill="rgb(var(--primary))"/><text x="285" y="205">Чорногора</text></a>
+          </g>
+        </svg>
+      </figure>
+    </div>
+  </section>
+
+  <div id="regions-list" class="container-site space-y-16 pb-16 pt-6 md:space-y-20 md:pb-20" aria-busy="true">
+    <p class="text-muted" role="status">Завантажуємо регіони…</p>
+  </div>
+</main>

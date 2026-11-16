@@ -4,29 +4,33 @@
 const v = (name) => `rgb(var(--${name}) / <alpha-value>)`;
 
 module.exports = {
-  content: ['./*.html', './src/js/**/*.js'],
+  // Сторінки збираються з src/pages + src/partials (scripts/build-html.mjs)
+  content: ['./src/pages/*.html', './src/partials/*.html', './src/js/**/*.js'],
   darkMode: 'class',
   theme: {
     extend: {
       colors: {
         bg: v('bg'),
         surface: v('surface'),
+        'surface-2': v('surface-2'),
         ink: v('text'),
         muted: v('text-muted'),
-        stone: v('stone'),
-        forest: v('forest'),
+        line: v('line'),
+        heading: v('heading'),
+        primary: v('primary'),
+        'on-primary': v('on-primary'),
         accent: v('accent'),
-        'accent-soft': v('accent-soft'),
+        sun: v('sky'),
       },
       fontFamily: {
-        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+        serif: ['Lora', 'Georgia', 'serif'],
         sans: ['Inter', 'system-ui', 'Segoe UI', 'sans-serif'],
       },
       fontSize: {
-        scene: ['clamp(2.75rem, 8vw, 7rem)', { lineHeight: '1' }],
-        page: ['clamp(2.25rem, 5vw, 3.75rem)', { lineHeight: '1.05' }],
+        hero: ['clamp(2.5rem, 6vw, 4.5rem)', { lineHeight: '1.05' }],
+        page: ['clamp(2.25rem, 5vw, 3.5rem)', { lineHeight: '1.1' }],
       },
-      maxWidth: { site: '75rem' },
+      maxWidth: { site: '80rem' },
     },
   },
   plugins: [],

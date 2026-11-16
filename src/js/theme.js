@@ -24,7 +24,7 @@ function applyTheme(theme) {
 
   // Колір рядка браузера на телефоні
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute('content', isDark ? '#0E1A24' : '#E9ECE8');
+  if (meta) meta.setAttribute('content', isDark ? '#0D1612' : '#F3F5F1');
 }
 
 export function initTheme() {

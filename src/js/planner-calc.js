@@ -174,6 +174,20 @@ export function matchRoutes(routes, { region, difficulty, days }) {
   return { routes: anyRegion, relaxed: 'region' };
 }
 
+/**
+ * Орієнтовна вартість маршруту з особи для фільтра «Бюджет» у каталозі:
+ * група з 2 людей, ночівлі в колибі, трансфер до старту — як типовий похід у конструкторі.
+ */
+export function estimatePerPerson(route) {
+  return calculateTrip({
+    days: route.days,
+    people: 2,
+    difficulty: route.difficulty,
+    stay: 'hut',
+    extras: ['transfer'],
+  }).perPerson;
+}
+
 export function formatUAH(amount) {
   return `${new Intl.NumberFormat('uk-UA').format(amount)} грн`;
 }

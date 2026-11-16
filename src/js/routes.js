@@ -1,207 +1,158 @@
-// Каталог маршрутів: завантаження data.json, фільтри, модальне вікно з деталями.
-import { loadData, el, DIFFICULTY_LABELS, daysLabel } from './data.js';
+// Каталог маршрутів: завантаження data.json, пошук, фільтри, сортування, «Показати ще».
+// Стан фільтрів зберігається в адресі (routes.html?region=gorgany&difficulty=easy),
+// тому посиланням можна поділитися, а кнопка «Назад» працює.
+import { loadData, el, routeCard, routesWord, loadError } from './data.js';
+import { revealOnScroll } from './site.js';
+import { estimatePerPerson } from './planner-calc.js';
 
+const PAGE_SIZE = 9;
 const grid = document.getElementById('routes-grid');
 const status = document.getElementById('routes-status');
-const filters = document.getElementById('route-filters');
-const dialog = document.getElementById('route-dialog');
-const dialogBody = dialog.querySelector('[data-dialog-body]');
+const form = document.getElementById('route-filters');
+const more = document.getElementById('routes-more');
 
 let allRoutes = [];
 let regionNames = {};
-let lastOpener = null;
+let shown = PAGE_SIZE;
 
-function routesWord(n) {
-  const last = n % 10;
-  const lastTwo = n % 100;
-  if (last === 1 && lastTwo !== 11) return 'маршрут';
-  if (last >= 2 && last <= 4 && (lastTwo < 12 || lastTwo > 14)) return 'маршрути';
-  return 'маршрутів';
-}
+const SORTERS = {
+  popular: (a, b) => b.popularity - a.popularity,
+  days: (a, b) => a.days - b.days || a.distanceKm - b.distanceKm,
+  distance: (a, b) => a.distanceKm - b.distanceKm,
+  peak: (a, b) => b.peakM - a.peakM,
+};
 
-// ---------- Фільтри ----------
 function matchesDays(route, value) {
   if (value === '1') return route.days === 1;
   if (value === '2-3') return route.days >= 2 && route.days <= 3;
-  if (value === '4+') return route.days >= 4;
   return true;
 }
 
-function applyFilters() {
-  const data = new FormData(filters);
-  const difficulty = data.get('difficulty');
-  const days = data.get('days');
-  const region = data.get('region');
+// Пошук без урахування регістру й апострофів: «хомяк» знайде «Хом'як»
+const normalize = (s) => s.toLowerCase().replace(/['ʼ’`]/g, '').trim();
 
-  const visible = allRoutes.filter(
-    (r) =>
-      (difficulty === 'all' || r.difficulty === difficulty) &&
+function readFilters() {
+  const data = new FormData(form);
+  return {
+    q: normalize(String(data.get('q') || '')),
+    region: data.get('region') || 'all',
+    difficulty: data.get('difficulty') || 'all',
+    days: data.get('days') || 'all',
+    budget: Number(data.get('budget')) || 0,
+    sort: SORTERS[data.get('sort')] ? data.get('sort') : 'popular',
+  };
+}
+
+function filtered({ q, region, difficulty, days, budget, sort }) {
+  return allRoutes
+    .filter((r) =>
+      (!q || normalize(`${r.name} ${regionNames[r.region]} ${r.start}`).includes(q)) &&
       (region === 'all' || r.region === region) &&
-      matchesDays(r, days),
-  );
-  renderGrid(visible);
+      (difficulty === 'all' || r.difficulty === difficulty) &&
+      matchesDays(r, days) &&
+      (!budget || estimatePerPerson(r) <= budget))
+    .sort(SORTERS[sort]);
 }
 
-// ---------- Картки ----------
-function stat(label, value) {
-  const item = el('div');
-  item.append(el('dt', 'text-xs text-muted', label), el('dd', 'font-medium tabular-nums', value));
-  return item;
-}
+function render() {
+  const filters = readFilters();
+  const routes = filtered(filters);
 
-function card(route) {
-  const item = el('li');
-  item.id = route.id;
-
-  const article = el('article', 'card flex h-full flex-col overflow-hidden transition-colors hover:border-accent');
-  const img = el('img', 'aspect-[3/2] w-full object-cover');
-  img.src = route.image;
-  img.alt = '';
-  img.width = 600;
-  img.height = 400;
-  img.loading = 'lazy';
-  img.decoding = 'async';
-
-  const content = el('div', 'flex flex-1 flex-col p-5');
-  const tags = el('p', 'flex items-center gap-2 text-xs text-muted');
-  tags.append(el('span', `badge badge-${route.difficulty}`, DIFFICULTY_LABELS[route.difficulty]), document.createTextNode(regionNames[route.region] || ''));
-
-  const stats = el('dl', 'mt-4 grid grid-cols-3 gap-2 text-sm');
-  stats.append(stat('Тривалість', daysLabel(route.days)), stat('Відстань', `${route.distanceKm} км`), stat('Вершина', `${route.peakM} м`));
-
-  const more = el('button', 'btn-ghost mt-5 self-start px-5 py-2 text-sm', 'Детальніше');
-  more.type = 'button';
-  more.setAttribute('aria-haspopup', 'dialog');
-  more.addEventListener('click', () => openRoute(route, more));
-
-  content.append(
-    tags,
-    el('h2', 'mt-3 text-2xl', route.name),
-    el('p', 'mt-2 line-clamp-3 text-sm text-muted', route.description),
-    stats,
-    more,
-  );
-  article.append(img, content);
-  item.append(article);
-  return item;
-}
-
-function renderGrid(routes) {
   if (!routes.length) {
-    status.textContent = 'Таких маршрутів поки немає.';
-    const reset = el('button', 'btn-ghost px-5 py-2 text-sm', 'Скинути фільтри');
+    status.textContent = 'Таких маршрутів поки немає';
+    const empty = el('li', 'card col-span-full p-10 text-center');
+    const reset = el('button', 'btn-ghost btn-sm mt-4', 'Скинути фільтри');
     reset.type = 'button';
-    reset.addEventListener('click', () => {
-      filters.reset();
-      applyFilters();
-    });
-    const empty = el('li', 'card col-span-full p-8 text-center');
-    empty.append(el('p', 'mb-4', 'Спробуй іншу складність або тривалість — або подивись усі маршрути.'), reset);
+    reset.addEventListener('click', () => form.reset());
+    empty.append(el('p', '', 'Спробуй іншу складність, тривалість чи бюджет — або подивись усі маршрути.'), reset);
     grid.replaceChildren(empty);
+    more.hidden = true;
     return;
   }
+
   status.textContent = `Знайдено ${routes.length} ${routesWord(routes.length)}`;
-  grid.replaceChildren(...routes.map(card));
+  grid.replaceChildren(
+    ...routes.slice(0, shown).map((route) => {
+      const item = el('li');
+      item.dataset.reveal = '';
+      item.append(routeCard(route, regionNames, { headingLevel: 'h2' }));
+      return item;
+    }),
+  );
+  more.hidden = routes.length <= shown;
+  revealOnScroll(grid);
 }
 
-// ---------- Модальне вікно ----------
-function openRoute(route, opener = null) {
-  lastOpener = opener;
-
-  const img = el('img', 'aspect-[3/2] w-full rounded-xl object-cover md:aspect-[2/1]');
-  img.src = route.image;
-  img.alt = `Ілюстрація маршруту «${route.name}»`;
-  img.width = 600;
-  img.height = 400;
-
-  const title = el('h2', 'mt-6 text-4xl', route.name);
-  title.id = 'route-dialog-title';
-
-  const tags = el('p', 'mt-2 flex flex-wrap items-center gap-2 text-sm text-muted');
-  tags.append(
-    el('span', `badge badge-${route.difficulty}`, DIFFICULTY_LABELS[route.difficulty]),
-    document.createTextNode(`${regionNames[route.region] || ''} · старт: ${route.start}`),
-  );
-
-  const stats = el('dl', 'mt-6 grid grid-cols-2 gap-4 rounded-xl border border-stone/30 p-4 sm:grid-cols-4');
-  stats.append(
-    stat('Тривалість', daysLabel(route.days)),
-    stat('Відстань', `${route.distanceKm} км`),
-    stat('Набір висоти', `${route.gainM} м`),
-    stat('Найвища точка', `${route.peakM} м`),
-  );
-
-  const highlights = el('ul', 'mt-4 space-y-1.5');
-  route.highlights.forEach((h) => {
-    const li = el('li', 'flex gap-2');
-    li.append(el('span', 'text-accent', '—'), document.createTextNode(h));
-    highlights.append(li);
-  });
-
-  const plan = el('a', 'btn-primary mt-8', 'Розрахувати похід цим маршрутом');
-  const params = new URLSearchParams({ region: route.region, days: route.days, difficulty: route.difficulty });
-  plan.href = `planner.html?${params}`;
-
-  dialogBody.replaceChildren(
-    img,
-    title,
-    tags,
-    el('p', 'mt-5 text-lg', route.description),
-    stats,
-    el('h3', 'mt-6 text-2xl', 'Що побачиш'),
-    highlights,
-    plan,
-  );
-
-  history.replaceState(null, '', `#${route.id}`);
-  if (!dialog.open) dialog.showModal();
-  dialog.scrollTop = 0;
+// ---------- Синхронізація з адресою ----------
+function writeUrl() {
+  const { region, difficulty, days, budget, sort } = readFilters();
+  const params = new URLSearchParams();
+  if (region !== 'all') params.set('region', region);
+  if (difficulty !== 'all') params.set('difficulty', difficulty);
+  if (days !== 'all') params.set('days', days);
+  if (budget) params.set('budget', budget);
+  if (sort !== 'popular') params.set('sort', sort);
+  const query = params.toString();
+  history.replaceState(null, '', query ? `?${query}` : location.pathname);
 }
 
-dialog.addEventListener('close', () => {
-  history.replaceState(null, '', location.pathname + location.search);
-  lastOpener?.focus();
-});
+function readUrl() {
+  const params = new URLSearchParams(location.search);
+  const setRadio = (name, value) => {
+    const input = form.querySelector(`input[name="${name}"][value="${CSS.escape(value || 'all')}"]`);
+    if (input) input.checked = true;
+  };
+  const region = params.get('region');
+  if ([...form.elements.region.options].some((o) => o.value === region)) form.elements.region.value = region;
+  const budget = params.get('budget');
+  if ([...form.elements.budget.options].some((o) => o.value === budget)) form.elements.budget.value = budget;
+  const sort = params.get('sort');
+  if (SORTERS[sort]) form.elements.sort.value = sort;
+  setRadio('difficulty', params.get('difficulty'));
+  setRadio('days', params.get('days'));
+}
 
-// Клік по затемненому фону закриває вікно
-dialog.addEventListener('click', (event) => {
-  if (event.target === dialog) dialog.close();
-});
+function update() {
+  shown = PAGE_SIZE;
+  writeUrl();
+  render();
+}
 
 // ---------- Старт ----------
 async function init() {
+  grid.setAttribute('aria-busy', 'true');
   status.textContent = 'Завантажуємо маршрути…';
   try {
     const data = await loadData();
     allRoutes = data.routes;
-    regionNames = data.regions || {};
-    applyFilters();
-
-    // Посилання виду routes.html#hoverla-zaroslyak відкриває потрібний маршрут
-    const id = decodeURIComponent(location.hash.slice(1));
-    const route = allRoutes.find((r) => r.id === id);
-    if (route) {
-      document.getElementById(route.id)?.scrollIntoView({ block: 'center' });
-      openRoute(route, document.querySelector(`#${CSS.escape(route.id)} button`));
-    }
+    regionNames = data.regionNames;
+    readUrl();
+    render();
   } catch (error) {
     console.warn('Не вдалося завантажити data.json:', error);
-    status.textContent = 'Не вдалося завантажити маршрути. Перевір підключення до інтернету.';
-    const retry = el('button', 'btn-ghost px-5 py-2 text-sm', 'Спробувати ще раз');
-    retry.type = 'button';
-    retry.addEventListener('click', init);
+    status.textContent = 'Не вдалося завантажити маршрути';
     const item = el('li', 'col-span-full');
-    item.append(retry);
+    item.append(loadError(init));
     grid.replaceChildren(item);
+  } finally {
+    grid.setAttribute('aria-busy', 'false');
   }
 }
 
-// Якщо адреса змінилася без перезавантаження (наприклад, routes.html#petros) — відкрити маршрут
-window.addEventListener('hashchange', () => {
-  const route = allRoutes.find((r) => r.id === decodeURIComponent(location.hash.slice(1)));
-  if (route && !dialog.open) openRoute(route, document.querySelector(`#${CSS.escape(route.id)} button`));
+form.addEventListener('change', update);
+let typing;
+form.elements.q.addEventListener('input', () => {
+  clearTimeout(typing);
+  typing = setTimeout(update, 200);
+});
+form.addEventListener('submit', (event) => event.preventDefault());
+form.addEventListener('reset', () => setTimeout(update));
+more.addEventListener('click', () => {
+  const firstNew = shown;
+  shown += PAGE_SIZE;
+  render();
+  // Фокус на першу нову картку — щоб клавіатура не «губилася»
+  grid.children[firstNew]?.querySelector('a')?.focus();
 });
 
-filters.addEventListener('change', applyFilters);
-filters.addEventListener('reset', () => setTimeout(applyFilters));
 init();

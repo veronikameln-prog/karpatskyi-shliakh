@@ -1,0 +1,164 @@
+<!--
+title: Поради новачкам — перший похід у Карпати без стресу
+description: Як підготуватися до першого походу: чек-лист спорядження, правила безпеки в горах, номери рятувальників і відповіді на часті запитання.
+nav: tips
+libs: gsap
+script: tips.js
+-->
+<main id="main">
+  <section class="relative isolate overflow-hidden no-print" aria-labelledby="page-title">
+    <div class="container-site grid items-center gap-6 pt-12 md:grid-cols-2 md:pt-14">
+      <div>
+        <p class="pill-label">Поради</p>
+        <h1 id="page-title" class="mt-4 text-page">Перший похід без стресу</h1>
+        <p class="mt-4 max-w-md text-lg">Усе, що варто знати до виходу на стежку.</p>
+        <nav aria-label="Розділи сторінки" class="mt-6">
+          <ul class="flex flex-wrap gap-2">
+            <li><a class="chip" href="#prep">Підготовка</a></li>
+            <li><a class="chip" href="#checklist">Чек-лист</a></li>
+            <li><a class="chip" href="#safety">Безпека</a></li>
+            <li><a class="chip" href="#faq">FAQ</a></li>
+          </ul>
+        </nav>
+      </div>
+      <img src="assets/img/photos/tips-art.jpg" alt="Ілюстрація: засніжена вершина над смерековим лісом" width="610" height="300" fetchpriority="high"
+        class="hidden w-full rounded-3xl object-cover mix-blend-multiply dark:mix-blend-normal dark:opacity-80 md:block">
+    </div>
+  </section>
+
+  <!-- Підготовка -->
+  <section id="prep" class="section scroll-mt-24 pb-6 no-print" aria-labelledby="prep-title">
+    <div class="container-site">
+      <h2 id="prep-title" class="section-title">Підготовка</h2>
+      <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <li class="card p-6 text-center" data-reveal>
+          <svg class="mx-auto h-10 w-10 text-heading" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"/><path d="M9 3v15M15 6v15"/></svg>
+          <h3 class="mt-3 font-sans text-base">Обери маршрут за силами</h3>
+          <p class="mt-1 text-sm text-muted">Для першого разу — до 15 км і 800 м набору.</p>
+        </li>
+        <li class="card p-6 text-center" data-reveal>
+          <svg class="mx-auto h-10 w-10 text-heading" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M7 18a4 4 0 1 1 .8-7.9A5.5 5.5 0 0 1 18.5 12 3 3 0 0 1 18 18H7Z"/><path d="M8 21l1-2M12 21l1-2M16 21l1-2"/></svg>
+          <h3 class="mt-3 font-sans text-base">Перевір прогноз погоди за 3 дні</h3>
+          <p class="mt-1 text-sm text-muted">Гроза в горах — причина перенести вихід.</p>
+        </li>
+        <li class="card p-6 text-center" data-reveal>
+          <svg class="mx-auto h-10 w-10 text-heading" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M16.5 14.5c2.7 0 4.5 1.6 5 4.5"/></svg>
+          <h3 class="mt-3 font-sans text-base">Повідом близьким маршрут і час повернення</h3>
+          <p class="mt-1 text-sm text-muted">І зареєструйся в рятувальників перед складним маршрутом.</p>
+        </li>
+        <li class="card p-6 text-center" data-reveal>
+          <svg class="mx-auto h-10 w-10 text-heading" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M4 18V7l5-3 2 4h3l2 4 4 2v4H4Z"/><path d="M4 15h16"/></svg>
+          <h3 class="mt-3 font-sans text-base">Розходи взуття заздалегідь</h3>
+          <p class="mt-1 text-sm text-muted">Нові черевики в перший день — гарантовані мозолі.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Чек-лист -->
+  <section id="checklist" class="section scroll-mt-24 pb-6" aria-labelledby="checklist-title">
+    <div class="container-site">
+      <form id="checklist-form" class="card p-6 md:p-8">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <h2 id="checklist-title" class="text-3xl">Чек-лист спорядження</h2>
+          <div class="flex flex-wrap items-center gap-4 no-print">
+            <p class="text-sm"><span id="checklist-count" role="status" aria-live="polite">0 з 14 готово</span></p>
+            <progress id="checklist-progress" class="h-2 w-32 overflow-hidden rounded-full [&::-moz-progress-bar]:bg-primary [&::-webkit-progress-bar]:bg-surface-2 [&::-webkit-progress-value]:bg-primary" max="14" value="0" aria-label="Готовність спорядження"></progress>
+            <button type="button" id="checklist-print" class="btn-primary btn-sm">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg>
+              Завантажити PDF
+            </button>
+          </div>
+        </div>
+        <div class="mt-6 grid gap-6 md:grid-cols-3 md:divide-x md:divide-line">
+          <fieldset>
+            <legend class="font-bold text-heading">Одяг</legend>
+            <ul class="mt-3 space-y-2.5">
+              <li><label class="flex cursor-pointer items-center gap-3"><input type="checkbox" class="checkbox" name="item" value="boots">Трекінгові черевики</label></li>
+              <li><label class="flex cursor-pointer items-center gap-3"><input type="checkbox" class="checkbox" name="item" value="windbreaker">Вітрівка</label></li>
+              <li><label class="flex cursor-pointer items-center gap-3"><input type="checkbox" class="checkbox" name="item" value="fleece">Теплий фліс</label></li>
+              <li><label class="flex cursor-pointer items-center gap-3"><input type="checkbox" class="checkbox" name="item" value="hat">Шапка й рукавички</label></li>
+              <li><label class="flex cursor-pointer items-center gap-3"><input type="checkbox" class="checkbox" name="item" value="socks">Запасні шкарпетки</label></li>
+            </ul>
+          </fieldset>
+          <fieldset class="md:pl-6">
+            <legend class="font-bold text-heading md:pl-6">Спорядження</legend>
+            <ul class="mt-3 space-y-2.5">
+              <li><label class="flex cursor-pointer items-center gap-3"><input type="checkbox" class="checkbox" name="item" value="backpack">Рюкзак 30–40 л</label></li>
+              <li><label class="flex cursor-pointer items-center gap-3"><input type="checkbox" class="checkbox" name="item" value="headlamp">Ліхтарик</label></li>
+              <li><label class="flex cursor-pointer items-center gap-3"><input type="checkbox" class="checkbox" name="item" value="powerbank">Повербанк</label></li>
+              <li><label class="flex cursor-pointer items-center gap-3"><input type="checkbox" class="checkbox" name="item" value="firstaid">Аптечка</label></li>
+              <li><label class="flex cursor-pointer items-center gap-3"><input type="checkbox" class="checkbox" name="item" value="map">Карта офлайн</label></li>
+            </ul>
+          </fieldset>
+          <fieldset class="md:pl-6">
+            <legend class="font-bold text-heading md:pl-6">Їжа і вода</legend>
+            <ul class="mt-3 space-y-2.5">
+              <li><label class="flex cursor-pointer items-center gap-3"><input type="checkbox" class="checkbox" name="item" value="water">1,5 л води</label></li>
+              <li><label class="flex cursor-pointer items-center gap-3"><input type="checkbox" class="checkbox" name="item" value="snack">Перекус</label></li>
+              <li><label class="flex cursor-pointer items-center gap-3"><input type="checkbox" class="checkbox" name="item" value="thermos">Термос</label></li>
+              <li><label class="flex cursor-pointer items-center gap-3"><input type="checkbox" class="checkbox" name="item" value="trashbag">Пакет для сміття</label></li>
+            </ul>
+          </fieldset>
+        </div>
+        <div class="mt-6 flex items-center justify-between gap-4 border-t border-line pt-4 text-sm text-muted no-print">
+          <p>Позначки зберігаються в цьому браузері.</p>
+          <button type="reset" class="font-semibold text-accent underline underline-offset-4 hover:no-underline">Очистити список</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Безпека -->
+  <section id="safety" class="section scroll-mt-24 pb-6 no-print" aria-labelledby="safety-title">
+    <div class="container-site">
+      <h2 id="safety-title" class="section-title">Безпека</h2>
+      <div class="mt-8 grid gap-5 lg:grid-cols-[1fr_1.1fr]">
+        <div class="rounded-3xl bg-[#163428] p-8 text-center text-white" data-reveal>
+          <h3 class="text-2xl text-white">Екстрені номери</h3>
+          <div class="mt-4 flex items-center justify-center gap-8">
+            <a href="tel:112" class="font-serif text-6xl font-bold hover:underline" aria-label="Подзвонити 112, єдиний номер екстреної допомоги">112</a>
+            <span class="h-14 w-px bg-white/30" aria-hidden="true"></span>
+            <a href="tel:101" class="font-serif text-6xl font-bold hover:underline" aria-label="Подзвонити 101, ДСНС">101</a>
+          </div>
+          <p class="mt-4 border-t border-white/20 pt-4 text-sm text-white/85">Гірська пошуково-рятувальна служба ДСНС. Запиши номери в телефон до виходу — зв'язок у горах буває не всюди.</p>
+        </div>
+        <ul class="card divide-y divide-line px-6" data-reveal>
+          <li class="flex items-center gap-4 py-4"><span class="text-xl" aria-hidden="true">⚠️</span>Не сходь зі стежки — так найпростіше заблукати.</li>
+          <li class="flex items-center gap-4 py-4"><span class="text-xl" aria-hidden="true">⚠️</span>Гроза — одразу вниз з хребта, подалі від вершин.</li>
+          <li class="flex items-center gap-4 py-4"><span class="text-xl" aria-hidden="true">⚠️</span>Не йди сам у перший похід.</li>
+          <li class="flex items-center gap-4 py-4"><span class="text-xl" aria-hidden="true">⚠️</span>Розворот — це нормально. Гора нікуди не дінеться.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="section scroll-mt-24 no-print" aria-labelledby="faq-title">
+    <div class="container-site">
+      <h2 id="faq-title" class="section-title">FAQ</h2>
+      <div class="mt-8 space-y-3">
+        <details class="card group p-5" open>
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-serif text-lg font-bold text-heading [&::-webkit-details-marker]:hidden">Чи потрібна фізична підготовка?<span class="transition-transform group-open:rotate-180" aria-hidden="true">⌄</span></summary>
+          <p class="mt-3">Для легких маршрутів достатньо гуляти 2–3 години без втоми. Почни з одноденного походу, а перед складним маршрутом кілька тижнів ходи пішки й піднімайся сходами.</p>
+        </details>
+        <details class="card group p-5">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-serif text-lg font-bold text-heading [&::-webkit-details-marker]:hidden">Скільки коштує перший похід?<span class="transition-transform group-open:rotate-180" aria-hidden="true">⌄</span></summary>
+          <p class="mt-3">Одноденний похід — від 1 000–1 500 ₴ на людину з дорогою та їжею. Точніше порахує <a href="planner.html" class="font-semibold text-accent underline underline-offset-4">конструктор походу</a>.</p>
+        </details>
+        <details class="card group p-5">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-serif text-lg font-bold text-heading [&::-webkit-details-marker]:hidden">Що робити, якщо заблукав?<span class="transition-transform group-open:rotate-180" aria-hidden="true">⌄</span></summary>
+          <p class="mt-3">Зупинись і не панікуй. Повернися до останньої впевненої точки маршруту, перевір офлайн-карту. Якщо стемніло або є травма — дзвони 112 чи 101 і залишайся на місці.</p>
+        </details>
+        <details class="card group p-5">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-serif text-lg font-bold text-heading [&::-webkit-details-marker]:hidden">Чи можна в похід з дітьми?<span class="transition-transform group-open:rotate-180" aria-hidden="true">⌄</span></summary>
+          <p class="mt-3">Так, обирай короткі легкі маршрути: Синевирське озеро чи водоспад Кам'янка. Закладай удвічі більше часу й більше перекусів.</p>
+        </details>
+        <details class="card group p-5">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-serif text-lg font-bold text-heading [&::-webkit-details-marker]:hidden">Де ночувати в горах?<span class="transition-transform group-open:rotate-180" aria-hidden="true">⌄</span></summary>
+          <p class="mt-3">У наметі на облаштованих стоянках, у колибах на полонинах або в готелі в селі біля старту. У національних парках ставити намет можна лише в дозволених місцях.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+</main>

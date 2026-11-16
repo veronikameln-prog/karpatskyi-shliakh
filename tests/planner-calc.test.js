@@ -2,7 +2,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { parseCount, validateTrip, calculateTrip, matchRoutes } from '../src/js/planner-calc.js';
+import { parseCount, validateTrip, calculateTrip, matchRoutes, estimatePerPerson } from '../src/js/planner-calc.js';
 
 const { routes } = JSON.parse(readFileSync(new URL('../data/data.json', import.meta.url), 'utf8'));
 const base = { region: 'any', difficulty: 'easy', stay: 'hut', extras: [] };
@@ -65,10 +65,10 @@ test('попередження про ризиковані комбінації'
 });
 
 test('підбір маршрутів: точний збіг і тривалість не довша за похід', () => {
-  const r = matchRoutes(routes, { region: 'chornohora', difficulty: 'easy', days: 1 });
+  const r = matchRoutes(routes, { region: 'gorgany', difficulty: 'easy', days: 1 });
   assert.equal(r.relaxed, null);
   assert.ok(r.routes.length > 0);
-  assert.ok(r.routes.every((x) => x.region === 'chornohora' && x.difficulty === 'easy' && x.days <= 1));
+  assert.ok(r.routes.every((x) => x.region === 'gorgany' && x.difficulty === 'easy' && x.days <= 1));
 });
 
 test('підбір маршрутів: якщо збігу немає — послаблюємо фільтр', () => {
@@ -80,4 +80,13 @@ test('підбір маршрутів: якщо збігу немає — пос
   // Складний маршрут за 1 день не знайдеться ніде
   const none = matchRoutes(routes, { region: 'any', difficulty: 'hard', days: 1 });
   assert.notEqual(none.relaxed, null);
+});
+
+test('оцінка бюджету маршруту для фільтра каталогу', () => {
+  // 1 день: їжа 450 + трансфер 700
+  assert.equal(estimatePerPerson({ days: 1, difficulty: 'easy' }), 1150);
+  // 3 дні: їжа 1350 + 2 ночі в колибі 800 + трансфер 700
+  assert.equal(estimatePerPerson({ days: 3, difficulty: 'hard' }), 2850);
+  // Довший похід завжди не дешевший за коротший
+  assert.ok(estimatePerPerson({ days: 2, difficulty: 'medium' }) > estimatePerPerson({ days: 1, difficulty: 'medium' }));
 });
