@@ -2,12 +2,14 @@
   "name": "karpatskyi-shliakh",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "description": "Карпатський шлях — туристична платформа «Мандруй Україною»: маршрути й конструктор походу в Карпати",
   "scripts": {
     "build:css": "tailwindcss -i ./src/input.css -o ./css/main.css --minify",
     "watch:css": "tailwindcss -i ./src/input.css -o ./css/main.css --watch",
     "dev": "npm run build:css && npx --yes serve -l 5173 .",
-    "build": "npm run build:css"
+    "build": "npm run build:css",
+    "test": "node --test tests/"
   },
   "devDependencies": {
     "tailwindcss": "3.4.17"
