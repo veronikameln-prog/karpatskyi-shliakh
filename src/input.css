@@ -1,0 +1,249 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== Дизайн-токени (docs/04-design.md) =====
+   Значення — RGB-трійки, щоб Tailwind міг додавати прозорість: bg-accent/20 */
+@layer base {
+  :root {
+    /* День — «Туман і хвоя» */
+    --bg: 233 236 232;
+    --surface: 246 247 244;
+    --text: 29 43 36;
+    --text-muted: 79 92 85;
+    --stone: 138 147 140;
+    --forest: 47 74 58;
+    --accent: 160 85 42;
+    --accent-soft: 200 116 58;
+
+    /* Шари гір на сценах */
+    --sky: 233 236 232;
+    --m-far: 185 194 188;
+    --m-mid: 127 145 133;
+    --m-near: 47 74 58;
+    --m-front: 31 52 40;
+    --mist: 246 247 244;
+    --light: 231 194 154; /* сонце */
+    --water: 168 186 184;
+    --stars: 0; /* зорі видно лише вночі */
+    color-scheme: light;
+  }
+
+  .dark {
+    /* Ніч — «Нічні Карпати» */
+    --bg: 14 26 36;
+    --surface: 22 37 50;
+    --text: 230 225 211;
+    --text-muted: 169 179 176;
+    --stone: 52 82 82;
+    --forest: 30 49 64;
+    --accent: 224 164 88;
+    --accent-soft: 217 199 160;
+
+    --sky: 14 26 36;
+    --m-far: 30 49 64;
+    --m-mid: 31 58 58;
+    --m-near: 18 36 40;
+    --m-front: 10 20 24;
+    --mist: 70 92 108;
+    --light: 217 199 160; /* місяць */
+    --water: 24 44 56;
+    --stars: 1;
+    color-scheme: dark;
+  }
+
+  html {
+    @apply bg-bg text-ink antialiased;
+    -webkit-text-size-adjust: 100%;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+  body {
+    @apply font-sans text-base leading-relaxed;
+    min-height: 100vh;
+  }
+  h1, h2, h3 {
+    @apply font-serif font-semibold tracking-tight;
+    text-wrap: balance;
+  }
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  ::selection {
+    background: rgb(var(--accent) / 0.25);
+  }
+}
+
+/* ===== Компоненти ===== */
+@layer components {
+  .container-site {
+    @apply mx-auto w-full max-w-site;
+    padding-inline: clamp(1rem, 4vw, 3rem);
+  }
+
+  .skip-link {
+    @apply absolute left-4 top-4 z-[100] -translate-y-24 rounded-full bg-accent px-5 py-2 font-medium text-bg transition-transform;
+  }
+  .skip-link:focus {
+    @apply translate-y-0;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-medium transition-colors duration-200;
+  }
+  .btn-primary {
+    @apply btn bg-accent text-bg hover:bg-ink;
+  }
+  .btn-ghost {
+    @apply btn border border-ink/25 text-ink hover:border-accent hover:text-accent;
+  }
+
+  .nav-link {
+    @apply relative py-1 text-sm font-medium text-ink/80 transition-colors hover:text-accent;
+  }
+  .nav-link[aria-current='page'] {
+    @apply text-accent;
+  }
+  .nav-link[aria-current='page']::after {
+    content: '';
+    @apply absolute inset-x-0 -bottom-0.5 h-px bg-accent;
+  }
+
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.2em] text-accent;
+  }
+
+  .card {
+    @apply rounded-xl border border-stone/30 bg-surface;
+  }
+
+  .field-label {
+    @apply mb-1.5 block text-sm font-medium;
+  }
+  .field {
+    @apply w-full rounded-lg border border-stone/50 bg-surface px-4 py-3 text-ink placeholder:text-muted/70 transition-colors;
+  }
+  .field:hover {
+    @apply border-stone;
+  }
+  .field:focus {
+    @apply border-accent outline-none ring-2 ring-accent/30;
+  }
+  .field[aria-invalid='true'] {
+    @apply border-red-700 dark:border-red-400;
+  }
+  .field-error {
+    @apply mt-1.5 min-h-[1.25rem] text-sm text-red-800 dark:text-red-300;
+  }
+
+  /* Кнопка-«пігулка» для radio / checkbox */
+  .chip {
+    @apply relative inline-flex cursor-pointer select-none items-center gap-2 rounded-full border border-stone/50 px-4 py-2 text-sm font-medium transition-colors hover:border-accent;
+  }
+  .chip input {
+    @apply absolute inset-0 cursor-pointer opacity-0;
+  }
+  .chip:has(input:checked) {
+    @apply border-accent bg-accent text-bg;
+  }
+  .chip:has(input:focus-visible) {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 3px;
+  }
+
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold;
+  }
+  .badge-easy {
+    @apply bg-forest/15 text-forest dark:bg-emerald-300/15 dark:text-emerald-200;
+  }
+  .badge-medium {
+    @apply bg-accent/15 text-accent;
+  }
+  .badge-hard {
+    @apply bg-red-800/10 text-red-800 dark:bg-red-300/15 dark:text-red-200;
+  }
+
+  .dialog {
+    @apply m-auto w-[min(56rem,calc(100%-2rem))] max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-2xl border border-stone/30 bg-surface p-0 text-ink;
+  }
+  .dialog::backdrop {
+    background: rgb(var(--m-front) / 0.6);
+    backdrop-filter: blur(4px);
+  }
+}
+
+/* ===== Шари гір (SVG) ===== */
+.f-sky { fill: rgb(var(--sky)); }
+.f-far { fill: rgb(var(--m-far)); }
+.f-mid { fill: rgb(var(--m-mid)); }
+.f-near { fill: rgb(var(--m-near)); }
+.f-front { fill: rgb(var(--m-front)); }
+.f-mist { fill: rgb(var(--mist)); }
+.f-light { fill: rgb(var(--light)); }
+.f-water { fill: rgb(var(--water)); }
+.f-stars { fill: rgb(var(--accent-soft)); opacity: var(--stars); transition: opacity 0.6s; }
+.f-sky, .f-far, .f-mid, .f-near, .f-front, .f-mist, .f-light, .f-water {
+  transition: fill 0.6s ease;
+}
+
+/* ===== Головна: сцени ===== */
+.stage {
+  @apply fixed inset-0 -z-10 overflow-hidden bg-bg;
+}
+.scene-art {
+  @apply absolute inset-0 h-full w-full;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+.scene-art.is-active {
+  opacity: 1;
+}
+.scene-art svg {
+  @apply absolute inset-0 h-full w-full;
+}
+.layer {
+  will-change: transform;
+}
+.scene {
+  @apply relative flex min-h-[100svh] items-center;
+}
+.scene-text {
+  text-shadow: 0 1px 24px rgb(var(--bg) / 0.6);
+}
+
+.altimeter {
+  @apply fixed bottom-6 left-[clamp(1rem,4vw,3rem)] z-30 font-sans tabular-nums;
+}
+
+.scene-dots {
+  @apply fixed right-[clamp(0.75rem,2.5vw,2rem)] top-1/2 z-30 hidden -translate-y-1/2 flex-col gap-4 sm:flex;
+}
+.scene-dots a {
+  @apply relative block h-2.5 w-2.5 rounded-full border border-ink/60 transition-all duration-300;
+}
+.scene-dots a[aria-current='true'] {
+  @apply h-6 border-accent bg-accent;
+}
+.scene-dots a span {
+  @apply pointer-events-none absolute right-6 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-surface px-3 py-1 text-xs font-medium opacity-0 transition-opacity;
+}
+.scene-dots a:hover span,
+.scene-dots a:focus-visible span {
+  @apply opacity-100;
+}
+
+/* Повага до налаштувань людини: без руху */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Карпатський шлях — плануй свій похід у Карпати</title>
+  <meta name="description" content="Маршрути Карпатами для новачків, конструктор походу з розрахунком бюджету і поради перед виходом. Мандруй Україною.">
+  <meta name="theme-color" content="#E9ECE8">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <!-- Тема ставиться до відмальовки сторінки, щоб не було «спалаху» -->
+  <script>
+    try {
+      var t = localStorage.getItem('ks-theme');
+      if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+    } catch (e) {}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&amp;family=Inter:wght@400;500;600&amp;display=swap">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Перейти до змісту</a>
+
+  <header class="fixed inset-x-0 top-0 z-40 border-b border-stone/20 bg-bg/80 backdrop-blur-md">
+    <div class="container-site flex h-16 items-center justify-between gap-6 md:h-20">
+      <a href="index.html" class="flex items-center gap-2.5 font-serif text-xl font-semibold md:text-2xl">
+        <svg class="h-8 w-8 text-accent" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <path d="M2 26 L12 10 L17 17 L21 12 L30 26 Z" fill="currentColor" opacity=".25"/>
+          <path d="M2 26 L12 10 L17 17 L21 12 L30 26" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M9 26 C12 22 15 24 17 20" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2"/>
+        </svg>
+        <span>Карпатський шлях</span>
+      </a>
+
+      <nav aria-label="Головне меню" class="hidden md:block">
+        <ul class="flex items-center gap-8">
+          <li><a class="nav-link" href="index.html" aria-current="page">Головна</a></li>
+          <li><a class="nav-link" href="routes.html">Маршрути</a></li>
+          <li><a class="nav-link" href="planner.html">Конструктор походу</a></li>
+          <li><a class="nav-link" href="about.html">Про нас</a></li>
+        </ul>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <button type="button" data-theme-toggle aria-pressed="false" aria-label="Нічна тема"
+          class="grid h-10 w-10 place-items-center rounded-full border border-ink/20 transition-colors hover:border-accent hover:text-accent">
+          <svg class="h-5 w-5 dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path d="M21 13.5A8.5 8.5 0 1 1 10.5 3a6.5 6.5 0 0 0 10.5 10.5Z"/>
+          </svg>
+          <svg class="hidden h-5 w-5 dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+          </svg>
+        </button>
+        <button type="button" data-menu-toggle aria-controls="mobile-menu" aria-expanded="false" aria-label="Відкрити меню"
+          class="grid h-10 w-10 place-items-center rounded-full border border-ink/20 md:hidden">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h10"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <nav id="mobile-menu" aria-label="Мобільне меню" class="border-t border-stone/20 bg-bg md:hidden" hidden>
+      <ul class="container-site flex flex-col gap-1 py-4 font-serif text-2xl">
+        <li><a class="block py-2" href="index.html" aria-current="page">Головна</a></li>
+        <li><a class="block py-2" href="routes.html">Маршрути</a></li>
+        <li><a class="block py-2" href="planner.html">Конструктор походу</a></li>
+        <li><a class="block py-2" href="about.html">Про нас</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Сцена-«задник»: 6 ілюстрацій гір (SVG, згенеровані ШІ). Активна — одна, решта прозорі. -->
+  <div class="stage" aria-hidden="true">
+    <svg width="0" height="0" class="absolute">
+      <defs>
+        <linearGradient id="mist" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" style="stop-color: rgb(var(--mist)); stop-opacity: 0"/>
+          <stop offset=".5" style="stop-color: rgb(var(--mist)); stop-opacity: .9"/>
+          <stop offset="1" style="stop-color: rgb(var(--mist)); stop-opacity: 0"/>
+        </linearGradient>
+        <symbol id="spruce" viewBox="0 0 40 100">
+          <path d="M20 0 L31 28 L25 28 L35 52 L28 52 L40 84 L23 84 L23 100 L17 100 L17 84 L0 84 L12 52 L5 52 L15 28 L9 28 Z"/>
+        </symbol>
+      </defs>
+    </svg>
+
+    <!-- 1. Туман у долині -->
+    <div class="scene-art is-active" data-art="0">
+      <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice">
+        <rect class="f-sky" width="1600" height="900"/>
+        <circle class="f-light layer" data-depth="0.05" cx="1120" cy="290" r="70"/>
+        <path class="f-far layer" data-depth="0.08" d="M0 520 L180 430 L330 480 L520 360 L700 450 L880 380 L1060 470 L1250 350 L1420 440 L1600 400 V900 H0Z"/>
+        <rect class="layer" fill="url(#mist)" data-depth="0.1" y="470" width="1600" height="120"/>
+        <path class="f-mid layer" data-depth="0.14" d="M0 610 L160 540 L300 590 L470 520 L640 600 L820 530 L1000 610 L1180 540 L1380 600 L1600 550 V900 H0Z"/>
+        <rect class="layer" fill="url(#mist)" data-depth="0.16" y="600" width="1600" height="110"/>
+        <path class="f-near layer" data-depth="0.22" d="M0 720 C200 660 400 700 600 680 S1000 650 1200 690 S1500 670 1600 680 V900 H0Z"/>
+        <path class="f-front layer" data-depth="0.3" d="M0 820 C300 780 600 830 900 800 S1400 780 1600 810 V900 H0Z"/>
+      </svg>
+    </div>
+
+    <!-- 2. Смерековий ліс -->
+    <div class="scene-art" data-art="1">
+      <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice">
+        <rect class="f-sky" width="1600" height="900"/>
+        <circle class="f-light layer" data-depth="0.05" cx="420" cy="250" r="55"/>
+        <path class="f-far layer" data-depth="0.08" d="M0 450 L200 380 L420 460 L640 360 L860 440 L1080 370 L1300 450 L1600 380 V900 H0Z"/>
+        <g class="f-mid layer" data-depth="0.14">
+          <path d="M0 580 L250 520 L500 580 L760 510 L1020 570 L1300 520 L1600 570 V900 H0Z"/>
+          <use href="#spruce" x="40" y="500" width="36" height="90"/>
+          <use href="#spruce" x="150" y="480" width="36" height="90"/>
+          <use href="#spruce" x="280" y="490" width="36" height="90"/>
+          <use href="#spruce" x="420" y="500" width="36" height="90"/>
+          <use href="#spruce" x="560" y="480" width="36" height="90"/>
+          <use href="#spruce" x="700" y="460" width="36" height="90"/>
+          <use href="#spruce" x="840" y="470" width="36" height="90"/>
+          <use href="#spruce" x="980" y="490" width="36" height="90"/>
+          <use href="#spruce" x="1120" y="470" width="36" height="90"/>
+          <use href="#spruce" x="1260" y="450" width="36" height="90"/>
+          <use href="#spruce" x="1400" y="470" width="36" height="90"/>
+          <use href="#spruce" x="1530" y="490" width="36" height="90"/>
+        </g>
+        <rect class="layer" fill="url(#mist)" data-depth="0.16" y="590" width="1600" height="80"/>
+        <g class="f-near layer" data-depth="0.22">
+          <path d="M0 700 C300 650 600 690 900 660 S1400 680 1600 650 V900 H0Z"/>
+          <use href="#spruce" x="60" y="520" width="72" height="180"/>
+          <use href="#spruce" x="260" y="500" width="72" height="180"/>
+          <use href="#spruce" x="480" y="510" width="72" height="180"/>
+          <use href="#spruce" x="1040" y="490" width="72" height="180"/>
+          <use href="#spruce" x="1250" y="500" width="72" height="180"/>
+          <use href="#spruce" x="1460" y="480" width="72" height="180"/>
+        </g>
+        <g class="f-front layer" data-depth="0.32">
+          <path d="M0 830 C400 800 1000 840 1600 810 V900 H0Z"/>
+          <use href="#spruce" x="-60" y="420" width="170" height="430"/>
+          <use href="#spruce" x="1480" y="400" width="170" height="440"/>
+        </g>
+      </svg>
+    </div>
+
+    <!-- 3. Полонина -->
+    <div class="scene-art" data-art="2">
+      <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice">
+        <rect class="f-sky" width="1600" height="900"/>
+        <circle class="f-light layer" data-depth="0.05" cx="400" cy="260" r="60"/>
+        <path class="f-far layer" data-depth="0.08" d="M0 470 L240 400 L480 450 L700 380 L960 440 L1200 390 L1600 450 V900 H0Z"/>
+        <rect class="layer" fill="url(#mist)" data-depth="0.1" y="500" width="1600" height="90"/>
+        <path class="f-mid layer" data-depth="0.14" d="M0 600 C250 520 450 560 700 540 S1150 500 1400 540 S1550 560 1600 550 V900 H0Z"/>
+        <path class="f-near layer" data-depth="0.22" d="M0 720 C300 640 650 700 950 650 S1450 690 1600 670 V900 H0Z"/>
+        <path class="f-front layer" data-depth="0.3" d="M0 830 C400 790 900 840 1600 800 V900 H0Z"/>
+      </svg>
+    </div>
+
+    <!-- 4. Говерла -->
+    <div class="scene-art" data-art="3">
+      <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice">
+        <rect class="f-sky" width="1600" height="900"/>
+        <g class="f-stars">
+          <circle cx="210" cy="120" r="2"/><circle cx="380" cy="210" r="1.5"/><circle cx="520" cy="90" r="2.2"/>
+          <circle cx="1050" cy="150" r="1.6"/><circle cx="1240" cy="80" r="2"/><circle cx="1420" cy="200" r="1.5"/>
+        </g>
+        <circle class="f-light layer" data-depth="0.05" cx="1200" cy="250" r="50"/>
+        <path class="f-far layer" data-depth="0.08" d="M0 560 L220 500 L420 550 L560 520 L1040 520 L1200 490 L1400 540 L1600 500 V900 H0Z"/>
+        <g class="f-mid layer" data-depth="0.12">
+          <path d="M150 900 C400 760 600 520 760 420 Q800 395 840 420 C1000 520 1200 760 1450 900 Z"/>
+          <rect x="797" y="372" width="6" height="30"/>
+          <rect x="789" y="380" width="22" height="5"/>
+        </g>
+        <rect class="layer" fill="url(#mist)" data-depth="0.16" y="620" width="1600" height="140"/>
+        <path class="f-near layer" data-depth="0.22" d="M0 780 C300 720 500 760 800 740 S1300 760 1600 720 V900 H0Z"/>
+        <path class="f-front layer" data-depth="0.3" d="M0 860 C400 830 1000 870 1600 840 V900 H0Z"/>
+      </svg>
+    </div>
+
+    <!-- 5. Гірське озеро -->
+    <div class="scene-art" data-art="4">
+      <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice">
+        <rect class="f-sky" width="1600" height="900"/>
+        <circle class="f-light layer" data-depth="0.05" cx="1150" cy="230" r="55"/>
+        <path class="f-far layer" data-depth="0.08" d="M0 420 L250 330 L450 400 L700 300 L950 390 L1200 320 L1600 410 V900 H0Z"/>
+        <path class="f-mid layer" data-depth="0.12" d="M0 560 L200 470 L420 540 L650 460 L880 540 L1120 470 L1350 530 L1600 480 V660 H0Z"/>
+        <g class="layer" data-depth="0.16">
+          <ellipse class="f-water" cx="800" cy="690" rx="640" ry="95"/>
+          <ellipse class="f-light" cx="1150" cy="680" rx="70" ry="10" opacity=".55"/>
+          <ellipse class="f-light" cx="1150" cy="705" rx="40" ry="6" opacity=".35"/>
+        </g>
+        <g class="f-near layer" data-depth="0.22">
+          <path d="M0 640 C160 690 260 760 800 790 C1340 760 1440 690 1600 640 V900 H0 Z"/>
+          <use href="#spruce" x="30" y="480" width="64" height="170"/>
+          <use href="#spruce" x="1490" y="470" width="64" height="170"/>
+        </g>
+        <path class="f-front layer" data-depth="0.3" d="M0 860 C400 830 1000 870 1600 840 V900 H0Z"/>
+      </svg>
+    </div>
+
+    <!-- 6. Нічне небо (вдень — світанок) -->
+    <div class="scene-art" data-art="5">
+      <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice">
+        <rect class="f-sky" width="1600" height="900"/>
+        <g class="f-stars layer" data-depth="0.03">
+          <circle cx="90" cy="80" r="2"/><circle cx="180" cy="230" r="1.4"/><circle cx="300" cy="120" r="2.4"/>
+          <circle cx="420" cy="300" r="1.5"/><circle cx="520" cy="60" r="1.8"/><circle cx="610" cy="190" r="2.2"/>
+          <circle cx="720" cy="110" r="1.4"/><circle cx="830" cy="260" r="2"/><circle cx="940" cy="70" r="1.6"/>
+          <circle cx="1020" cy="180" r="2.4"/><circle cx="1110" cy="330" r="1.4"/><circle cx="1350" cy="120" r="2"/>
+          <circle cx="1440" cy="280" r="1.6"/><circle cx="1530" cy="60" r="2.2"/><circle cx="260" cy="380" r="1.4"/>
+          <circle cx="680" cy="400" r="1.5"/><circle cx="1500" cy="420" r="1.4"/><circle cx="60" cy="440" r="1.8"/>
+        </g>
+        <circle class="f-light layer" data-depth="0.05" cx="1250" cy="230" r="48"/>
+        <path class="f-far layer" data-depth="0.08" d="M0 600 L300 540 L600 580 L900 520 L1200 570 L1600 530 V900 H0Z"/>
+        <path class="f-mid layer" data-depth="0.14" d="M0 700 C400 650 800 690 1200 660 S1500 670 1600 660 V900 H0Z"/>
+        <g class="layer" data-depth="0.26">
+          <path class="f-front" d="M0 800 C500 760 1000 800 1600 770 V900 H0Z"/>
+          <path class="f-light" d="M720 792 L780 722 L840 792 Z" opacity=".9"/>
+          <path class="f-front" d="M768 792 L780 762 L792 792 Z"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Висотомір і крапки — закріплені елементи -->
+  <p class="altimeter rounded-xl bg-bg/75 px-4 py-2 backdrop-blur-sm" aria-hidden="true">
+    <span class="block text-xs font-semibold uppercase tracking-[0.2em] text-muted">Висота</span>
+    <span class="font-serif text-4xl font-semibold text-accent md:text-5xl"><span data-alt-value>400</span>&nbsp;м</span>
+  </p>
+
+  <nav class="scene-dots" aria-label="Сцени головної сторінки">
+    <a href="#s-fog" aria-current="true"><span>Туман</span></a>
+    <a href="#s-forest"><span>Ліс</span></a>
+    <a href="#s-meadow"><span>Полонина</span></a>
+    <a href="#s-hoverla"><span>Говерла</span></a>
+    <a href="#s-lake"><span>Озера</span></a>
+    <a href="#s-night"><span>Ночівля</span></a>
+  </nav>
+
+  <main id="main">
+    <section class="scene" id="s-fog" data-scene data-alt="400" aria-labelledby="t-fog">
+      <div class="container-site scene-text -mt-24 max-w-site">
+        <p class="eyebrow reveal">Мандруй Україною · Карпати</p>
+        <h1 id="t-fog" class="reveal mt-4 max-w-4xl text-scene">Почни свій шлях у&nbsp;Карпати</h1>
+        <p class="reveal mt-6 max-w-xl text-lg md:text-xl">
+          Маршрути для першого походу, чесний розрахунок бюджету — і жодних пошуків по форумах.
+        </p>
+        <div class="reveal mt-8 flex flex-wrap gap-3">
+          <a class="btn-primary" href="planner.html">Скласти похід</a>
+          <a class="btn-ghost" href="routes.html">Дивитися маршрути</a>
+        </div>
+      </div>
+      <a href="#s-forest" class="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-xs font-medium uppercase tracking-[0.2em] text-muted hover:text-accent sm:flex">
+        Гортай униз
+        <svg class="h-5 w-5 animate-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </a>
+    </section>
+
+    <section class="scene" id="s-forest" data-scene data-alt="900" aria-labelledby="t-forest">
+      <div class="container-site scene-text -mt-40">
+        <p class="eyebrow reveal">Крок перший</p>
+        <h2 id="t-forest" class="reveal mt-4 max-w-3xl text-scene">Спершу — ліс</h2>
+        <p class="reveal mt-6 max-w-xl text-lg">
+          Смерекові схили, де стежка поступово набирає висоту.
+          Більшість карпатських маршрутів починається саме тут — у тіні й тиші.
+        </p>
+      </div>
+    </section>
+
+    <section class="scene" id="s-meadow" data-scene data-alt="1400" aria-labelledby="t-meadow">
+      <div class="container-site scene-text -mt-40 md:text-right">
+        <p class="eyebrow reveal">Крок другий</p>
+        <h2 id="t-meadow" class="reveal mt-4 text-scene md:ml-auto md:max-w-3xl">Потім — простір</h2>
+        <p class="reveal mt-6 max-w-xl text-lg md:ml-auto">
+          Над лісом відкриваються полонини: трава, вітер і хмари на рівні очей.
+          Тут найкраще видно, навіщо люди повертаються в гори.
+        </p>
+      </div>
+    </section>
+
+    <section class="scene" id="s-hoverla" data-scene data-alt="2061" aria-labelledby="t-hoverla">
+      <div class="container-site scene-text -mt-56 text-center">
+        <p class="eyebrow reveal">Найвища точка України</p>
+        <h2 id="t-hoverla" class="reveal mt-4 text-scene">2061&nbsp;метр</h2>
+        <p class="reveal mx-auto mt-6 max-w-xl text-lg">
+          Говерла. Найпопулярніший маршрут — від бази «Заросляк», один день, підходить новачкам у хорошу погоду.
+        </p>
+        <a class="btn-ghost reveal mt-8" href="routes.html#hoverla-zaroslyak">Маршрут на Говерлу</a>
+      </div>
+    </section>
+
+    <section class="scene" id="s-lake" data-scene data-alt="1750" aria-labelledby="t-lake">
+      <div class="container-site scene-text -mt-48">
+        <p class="eyebrow reveal">Окрема стежка</p>
+        <h2 id="t-lake" class="reveal mt-4 max-w-3xl text-scene">Озера, яких немає на рівнині</h2>
+        <p class="reveal mt-6 max-w-xl text-lg">
+          Несамовите, Бребенескул, Синевир — до кожного веде свій маршрут,
+          і кожне виглядає інакше вранці та ввечері.
+        </p>
+      </div>
+    </section>
+
+    <section class="scene" id="s-night" data-scene data-alt="1500" aria-labelledby="t-night">
+      <div class="container-site scene-text -mt-40">
+        <p class="eyebrow reveal">Твоя черга</p>
+        <h2 id="t-night" class="reveal mt-4 max-w-3xl text-scene">Склади свій маршрут</h2>
+        <p class="reveal mt-6 max-w-xl text-lg">
+          Обери регіон, кількість днів і компанію — конструктор порахує бюджет і підбере маршрути під твій рівень.
+        </p>
+        <dl class="reveal mt-8 grid max-w-lg grid-cols-3 gap-4">
+          <div><dt class="text-sm text-muted">Маршрутів</dt><dd class="font-serif text-4xl font-semibold">12</dd></div>
+          <div><dt class="text-sm text-muted">Регіони</dt><dd class="font-serif text-4xl font-semibold">4</dd></div>
+          <div><dt class="text-sm text-muted">Днів</dt><dd class="font-serif text-4xl font-semibold">1–7</dd></div>
+        </dl>
+        <a class="btn-primary reveal mt-8" href="planner.html">Відкрити конструктор</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-stone/30 bg-surface">
+    <div class="container-site grid gap-10 py-12 md:grid-cols-[2fr_1fr_1fr]">
+      <div>
+        <p class="font-serif text-2xl font-semibold">Карпатський шлях</p>
+        <p class="mt-3 max-w-sm text-sm text-muted">
+          Маршрути й конструктор походу для тих, хто вперше збирається в Карпати.
+          Частина ініціативи «Мандруй Україною».
+        </p>
+      </div>
+      <nav aria-label="Навігація у футері">
+        <p class="eyebrow mb-3">Сторінки</p>
+        <ul class="space-y-2 text-sm">
+          <li><a class="hover:text-accent" href="index.html">Головна</a></li>
+          <li><a class="hover:text-accent" href="routes.html">Маршрути</a></li>
+          <li><a class="hover:text-accent" href="planner.html">Конструктор походу</a></li>
+          <li><a class="hover:text-accent" href="about.html">Про нас і контакти</a></li>
+        </ul>
+      </nav>
+      <div>
+        <p class="eyebrow mb-3">Важливо</p>
+        <p class="text-sm text-muted">
+          Перед походом перевіряйте погоду і правила нацпарків.
+          У разі небезпеки телефонуйте <a class="font-semibold text-ink hover:text-accent" href="tel:101">101</a>
+          або <a class="font-semibold text-ink hover:text-accent" href="tel:112">112</a>.
+        </p>
+      </div>
+    </div>
+    <div class="border-t border-stone/20">
+      <p class="container-site py-5 text-xs text-muted">
+        © <span data-year>2026</span> Карпатський шлях · навчальний проєкт. Ціни демонстраційні, бронювання не здійснюється.
+      </p>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script type="module" src="src/js/site.js"></script>
+  <script type="module" src="src/js/scenes.js"></script>
+</body>
+</html>
