@@ -130,7 +130,7 @@
 
   /* Пункти меню: активний — темно-зелена «пігулка», як у референсі */
   .nav-link {
-    @apply relative rounded-full px-4 py-2.5 text-sm font-medium text-ink/85 transition-colors hover:bg-surface-2 hover:text-heading;
+    @apply relative whitespace-nowrap rounded-full px-4 py-2.5 text-sm font-medium text-ink/85 transition-colors hover:bg-surface-2 hover:text-heading;
   }
   .nav-link[aria-current='page'] {
     @apply bg-heading text-bg hover:bg-heading hover:text-bg;
@@ -377,6 +377,21 @@
 }
 .how-live .how-step.is-done .how-arrow {
   color: rgb(var(--primary));
+}
+/* Сцена під кроками: видно лише картку поточного кроку, решта плавно гасне */
+.how-panel {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.how-panel img {
+  transform: scale(1.06);
+  transition: transform 1.2s ease;
+}
+.how-panel.is-active {
+  opacity: 1;
+}
+.how-panel.is-active img {
+  transform: scale(1);
 }
 
 /* Відгуки: безперервна стрічка, як на PrompterMind. Список повторено двічі, тож зсув на -50% замикає коло без стрибка */

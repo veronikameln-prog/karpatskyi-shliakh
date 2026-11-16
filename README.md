@@ -48,6 +48,16 @@
 | `region-borzhava.jpg` | [Полонина Боржава](https://commons.wikimedia.org/wiki/File:Polonina_Borzhava_(Ukraine).jpg) | Stanislav Dusík | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 | `region-beskydy.jpg` | [Сколівські Бескиди, вид з Парашки](https://commons.wikimedia.org/wiki/File:%D0%A1%D0%BA%D0%BE%D0%BB%D1%96%D0%B2%D1%81%D1%8C%D0%BA%D1%96_%D0%91%D0%B5%D1%81%D0%BA%D0%B8%D0%B4%D0%B8,_%D0%B2%D0%B8%D0%B4_%D0%B7_%D0%9F%D0%B0%D1%80%D0%B0%D1%88%D0%BA%D0%B8.jpg) | Misha Reme | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
+### Фото блоку «Як це працює»
+
+Теж з Wikimedia Commons, обрізані до 16:9 (1600×900):
+
+| Файл | Що на фото | Автор | Ліцензія |
+| --- | --- | --- | --- |
+| `how-regions.jpg` | [Чорногорський хребет, панорама](https://commons.wikimedia.org/wiki/File:%D0%A7%D0%BE%D1%80%D0%BD%D0%BE%D0%B3%D0%BE%D1%80%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D1%85%D1%80%D0%B5%D0%B1%D0%B5%D1%82._%D0%9A%D0%B0%D1%80%D0%BF%D0%B0%D1%82%D0%B8._%D0%9F%D0%B0%D0%BD%D0%BE%D1%80%D0%B0%D0%BC%D0%B0.jpg) | Zysko serhii | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| `how-group.jpg` | [Сходження на Говерлу](https://commons.wikimedia.org/wiki/File:%D0%92%D0%BE%D1%81%D1%85%D0%BE%D0%B6%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5_%D0%BD%D0%B0_%D0%93%D0%BE%D0%B2%D0%B5%D1%80%D0%BB%D1%83_(30.09.2021).jpg) | Половко Сергей Николаевич | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| `how-camp.jpg` | [Ранок під Піп Іваном](https://commons.wikimedia.org/wiki/File:%D0%A0%D0%B0%D0%BD%D0%BE%D0%BA_%D0%BF%D1%96%D0%B4_%D0%B3.%D0%9F%D1%96%D0%BF-%D0%86%D0%B2%D0%B0%D0%BD.jpg) | Zysko serhii | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+
 ### Фото маршрутів
 
 Теж з Wikimedia Commons, обрізані до 16:9 (1280×720):

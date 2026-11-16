@@ -118,6 +118,7 @@ function howItWorks() {
   const section = document.querySelector('[data-how]');
   if (!gsap || !ScrollTrigger || !section || reduceMotion) return; // без анімації всі кроки видно однаково
   const steps = [...section.querySelectorAll('[data-how-step]')];
+  const panels = [...section.querySelectorAll('[data-how-panel]')]; // фото й опис кроку під іконками
   let current = -1;
 
   const setActive = (index) => {
@@ -128,6 +129,10 @@ function howItWorks() {
       step.classList.toggle('is-done', k < index); // стрілка після пройденого кроку стає яскравою
       if (k === index) step.setAttribute('aria-current', 'step');
       else step.removeAttribute('aria-current');
+    });
+    panels.forEach((panel, k) => {
+      panel.classList.toggle('is-active', k === index);
+      panel.inert = k !== index; // посилання з прихованих карток не ловлять Tab
     });
   };
 
@@ -140,7 +145,7 @@ function howItWorks() {
   mm.add('(min-width: 768px)', () => {
     ScrollTrigger.create({
       trigger: section,
-      start: 'center center',
+      start: 'center 55%', // трохи нижче центру — заголовок не ховається під плаваючу шапку
       end: () => `+=${window.innerHeight * 1.2}`,
       pin: true,
       onUpdate: (self) => setActive(Math.min(steps.length - 1, Math.floor(self.progress * steps.length))),

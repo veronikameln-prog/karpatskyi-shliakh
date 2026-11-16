@@ -6,6 +6,8 @@ const v = (name) => `rgb(var(--${name}) / <alpha-value>)`;
 module.exports = {
   // Сторінки збираються з src/pages + src/partials (scripts/build-html.mjs)
   content: ['./src/pages/*.html', './src/partials/*.html', './src/js/**/*.js'],
+  // Класи складності JS складає з рядка (badge-${route.difficulty}), Tailwind їх у коді не бачить — додаємо явно
+  safelist: ['badge-easy', 'badge-medium', 'badge-hard'],
   darkMode: 'class',
   theme: {
     extend: {

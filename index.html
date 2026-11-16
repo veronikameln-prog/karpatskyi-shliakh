@@ -47,7 +47,7 @@
         <span class="font-serif text-[1.05rem] font-bold leading-[1.05] text-heading md:text-lg">Карпатський<br><em class="font-semibold">Шлях</em></span>
       </a>
 
-      <nav aria-label="Головне меню" class="hidden lg:block">
+      <nav aria-label="Головне меню" class="hidden xl:block">
         <ul class="flex items-center gap-1">
           <li><a class="nav-link" href="routes.html">Маршрути</a></li>
           <li><a class="nav-link" href="regions.html">Регіони</a></li>
@@ -75,13 +75,13 @@
         </button>
         <a href="planner.html" class="btn-primary btn-sm ml-1 hidden whitespace-nowrap sm:inline-flex">Склади похід</a>
         <button type="button" data-menu-toggle aria-controls="mobile-menu" aria-expanded="false" aria-label="Відкрити меню"
-          class="grid h-10 w-10 place-items-center rounded-full text-heading hover:bg-surface-2 lg:hidden">
+          class="grid h-10 w-10 place-items-center rounded-full text-heading hover:bg-surface-2 xl:hidden">
           <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
         </button>
       </div>
     </div>
 
-    <nav id="mobile-menu" aria-label="Мобільне меню" class="mx-auto mt-2 max-w-site rounded-3xl border border-line bg-surface p-3 shadow-lg lg:hidden" hidden>
+    <nav id="mobile-menu" aria-label="Мобільне меню" class="mx-auto mt-2 max-w-site rounded-3xl border border-line bg-surface p-3 shadow-lg xl:hidden" hidden>
       <ul class="flex flex-col gap-1">
         <li><a class="nav-link block text-base" href="index.html" aria-current="page">Головна</a></li>
         <li><a class="nav-link block text-base" href="routes.html">Маршрути</a></li>
@@ -274,7 +274,7 @@
   </section>
 
   <!-- ===== Як це працює ===== -->
-  <section class="section pt-4" aria-labelledby="how-title" data-how>
+  <section class="section pt-4 md:pb-6" aria-labelledby="how-title" data-how>
     <div class="container-site">
       <h2 id="how-title" class="section-title">Як це працює</h2>
       <ol class="mt-10 grid gap-10 text-center md:grid-cols-3">
@@ -296,6 +296,36 @@
           <p class="mx-auto mt-2 max-w-[16rem] text-sm text-muted">Отримай готовий план та розрахунок витрат.</p>
         </li>
       </ol>
+      <!-- Сцена під кроками: фото й опис поточного кроку змінюються разом із підсвіченим кроком (тільки від md) -->
+      <div class="how-stage relative mt-8 hidden h-[clamp(17rem,38vh,25rem)] overflow-hidden rounded-3xl border border-line bg-surface shadow-[0_24px_50px_-28px_rgb(22_52_40/0.35)] md:block" data-how-stage>
+        <div class="how-panel is-active absolute inset-0 grid grid-cols-[1.15fr_1fr] grid-rows-[minmax(0,1fr)]" data-how-panel>
+          <img src="assets/img/photos/how-regions.jpg" alt="" width="1600" height="900" loading="lazy" class="h-full w-full object-cover">
+          <div class="flex flex-col justify-center p-8 lg:px-12">
+            <p class="text-sm font-semibold uppercase tracking-wider text-accent">Крок 1</p>
+            <h3 class="mt-2 text-2xl">5 регіонів — 5 характерів</h3>
+            <p class="mt-3 text-muted">Високогірна Чорногора, кам'яні Горгани, дикий Свидовець, лагідна Боржава чи лісові Бескиди — обери, що тобі ближче.</p>
+            <a href="regions.html" class="btn-ghost mt-6 self-start">Переглянути регіони <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+        <div class="how-panel absolute inset-0 grid grid-cols-[1.15fr_1fr] grid-rows-[minmax(0,1fr)]" data-how-panel inert>
+          <img src="assets/img/photos/how-group.jpg" alt="" width="1600" height="900" loading="lazy" class="h-full w-full object-cover">
+          <div class="flex flex-col justify-center p-8 lg:px-12">
+            <p class="text-sm font-semibold uppercase tracking-wider text-accent">Крок 2</p>
+            <h3 class="mt-2 text-2xl">Від 1 до 7 днів, від 1 до 10 людей</h3>
+            <p class="mt-3 text-muted">Скажи, скільки маєш часу й хто йде з тобою, — конструктор лишить лише ті маршрути, які вам під силу.</p>
+            <a href="planner.html" class="btn-ghost mt-6 self-start">Відкрити конструктор <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+        <div class="how-panel absolute inset-0 grid grid-cols-[1.15fr_1fr] grid-rows-[minmax(0,1fr)]" data-how-panel inert>
+          <img src="assets/img/photos/how-camp.jpg" alt="" width="1600" height="900" loading="lazy" class="h-full w-full object-cover">
+          <div class="flex flex-col justify-center p-8 lg:px-12">
+            <p class="text-sm font-semibold uppercase tracking-wider text-accent">Крок 3</p>
+            <h3 class="mt-2 text-2xl">Готовий план і кошторис</h3>
+            <p class="mt-3 text-muted">Маршрут, дорога, ночівлі, їжа й спорядження — одразу бачиш орієнтовний бюджет на людину.</p>
+            <a href="planner.html" class="btn-primary mt-6 self-start">Скласти похід <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
