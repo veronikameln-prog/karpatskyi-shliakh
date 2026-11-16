@@ -205,9 +205,26 @@ form.addEventListener('reset', () => {
   renderEmpty();
 });
 
-// Назви регіонів підвантажуємо заздалегідь (якщо не вийде — покажемо коди)
+// Перехід з каталогу: planner.html?region=chornohora&days=2&difficulty=medium
+// Значення з адреси перевіряються так само, як і введені вручну.
+function prefillFromUrl() {
+  const params = new URLSearchParams(location.search);
+  if (!params.size) return false;
+  const region = params.get('region');
+  if ([...form.elements.region.options].some((o) => o.value === region)) form.elements.region.value = region;
+  if (params.has('days')) form.elements.days.value = params.get('days');
+  const difficulty = form.querySelector(`input[name="difficulty"][value="${CSS.escape(params.get('difficulty') || '')}"]`);
+  if (difficulty) difficulty.checked = true;
+  return true;
+}
+const prefilled = prefillFromUrl();
+
+// Назви регіонів підвантажуємо заздалегідь; якщо прийшли з каталогу — рахуємо після цього
 loadData()
   .then((data) => {
     regionNames = data.regions || {};
   })
-  .catch(() => {});
+  .catch(() => {})
+  .finally(() => {
+    if (prefilled) calculate();
+  });

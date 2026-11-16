@@ -19,6 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&amp;family=Inter:wght@400;500;600&amp;display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.1.14/swiper-bundle.min.css">
   <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
@@ -120,9 +121,24 @@
       </section>
 
       <section class="mt-20" aria-labelledby="reviews-title">
-        <h2 id="reviews-title" class="text-4xl">Що кажуть мандрівники</h2>
-        <p id="reviews-status" class="mt-3 text-sm text-muted" role="status">Завантажуємо відгуки…</p>
-        <ul id="reviews-list" class="mt-6 grid gap-6 md:grid-cols-3"></ul>
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h2 id="reviews-title" class="text-4xl">Що кажуть мандрівники</h2>
+            <p id="reviews-status" class="mt-3 text-sm text-muted" role="status">Завантажуємо відгуки…</p>
+          </div>
+          <div class="flex gap-2">
+            <button type="button" data-reviews-prev class="grid h-11 w-11 place-items-center rounded-full border border-ink/20 transition-colors hover:border-accent hover:text-accent" aria-label="Попередній відгук">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+            </button>
+            <button type="button" data-reviews-next class="grid h-11 w-11 place-items-center rounded-full border border-ink/20 transition-colors hover:border-accent hover:text-accent" aria-label="Наступний відгук">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="swiper mt-6 !pb-10" data-reviews-slider>
+          <ul id="reviews-list" class="swiper-wrapper"></ul>
+          <div class="swiper-pagination" data-reviews-pagination></div>
+        </div>
       </section>
 
       <section id="contacts" class="mt-20 grid gap-10 lg:grid-cols-[1fr_1.4fr]" aria-labelledby="contact-title">
@@ -138,7 +154,7 @@
         <form id="contact-form" class="card grid gap-5 p-5 md:p-8" novalidate aria-label="Форма зворотного зв'язку">
           <div>
             <label class="field-label" for="c-name">Ім'я</label>
-            <input id="c-name" name="name" type="text" class="field" autocomplete="given-name" placeholder="Оксана" aria-describedby="c-name-error" required>
+            <input id="c-name" name="name" type="text" maxlength="50" class="field" autocomplete="given-name" placeholder="Оксана" aria-describedby="c-name-error" required>
             <p id="c-name-error" class="field-error" aria-live="polite"></p>
           </div>
           <div class="grid gap-5 sm:grid-cols-2">
@@ -163,8 +179,11 @@
           </div>
           <div>
             <label class="field-label" for="c-message">Повідомлення</label>
-            <textarea id="c-message" name="message" rows="5" class="field resize-y" placeholder="Хочемо на Говерлу втрьох у серпні. Який маршрут обрати?" aria-describedby="c-message-error" required></textarea>
-            <p id="c-message-error" class="field-error" aria-live="polite"></p>
+            <textarea id="c-message" name="message" rows="5" maxlength="1000" class="field resize-y" placeholder="Хочемо на Говерлу втрьох у серпні. Який маршрут обрати?" aria-describedby="c-message-error" required></textarea>
+            <div class="flex justify-between gap-4">
+              <p id="c-message-error" class="field-error" aria-live="polite"></p>
+              <p id="c-message-count" class="mt-1.5 shrink-0 text-xs tabular-nums text-muted">0 / 1000</p>
+            </div>
           </div>
           <div>
             <label class="flex items-start gap-3 text-sm">
@@ -223,6 +242,9 @@
     </div>
   </footer>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.1.14/swiper-bundle.min.js" defer></script>
   <script type="module" src="src/js/site.js"></script>
+  <script type="module" src="src/js/reviews.js"></script>
+  <script type="module" src="src/js/form.js"></script>
 </body>
 </html>

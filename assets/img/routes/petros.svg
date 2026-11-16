@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400" role="img" aria-label="Ілюстрація: Петрос">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9ECE8"/><stop offset="1" stop-color="#E7C29A"/></linearGradient>
+    <linearGradient id="mist" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F6F7F4" stop-opacity="0"/><stop offset=".5" stop-color="#F6F7F4" stop-opacity=".85"/><stop offset="1" stop-color="#F6F7F4" stop-opacity="0"/></linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#sky)"/>
+  <circle cx="271" cy="79" r="26" fill="#C8743A" opacity=".55"/>
+  <path d="M0,400 L0,242 L86,187 L171,181 L257,201 L343,186 L429,183 L514,214 L600,178 L600,400 Z" fill="#B9C2BC"/>
+  <path d="M0,400 L0,265 L100,228 L200,99 L300,277 L400,277 L500,250 L600,241 L600,400 Z" fill="#7F9185"/>
+  <rect y="240" width="600" height="70" fill="url(#mist)"/>
+  
+  <path d="M0,400 L0,333 L120,306 L240,338 L360,337 L480,324 L600,311 L600,400 Z" fill="#2F4A3A"/>
+  <path d="M0,400 L0,378 L150,370 L300,381 L450,380 L600,365 L600,400 Z" fill="#1F3428"/>
+</svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400" role="img" aria-label="Ілюстрація: Боржавський хребет">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EDE9E1"/><stop offset="1" stop-color="#E8B98C"/></linearGradient>
+    <linearGradient id="mist" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F6F7F4" stop-opacity="0"/><stop offset=".5" stop-color="#F6F7F4" stop-opacity=".85"/><stop offset="1" stop-color="#F6F7F4" stop-opacity="0"/></linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#sky)"/>
+  <circle cx="356" cy="90" r="32" fill="#C8743A" opacity=".55"/>
+  <path d="M0,400 L0,194 L86,242 L171,176 L257,180 L343,238 L429,176 L514,206 L600,233 L600,400 Z" fill="#B9C2BC"/>
+  <path d="M0,400 L0,220 L100,241 L200,229 L300,223 L400,250 L500,139 L600,279 L600,400 Z" fill="#7F9185"/>
+  <rect y="240" width="600" height="70" fill="url(#mist)"/>
+  
+  <path d="M0,400 L0,318 L120,309 L240,327 L360,330 L480,307 L600,307 L600,400 Z" fill="#2F4A3A"/>
+  <path d="M0,400 L0,382 L150,377 L300,383 L450,375 L600,375 L600,400 Z" fill="#1F3428"/>
+</svg>

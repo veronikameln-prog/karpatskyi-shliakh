@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400" role="img" aria-label="Ілюстрація: Чорногірський хребет">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9ECE8"/><stop offset="1" stop-color="#E7C29A"/></linearGradient>
+    <linearGradient id="mist" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F6F7F4" stop-opacity="0"/><stop offset=".5" stop-color="#F6F7F4" stop-opacity=".85"/><stop offset="1" stop-color="#F6F7F4" stop-opacity="0"/></linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#sky)"/>
+  <circle cx="376" cy="96" r="34" fill="#C8743A" opacity=".55"/>
+  <path d="M0,400 L0,189 L86,211 L171,180 L257,207 L343,180 L429,232 L514,177 L600,212 L600,400 Z" fill="#B9C2BC"/>
+  <path d="M0,400 L0,279 L100,268 L200,276 L300,266 L400,95 L500,244 L600,276 L600,400 Z" fill="#7F9185"/>
+  <rect y="240" width="600" height="70" fill="url(#mist)"/>
+  
+  <path d="M0,400 L0,320 L120,312 L240,319 L360,334 L480,326 L600,324 L600,400 Z" fill="#2F4A3A"/>
+  <path d="M0,400 L0,372 L150,383 L300,374 L450,383 L600,370 L600,400 Z" fill="#1F3428"/>
+</svg>

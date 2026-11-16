@@ -26,6 +26,8 @@
 - **Tailwind CSS 3** — збирається через CLI; тема «день / ніч» через `dark:` і CSS-змінні.
 - **JavaScript** — ES-модулі, без фреймворків.
 - **GSAP + ScrollTrigger** (CDN) — сцени головної та паралакс.
+- **Swiper** (CDN) — карусель відгуків.
+- **data.json + fetch / async-await** — маршрути й відгуки.
 - **ШІ-ілюстрації** — SVG-шари гір і промпти для фото (`docs/05-image-prompts.md`).
 
 ## Запуск локально
@@ -36,6 +38,7 @@
 npm install
 npm run build:css   # зібрати css/main.css
 npm run watch:css   # перезбирати під час розробки
+npm test            # автотести конструктора і форми
 ```
 
 Сторінки відкриваються через будь-який локальний сервер, наприклад:
@@ -50,7 +53,10 @@ npx serve .
 ├── index.html, routes.html, planner.html, about.html
 ├── css/main.css          зібраний Tailwind
 ├── src/input.css         дизайн-токени і компоненти
-├── src/js/               site.js, theme.js, menu.js, scenes.js
+├── src/js/               site, theme, menu, scenes, data, routes, planner(-calc), reviews, form
+├── data/data.json        12 маршрутів, регіони, відгуки
+├── tests/                автотести логіки конструктора і форми (npm test)
+├── scripts/              генератор SVG-ілюстрацій маршрутів
 ├── assets/img/           іконка, ілюстрації
 └── docs/                 бриф, техопис, промпт-паспорт, дизайн, промпти зображень
 ```

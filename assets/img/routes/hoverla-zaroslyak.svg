@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400" role="img" aria-label="Ілюстрація: Говерла від Заросляка">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9ECE8"/><stop offset="1" stop-color="#E7C29A"/></linearGradient>
+    <linearGradient id="mist" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F6F7F4" stop-opacity="0"/><stop offset=".5" stop-color="#F6F7F4" stop-opacity=".85"/><stop offset="1" stop-color="#F6F7F4" stop-opacity="0"/></linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#sky)"/>
+  <circle cx="229" cy="103" r="35" fill="#C8743A" opacity=".55"/>
+  <path d="M0,400 L0,190 L86,200 L171,189 L257,215 L343,238 L429,203 L514,179 L600,192 L600,400 Z" fill="#B9C2BC"/>
+  <path d="M0,400 L0,236 L100,265 L200,233 L300,233 L400,95 L500,239 L600,246 L600,400 Z" fill="#7F9185"/>
+  <rect y="240" width="600" height="70" fill="url(#mist)"/>
+  
+  <path d="M0,400 L0,304 L120,324 L240,336 L360,318 L480,327 L600,336 L600,400 Z" fill="#2F4A3A"/>
+  <path d="M0,400 L0,378 L150,382 L300,379 L450,380 L600,385 L600,400 Z" fill="#1F3428"/>
+</svg>

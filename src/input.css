@@ -238,6 +238,17 @@
   @apply opacity-100;
 }
 
+/* Swiper (відгуки) у кольорах сайту */
+.swiper {
+  --swiper-theme-color: rgb(var(--accent));
+  --swiper-pagination-bullet-inactive-color: rgb(var(--text));
+  --swiper-pagination-bullet-inactive-opacity: 0.3;
+}
+.swiper-button-disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
 /* Повага до налаштувань людини: без руху */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

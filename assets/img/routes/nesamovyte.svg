@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400" role="img" aria-label="Ілюстрація: Озеро Несамовите">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9ECE8"/><stop offset="1" stop-color="#E7C29A"/></linearGradient>
+    <linearGradient id="mist" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F6F7F4" stop-opacity="0"/><stop offset=".5" stop-color="#F6F7F4" stop-opacity=".85"/><stop offset="1" stop-color="#F6F7F4" stop-opacity="0"/></linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#sky)"/>
+  <circle cx="260" cy="107" r="31" fill="#C8743A" opacity=".55"/>
+  <path d="M0,400 L0,186 L86,199 L171,222 L257,220 L343,243 L429,240 L514,192 L600,188 L600,400 Z" fill="#B9C2BC"/>
+  <path d="M0,400 L0,254 L100,242 L200,259 L300,131 L400,274 L500,255 L600,260 L600,400 Z" fill="#7F9185"/>
+  <rect y="240" width="600" height="70" fill="url(#mist)"/>
+  <ellipse cx="300" cy="330" rx="230" ry="34" fill="#A8BAB8"/><ellipse cx="276" cy="330" rx="40" ry="5" fill="#E7C29A" opacity=".7"/>
+  <path d="M0,400 L0,300 C120,320 140,370 300,372 C460,370 480,320 600,300 L600,400 Z" fill="#2F4A3A"/>
+  <path d="M0,400 L0,379 L150,381 L300,369 L450,370 L600,381 L600,400 Z" fill="#1F3428"/>
+</svg>

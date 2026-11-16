@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400" role="img" aria-label="Ілюстрація: Сивуля">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E4E7E3"/><stop offset="1" stop-color="#C9D2CC"/></linearGradient>
+    <linearGradient id="mist" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F6F7F4" stop-opacity="0"/><stop offset=".5" stop-color="#F6F7F4" stop-opacity=".85"/><stop offset="1" stop-color="#F6F7F4" stop-opacity="0"/></linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#sky)"/>
+  <circle cx="412" cy="104" r="32" fill="#C8743A" opacity=".55"/>
+  <path d="M0,400 L0,222 L86,183 L171,176 L257,175 L343,176 L429,200 L514,227 L600,196 L600,400 Z" fill="#B9C2BC"/>
+  <path d="M0,400 L0,234 L100,121 L200,272 L300,267 L400,263 L500,255 L600,240 L600,400 Z" fill="#7F9185"/>
+  <rect y="240" width="600" height="70" fill="url(#mist)"/>
+  
+  <path d="M0,400 L0,316 L120,301 L240,315 L360,318 L480,308 L600,305 L600,400 Z" fill="#2F4A3A"/>
+  <path d="M0,400 L0,374 L150,383 L300,382 L450,378 L600,366 L600,400 Z" fill="#1F3428"/>
+</svg>

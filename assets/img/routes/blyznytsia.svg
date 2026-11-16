@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400" role="img" aria-label="Ілюстрація: Близниця">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E6ECEC"/><stop offset="1" stop-color="#D8C3A5"/></linearGradient>
+    <linearGradient id="mist" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F6F7F4" stop-opacity="0"/><stop offset=".5" stop-color="#F6F7F4" stop-opacity=".85"/><stop offset="1" stop-color="#F6F7F4" stop-opacity="0"/></linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#sky)"/>
+  <circle cx="371" cy="70" r="28" fill="#C8743A" opacity=".55"/>
+  <path d="M0,400 L0,199 L86,236 L171,209 L257,224 L343,188 L429,197 L514,215 L600,220 L600,400 Z" fill="#B9C2BC"/>
+  <path d="M0,400 L0,221 L100,116 L200,273 L300,227 L400,270 L500,239 L600,265 L600,400 Z" fill="#7F9185"/>
+  <rect y="240" width="600" height="70" fill="url(#mist)"/>
+  
+  <path d="M0,400 L0,338 L120,301 L240,306 L360,327 L480,339 L600,316 L600,400 Z" fill="#2F4A3A"/>
+  <path d="M0,400 L0,372 L150,384 L300,373 L450,370 L600,373 L600,400 Z" fill="#1F3428"/>
+</svg>
