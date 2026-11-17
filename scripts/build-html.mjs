@@ -15,21 +15,26 @@ import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SITE_URL = 'https://karpatskyi-shliakh.netlify.app';
-// Google Analytics 4: ідентифікатор потоку даних (G-XXXXXXXXXX) з analytics.google.com.
-// Можна вписати тут або задати змінною середовища GA_ID (на Netlify — Project configuration → Environment variables).
-// Поки порожньо — лічильник у сторінки не додається.
-const GA_ID = process.env.GA_ID || '';
+// Google Analytics 4 — тег Google з analytics.google.com (Адміністратор → Потоки даних → Сайт → Налаштувати тег).
+// Підходить і контейнер тегу Google (GTM-…), і ідентифікатор показника (G-…).
+// Змінна середовища GA_ID (на Netlify — Project configuration → Environment variables) має перевагу; '' — без лічильника.
+const GA_ID = process.env.GA_ID ?? 'GTM-5R2XLRNB';
 
-// Лічильник GA4. На localhost не вмикається, щоб перегляди під час розробки не псували статистику.
+// Тег Google. На localhost не завантажується, щоб перегляди під час розробки не псували статистику.
 function analyticsTag() {
-  if (!/^G-[A-Z0-9]+$/.test(GA_ID)) return '';
-  return `  <script async src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script>
-  <script>
+  const match = /^(GTM|GT|G)-[A-Z0-9]+$/.exec(GA_ID);
+  if (!match) return '';
+  const lib = match[1] === 'GTM' ? 'gtm.js' : 'gtag/js';
+  const config = match[1] === 'GTM' ? '' : `\n      gtag('config', '${GA_ID}');`;
+  return `  <script>
     if (!/^(localhost|127\\.0\\.0\\.1)$/.test(location.hostname)) {
+      var gtagScript = document.createElement('script');
+      gtagScript.async = true;
+      gtagScript.src = 'https://www.googletagmanager.com/${lib}?id=${GA_ID}';
+      document.head.appendChild(gtagScript);
       window.dataLayer = window.dataLayer || [];
       window.gtag = function () { dataLayer.push(arguments); };
-      gtag('js', new Date());
-      gtag('config', '${GA_ID}');
+      gtag('js', new Date());${config}
     }
   </script>
 `;
