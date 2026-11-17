@@ -9,12 +9,31 @@
 // libs: gsap, swiper     (бібліотеки з CDN)
 // script: routes.js      (модуль сторінки з src/js)
 // -->
-import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SITE_URL = 'https://karpatskyi-shliakh.netlify.app';
+// Google Analytics 4: ідентифікатор потоку даних (G-XXXXXXXXXX) з analytics.google.com.
+// Можна вписати тут або задати змінною середовища GA_ID (у GitHub Actions — Settings → Secrets and variables → Variables).
+// Поки порожньо — лічильник у сторінки не додається.
+const GA_ID = process.env.GA_ID || '';
+
+// Лічильник GA4. На localhost не вмикається, щоб перегляди під час розробки не псували статистику.
+function analyticsTag() {
+  if (!/^G-[A-Z0-9]+$/.test(GA_ID)) return '';
+  return `  <script async src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script>
+  <script>
+    if (!/^(localhost|127\\.0\\.0\\.1)$/.test(location.hostname)) {
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { dataLayer.push(arguments); };
+      gtag('js', new Date());
+      gtag('config', '${GA_ID}');
+    }
+  </script>
+`;
+}
 
 const CDN = {
   gsap: {
@@ -26,6 +45,10 @@ const CDN = {
   swiper: {
     css: ['https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.1.14/swiper-bundle.min.css'],
     js: ['https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.1.14/swiper-bundle.min.js'],
+  },
+  leaflet: {
+    css: ['https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css'],
+    js: ['https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js'],
   },
 };
 
@@ -50,13 +73,45 @@ function parsePage(source) {
 
 const escapeAttr = (s) => s.replaceAll('&', '&amp;').replaceAll('"', '&quot;');
 
+// Телефону — легка копія фото (-sm, 720 px), великому екрану — повна. Додається до кожного <img> з assets/img/photos,
+// якщо мала копія існує і srcset ще не задано вручну.
+function withSrcset(html) {
+  return html.replace(/<img\b([^>]*?)\ssrc="(assets\/img\/photos\/([^"]+?)(\.(?:jpe?g|webp)))"([^>]*)>/g, (tag, before, src, name, ext, after) => {
+    if (/\ssrcset=/.test(tag)) return tag;
+    const small = `assets/img/photos/${name}-sm${ext}`;
+    if (!existsSync(join(root, small))) return tag;
+    const sizes = /\ssizes=/.test(tag) ? '' : ' sizes="100vw"';
+    return `<img${before} src="${src}" srcset="${small} 720w, ${src} 1600w"${sizes}${after}>`;
+  });
+}
+
+// Сторінка маршруту: фото героя за ?id= ставиться вбудованим скриптом ще під час розбору HTML,
+// інакше браузер дізнається про нього лише після route.js і data.json (довгий LCP на телефоні).
+function routeHeroesScript() {
+  const { routes } = JSON.parse(read('data/data.json'));
+  const heroes = Object.fromEntries(routes.map((r) => [r.id, r.hero || r.image]));
+  return `(function () {
+      var heroes = ${JSON.stringify(heroes)};
+      var src = heroes[new URLSearchParams(location.search).get('id')];
+      if (!src) return;
+      var img = document.getElementById('route-hero');
+      var m = /^(.+)(\\.(?:jpe?g|webp))$/.exec(src);
+      if (m) { img.srcset = m[1] + '-sm' + m[2] + ' 720w, ' + src + ' 1600w'; img.sizes = '100vw'; }
+      img.src = src;
+    })();`;
+}
+
 const pages = readdirSync(join(root, 'src/pages')).filter((f) => f.endsWith('.html'));
 for (const file of pages) {
-  const { meta, body } = parsePage(read(`src/pages/${file}`));
+  const { meta, body: rawBody } = parsePage(read(`src/pages/${file}`));
+  const body = rawBody.includes('{{routeHeroes}}') ? rawBody.replace('{{routeHeroes}}', routeHeroesScript()) : rawBody;
   const libs = (meta.libs || '').split(',').map((s) => s.trim()).filter(Boolean);
   for (const lib of libs) if (!CDN[lib]) throw new Error(`${file}: невідома бібліотека ${lib}`);
 
-  const libsCss = libs.flatMap((l) => CDN[l].css || []).map((href) => `  <link rel="stylesheet" href="${href}">\n`).join('');
+  // CSS бібліотек (карта, слайдер) не блокує першу відмальовку: вони все одно оживають лише після свого JS
+  const libsCss = libs.flatMap((l) => CDN[l].css || [])
+    .map((href) => `  <link rel="preload" as="style" href="${href}" onload="this.onload=null;this.rel='stylesheet'">\n  <noscript><link rel="stylesheet" href="${href}"></noscript>\n`)
+    .join('');
   const libsJs = libs.flatMap((l) => CDN[l].js || []).map((src) => `  <script src="${src}" defer></script>\n`).join('');
   const pageScript = meta.script ? `  <script type="module" src="src/js/${meta.script}"></script>\n` : '';
 
@@ -65,7 +120,7 @@ for (const file of pages) {
     .replaceAll('{{description}}', escapeAttr(meta.description))
     .replaceAll('{{siteUrl}}', SITE_URL)
     .replaceAll('{{file}}', file === 'index.html' ? '' : file)
-    .replace('{{libsCss}}', libsCss)
+    .replace('{{libsCss}}', libsCss + analyticsTag())
     // 404 віддається з будь-якої адреси (/a/b/c), тому відносні шляхи рахуємо від кореня сайту
     .replace('<meta charset="utf-8">', meta.base ? `<meta charset="utf-8">
   <base href="${meta.base}">` : '<meta charset="utf-8">');
@@ -75,7 +130,7 @@ for (const file of pages) {
     .replaceAll(`data-nav="${meta.nav}"`, 'aria-current="page"')
     .replace(/ data-nav="[^"]*"/g, '');
 
-  const html = `${head}${header}\n${body.trimEnd()}\n\n${partials.footer}\n${libsJs}  <script type="module" src="src/js/site.js"></script>\n${pageScript}</body>\n</html>\n`;
+  const html = withSrcset(`${head}${header}\n${body.trimEnd()}\n\n${partials.footer}\n${libsJs}  <script type="module" src="src/js/site.js"></script>\n${pageScript}</body>\n</html>\n`);
   writeFileSync(join(root, file), html);
   console.log(`✓ ${file}`);
 }

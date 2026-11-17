@@ -1,8 +1,12 @@
 // Сторінка одного маршруту: route.html?id=hoverla. Усі дані — з data.json.
-import { loadData, el, icon, routeCard, daysLabel, DIFFICULTY_LABELS, loadError } from './data.js';
+import { loadData, el, icon, routeCard, daysLabel, DIFFICULTY_LABELS, loadError, setPhoto } from './data.js';
 import { revealOnScroll } from './site.js';
+import { createMap, addPin } from './map.js';
+import { t, tf } from './i18n.js';
 
 const MONTHS = ['Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень', 'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень'];
+const MONTHS_FROM = ['січня', 'лютого', 'березня', 'квітня', 'травня', 'червня', 'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня'];
+const MONTHS_TO = MONTHS_FROM;
 const GENERIC_TIPS = [
   'Виходь рано — у горах після обіду часто гроза.',
   'Візьми щонайменше 1,5 л води на людину.',
@@ -19,51 +23,35 @@ const TIP_ICONS = [
 const $ = (id) => document.getElementById(id);
 const main = $('main');
 
+// У <dl> пара «назва — значення» має бути саме dt + dd, тому іконка лежить усередині dt
 function statItem(iconName, label, value) {
-  const item = el('div', 'flex items-center gap-3 lg:px-4 lg:first:pl-0');
-  item.append(icon(iconName, 'h-7 w-7 text-accent'));
-  const text = el('div');
-  text.append(el('dt', 'text-xs text-muted', label), el('dd', 'font-semibold text-heading', value));
-  item.append(text);
+  const item = el('div', 'group/stat relative flex min-h-9 flex-col justify-center pl-10 lg:pl-14 lg:pr-4 lg:first:pl-10');
+  const term = el('dt', 'text-xs text-muted', label);
+  term.prepend(icon(iconName, 'absolute left-0 top-1/2 h-7 w-7 -translate-y-1/2 text-accent lg:left-4 lg:group-first/stat:left-0'));
+  item.append(term, el('dd', 'font-semibold text-heading', value));
   return item;
 }
 
-// Спрощена схема: старт унизу ліворуч, вершина вгорі праворуч, плавна стежка між ними.
-// Креслимо через DOM API (createElementNS) — без вставки рядків HTML.
-function drawMap(svg, route) {
-  const NS = 'http://www.w3.org/2000/svg';
-  const node = (tag, attrs, text) => {
-    const n = document.createElementNS(NS, tag);
-    Object.entries(attrs).forEach(([k, v]) => n.setAttribute(k, v));
-    if (text) n.textContent = text;
-    return n;
-  };
-  const title = svg.querySelector('title');
-  title.textContent = `Схема маршруту «${route.name}»: від ${route.start} до найвищої точки ${route.peakM} м`;
-  [...svg.childNodes].forEach((c) => c !== title && c.remove());
-
-  // Рельєф (горизонталі)
-  const relief = node('g', { fill: 'none', stroke: 'currentColor', 'stroke-width': '1', class: 'text-[#9DBBA4] dark:text-[#3C5A50]', opacity: '0.8' });
-  for (let i = 0; i < 7; i += 1) {
-    const y = 60 + i * 34;
-    relief.append(node('path', { d: `M0 ${y + 30} C 140 ${y - 10}, 260 ${y + 50}, 420 ${y} S 600 ${y - 30}, 640 ${y - 10}` }));
+// Карта: старт, найвища точка (і фініш, якщо маршрут не кільцевий). Пунктир — лише напрямок.
+function drawMap(container, route) {
+  const c = route.coords;
+  if (!c) {
+    container.closest('figure').hidden = true;
+    return;
   }
-  svg.append(relief);
-
-  const path = 'M90 240 C 170 230, 200 190, 280 185 S 400 170, 450 120 S 540 70, 560 60';
-  svg.append(node('path', { d: path, fill: 'none', stroke: 'rgb(22 52 40)', 'stroke-width': '4', 'stroke-linecap': 'round', class: 'dark:stroke-[#9CD3AE]' }));
-
-  const point = (x, y, label, anchor) => {
-    const g = node('g', {});
-    g.append(node('circle', { cx: x, cy: y, r: 9, fill: '#fff', stroke: 'rgb(22 52 40)', 'stroke-width': 4 }));
-    const width = label.length * 8.2 + 20;
-    const bx = anchor === 'end' ? x - width - 14 : x + 14;
-    g.append(node('rect', { x: bx, y: y - 16, width, height: 30, rx: 8, fill: '#fff', opacity: '0.95' }));
-    g.append(node('text', { x: bx + 10, y: y + 4, 'font-size': 14, 'font-weight': 600, fill: '#163428', 'font-family': 'Inter, sans-serif' }, label));
-    return g;
-  };
-  svg.append(point(90, 240, route.start.replace(/\s*\(.*\)/, ''), 'start'));
-  svg.append(point(560, 60, `${route.peakM} м`, 'end'));
+  const map = createMap(container, { center: c.peak, zoom: 12 });
+  if (!map) {
+    container.querySelector('p').textContent = 'Не вдалося завантажити карту. Скористайся кнопкою «Прокласти дорогу до старту».';
+    return;
+  }
+  const { L } = window;
+  const points = [c.start, c.peak, ...(c.end ? [c.end] : [])];
+  L.polyline(points, { color: '#163428', weight: 3, dashArray: '6 8', opacity: 0.85, className: 'map-route' }).addTo(map);
+  addPin(map, c.start, `Старт: ${route.start.replace(/\s*\(.*\)/, '')}`, 'start');
+  addPin(map, c.peak, `${c.peakName} · ${route.peakM} м`, 'peak');
+  if (c.end) addPin(map, c.end, c.endName, 'start');
+  map.fitBounds(L.latLngBounds(points), { padding: [56, 56], maxZoom: 13 });
+  container.setAttribute('aria-label', tf('Карта маршруту «{name}»: від {start} до точки {peak}', { name: route.name, start: route.start.replace(/\s*\(.*\)/, ''), peak: c.peakName }));
 }
 
 function renderSeason(months, list, note) {
@@ -79,7 +67,7 @@ function renderSeason(months, list, note) {
       return item;
     }),
   );
-  note.textContent = `Найкраще: ${MONTHS[from - 1].toLowerCase()} — ${MONTHS[to - 1].toLowerCase()}. Пунктиром позначено місяці, коли на вершинах можливий сніг.`;
+  note.textContent = tf('Найкраще йти з {from} до {to}: стежки сухі, а день достатньо довгий.', { from: MONTHS_FROM[from - 1], to: MONTHS_TO[to - 1] });
 }
 
 function render(route, data) {
@@ -89,7 +77,7 @@ function render(route, data) {
   document.querySelector('meta[name="description"]')?.setAttribute('content', route.description);
 
   const hero = $('route-hero');
-  hero.src = route.hero || region.image || route.image;
+  setPhoto(hero, route.hero || route.image || region.image);
   $('crumb-region').textContent = region.name || '';
   $('crumb-region').href = `regions.html#${route.region}`;
   $('crumb-route').textContent = route.name;
@@ -116,32 +104,35 @@ function render(route, data) {
     }),
   );
   drawMap($('route-map'), route);
+  if (route.coords) $('route-directions').href = `https://www.google.com/maps/dir/?api=1&destination=${route.coords.start.join(',')}`;
 
   if (region.months) renderSeason(region.months, $('route-season'), $('route-season-note'));
 
   $('route-description').textContent = route.description;
   $('route-highlights').replaceChildren(
     ...route.highlights.map((h) => {
-      const li = el('li', 'flex gap-2');
-      li.append(el('span', 'text-accent', '—'), document.createTextNode(h));
+      const li = el('li', 'flex items-start gap-3');
+      const check = el('span', 'mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-surface-2 text-accent');
+      check.innerHTML = '<svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>';
+      const text = t(h);
+      li.append(check, document.createTextNode(text.charAt(0).toUpperCase() + text.slice(1)));
       return li;
     }),
   );
 
   const gallery = route.gallery || [{ src: route.image, caption: route.highlights[0] }, { src: region.image, caption: `${region.name}: ${region.tagline}` }];
-  $('route-gallery').className = `grid gap-4 ${gallery.length > 2 ? 'grid-cols-2 sm:grid-cols-4' : 'sm:grid-cols-2'}`;
   $('route-gallery').replaceChildren(
     ...gallery.map((g) => {
-      const li = el('li', 'card overflow-hidden');
+      const li = el('li', 'group relative overflow-hidden rounded-2xl shadow-[0_10px_28px_-16px_rgb(22_52_40/0.5)]');
       li.dataset.reveal = '';
       const fig = el('figure');
-      const img = el('img', 'aspect-square w-full object-cover');
-      img.src = g.src;
+      const img = el('img', 'aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105');
+      setPhoto(img, g.src, '(min-width: 768px) 33vw, 100vw');
       img.alt = g.caption;
       img.loading = 'lazy';
-      img.width = 300;
-      img.height = 300;
-      fig.append(img, el('figcaption', 'p-3 text-center text-sm font-medium text-heading', g.caption));
+      img.width = 900;
+      img.height = 675;
+      fig.append(img, el('figcaption', 'photo-shade absolute inset-x-0 bottom-0 px-4 pb-3 pt-10 text-sm font-semibold text-white', g.caption));
       li.append(fig);
       return li;
     }),

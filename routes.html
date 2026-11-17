@@ -29,11 +29,21 @@
       if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches)) {
         document.documentElement.classList.add('dark');
       }
+      // Іншу мову підставляє i18n.js; до того сторінку не показуємо, щоб не «мигав» український текст
+      var l = localStorage.getItem('ks-lang');
+      if (l === 'en' || l === 'pl') {
+        document.documentElement.lang = l;
+        document.documentElement.classList.add('i18n-wait');
+        setTimeout(function () { document.documentElement.classList.remove('i18n-wait'); }, 2500);
+      }
     } catch (e) {}
   </script>
+  <style>.i18n-wait body{visibility:hidden}</style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Lora:wght@600;700&amp;display=swap">
+  <!-- Шрифти вантажаться, не блокуючи першу відмальовку (поки що — системний шрифт, потім плавна заміна) -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Lora:wght@600;700&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Lora:wght@600;700&amp;display=swap"></noscript>
   <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
@@ -41,10 +51,10 @@
 
   <!-- Шапка-«капсула»: плаває над сторінкою, на головній — поверх фото героя -->
   <header class="sticky top-0 z-40 px-3 pt-3 md:px-6 md:pt-4">
-    <div class="mx-auto flex h-16 max-w-site items-center justify-between gap-4 rounded-full border border-white/60 bg-surface/85 pl-5 pr-2.5 shadow-[0_8px_30px_-12px_rgb(22_52_40/0.25)] backdrop-blur-md dark:border-line md:pl-7 md:pr-3">
-      <a href="index.html" class="flex items-center gap-2.5" aria-label="Карпатський шлях — на головну">
+    <div class="mx-auto flex h-16 max-w-site items-center justify-between gap-2 rounded-full border border-white/60 bg-surface/85 pl-4 pr-2 sm:gap-4 sm:pl-5 sm:pr-2.5 shadow-[0_8px_30px_-12px_rgb(22_52_40/0.25)] backdrop-blur-md dark:border-line md:pl-7 md:pr-3">
+      <a href="index.html" class="flex min-w-0 items-center gap-2 sm:gap-2.5 [&_.logo]:h-8 sm:[&_.logo]:h-9 md:[&_.logo]:h-10" aria-label="Карпатський шлях — на головну">
         <svg class="logo h-9 w-auto shrink-0 md:h-10" viewBox="190 432 876 346" aria-hidden="true" focusable="false"><g class="m"><path d="M198 771 L401 557 L475 622 L458 650 Q446 632 403 598 Q340 662 198 771 Z"/><path d="M412 755 L458 650 L475 622 L628 440 L770 603 L726 642 Q731 612 716 597 L624 497 Z"/><path d="M629 754 L853 549 L1058 771 L1022 759 L848 602 Q760 660 629 754 Z"/></g></svg>
-        <span class="font-serif text-[1.05rem] font-bold leading-[1.05] text-heading md:text-lg">Карпатський<br><em class="font-semibold">Шлях</em></span>
+        <span class="font-serif text-[0.95rem] font-bold leading-[1.05] text-heading sm:text-[1.05rem] md:text-lg">Карпатський<br><em class="font-semibold">Шлях</em></span>
       </a>
 
       <nav aria-label="Головне меню" class="hidden xl:block">
@@ -58,7 +68,7 @@
       </nav>
 
       <div class="flex items-center gap-1.5">
-        <a href="routes.html" class="grid h-10 w-10 place-items-center rounded-full text-heading transition-colors hover:bg-surface-2" aria-label="Пошук маршруту">
+        <a href="routes.html" class="hidden h-10 w-10 place-items-center rounded-full text-heading transition-colors hover:bg-surface-2 sm:grid" aria-label="Пошук маршруту">
           <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
         </a>
         <span class="mx-1 hidden h-6 w-px bg-line sm:block" aria-hidden="true"></span>
@@ -67,12 +77,19 @@
           <svg class="h-5 w-5 dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M21 13.5A8.5 8.5 0 1 1 10.5 3a6.5 6.5 0 0 0 10.5 10.5Z"/></svg>
           <svg class="hidden h-5 w-5 dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
         </button>
-        <!-- Перемикач мови: поки лише заготовка (сайт тільки українською) -->
-        <button type="button" class="hidden h-10 items-center gap-1 rounded-full px-3 text-sm font-medium text-heading transition-colors hover:bg-surface-2 sm:inline-flex"
-          aria-label="Мова сайту: українська. Інші мови — згодом" title="Інші мови — згодом">
-          UK
-          <svg class="h-3.5 w-3.5 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-        </button>
+        <!-- Перемикач мови: вибір зберігається в localStorage, переклад підставляє src/js/i18n.js -->
+        <div class="relative hidden sm:block">
+          <button type="button" data-lang-toggle aria-haspopup="true" aria-expanded="false" aria-controls="lang-menu" aria-label="Мова сайту"
+            class="inline-flex h-10 items-center gap-1 rounded-full px-3 text-sm font-medium text-heading transition-colors hover:bg-surface-2">
+            <span data-lang-current translate="no">UK</span>
+            <svg class="h-3.5 w-3.5 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <ul id="lang-menu" class="lang-menu" translate="no" hidden>
+            <li><button type="button" class="lang-option" data-lang="uk" lang="uk">Українська</button></li>
+            <li><button type="button" class="lang-option" data-lang="en" lang="en">English</button></li>
+            <li><button type="button" class="lang-option" data-lang="pl" lang="pl">Polski</button></li>
+          </ul>
+        </div>
         <a href="planner.html" class="btn-primary btn-sm ml-1 hidden whitespace-nowrap sm:inline-flex">Склади похід</a>
         <button type="button" data-menu-toggle aria-controls="mobile-menu" aria-expanded="false" aria-label="Відкрити меню"
           class="grid h-10 w-10 place-items-center rounded-full text-heading hover:bg-surface-2 xl:hidden">
@@ -90,18 +107,26 @@
         <li><a class="nav-link block text-base" href="tips.html">Поради</a></li>
         <li><a class="nav-link block text-base" href="about.html">Про нас</a></li>
         <li class="pt-2 sm:hidden"><a class="btn-primary w-full" href="planner.html">Склади похід</a></li>
+        <li class="flex gap-2 pt-2 sm:hidden" translate="no">
+          <button type="button" class="lang-option flex-1 justify-center border border-line" data-lang="uk" lang="uk">UK</button>
+          <button type="button" class="lang-option flex-1 justify-center border border-line" data-lang="en" lang="en">EN</button>
+          <button type="button" class="lang-option flex-1 justify-center border border-line" data-lang="pl" lang="pl">PL</button>
+        </li>
       </ul>
     </nav>
   </header>
 
 <main id="main">
-  <section class="relative isolate overflow-hidden" aria-labelledby="page-title">
-    <img src="assets/img/photos/valley.jpg" alt="" width="1020" height="440" fetchpriority="high"
-      class="absolute inset-y-0 right-0 -z-10 h-full w-full object-cover opacity-30 md:w-[58%] md:opacity-100 md:mask-fade-left">
-    <div class="container-site pb-24 pt-14 md:pb-28 md:pt-20">
-      <p class="eyebrow">Каталог</p>
-      <h1 id="page-title" class="mt-4 text-page">Маршрути Карпатами</h1>
-      <p class="mt-4 max-w-md text-lg">Підібрали маршрути для першого походу — від прогулянки до озера до триденного траверсу.</p>
+  <section class="page-hero" aria-labelledby="page-title">
+    <img src="assets/img/photos/hero-routes.webp" srcset="assets/img/photos/hero-routes-sm.webp 720w, assets/img/photos/hero-routes.webp 1600w" sizes="100vw" alt="" width="1920" height="1381" fetchpriority="high" class="page-hero-photo object-[50%_62%]">
+    <div class="container-site pb-24 pt-12 md:pb-28 md:pt-16">
+      <h1 id="page-title" class="text-page">Маршрути Карпатами</h1>
+      <p class="mt-4 max-w-xl text-lg text-white/90">Від прогулянки до озера до триденного траверсу хребтом. Обери регіон, складність і тривалість — покажемо, що підходить саме тобі.</p>
+      <ul class="mt-6 flex flex-wrap gap-2.5">
+        <li class="hero-chip">12 маршрутів</li>
+        <li class="hero-chip">5 регіонів</li>
+        <li class="hero-chip">від 1 до 3 днів</li>
+      </ul>
     </div>
   </section>
 
@@ -179,7 +204,7 @@
 
   <!-- Світлий футер: темно-зелений текст, а внизу — смереки в тумані (фон .site-footer) -->
   <footer class="site-footer mt-auto text-ink">
-    <div class="container-site pb-[clamp(6rem,13vw,16rem)] pt-6 md:pt-8">
+    <div class="container-site pb-[clamp(4.5rem,9vw,9.5rem)] pt-8 md:pt-10">
       <div class="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
         <a href="index.html" class="flex items-center gap-4 md:border-r md:border-line md:pr-10" aria-label="Карпатський шлях — на головну">
           <svg class="logo h-9 w-auto shrink-0 md:h-10" viewBox="190 432 876 346" aria-hidden="true" focusable="false"><g class="m"><path d="M198 771 L401 557 L475 622 L458 650 Q446 632 403 598 Q340 662 198 771 Z"/><path d="M412 755 L458 650 L475 622 L628 440 L770 603 L726 642 Q731 612 716 597 L624 497 Z"/><path d="M629 754 L853 549 L1058 771 L1022 759 L848 602 Q760 660 629 754 Z"/></g></svg>
@@ -207,8 +232,8 @@
         </ul>
       </div>
       <div class="mt-8 flex flex-col gap-2 border-t border-line pt-6 text-sm text-heading sm:flex-row sm:justify-between">
-        <p>© <span data-year>2026</span> Карпатський шлях. Всі права захищено.</p>
-        <p>Навчальний проєкт · ціни в конструкторі орієнтовні</p>
+        <p class="footer-note">© <span data-year>2026</span> Карпатський шлях. Всі права захищено.</p>
+        <p class="footer-note">Навчальний проєкт · ціни в конструкторі орієнтовні</p>
       </div>
     </div>
   </footer>

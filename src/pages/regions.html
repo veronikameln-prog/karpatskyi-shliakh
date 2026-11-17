@@ -2,46 +2,43 @@
 title: Регіони Карпат — Чорногора, Горгани, Свидовець, Боржава, Бескиди
 description: П'ять гірських масивів для першого походу: найвищі вершини, сезон, складність, звідки стартувати й популярні маршрути.
 nav: regions
-libs: gsap
+libs: gsap, leaflet
 script: regions.js
 -->
 <main id="main">
-  <section class="relative isolate overflow-hidden" aria-labelledby="page-title">
-    <img src="assets/img/photos/hero-home.jpg" alt="" width="680" height="728" fetchpriority="high"
-      class="absolute inset-y-0 right-0 -z-10 h-full w-full object-cover opacity-25 md:w-[55%] md:opacity-100 md:mask-fade-left">
-    <div class="container-site grid items-center gap-8 py-14 md:grid-cols-2 md:py-16">
-      <div>
-        <p class="eyebrow">Регіони</p>
-        <h1 id="page-title" class="mt-4 text-page">Регіони Карпат</h1>
-        <p class="mt-4 max-w-md text-lg">П'ять масивів, які найкраще підходять для першого походу: від легких полонин до найвищих вершин.</p>
-        <nav aria-label="Перейти до регіону" class="mt-8">
-          <ul class="flex flex-wrap gap-2">
-            <li><a class="chip" href="#chornohora">Чорногора</a></li>
-            <li><a class="chip" href="#gorgany">Горгани</a></li>
-            <li><a class="chip" href="#svydovets">Свидовець</a></li>
-            <li><a class="chip" href="#borzhava">Полонинський хребет</a></li>
-            <li><a class="chip" href="#beskydy">Бескиди</a></li>
-          </ul>
-        </nav>
-      </div>
-      <!-- Схема розташування масивів (спрощено) -->
-      <figure class="mx-auto w-full max-w-md rounded-3xl bg-bg/70 p-4 backdrop-blur-sm">
-        <svg viewBox="0 0 400 260" class="h-auto w-full" role="img" aria-labelledby="regions-map-title">
-          <title id="regions-map-title">Схема: Бескиди на північному заході, Боржава на заході, Горгани в центрі, Свидовець на півдні, Чорногора на південному сході Українських Карпат</title>
-          <path d="M20 70 C 90 40, 170 50, 240 90 S 350 150, 385 215 L 330 240 C 280 200, 210 170, 150 160 S 50 140, 20 120 Z" fill="rgb(var(--surface-2))" stroke="rgb(var(--accent))" stroke-width="1.5" stroke-dasharray="4 4"/>
-          <g font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="rgb(var(--heading))">
-            <a href="#beskydy"><circle cx="70" cy="75" r="7" fill="rgb(var(--primary))"/><text x="82" y="70">Бескиди</text></a>
-            <a href="#borzhava"><circle cx="70" cy="128" r="7" fill="rgb(var(--primary))"/><text x="40" y="155">Боржава</text></a>
-            <a href="#gorgany"><circle cx="200" cy="105" r="7" fill="rgb(var(--primary))"/><text x="212" y="100">Горгани</text></a>
-            <a href="#svydovets"><circle cx="230" cy="165" r="7" fill="rgb(var(--primary))"/><text x="160" y="195">Свидовець</text></a>
-            <a href="#chornohora"><circle cx="300" cy="175" r="7" fill="rgb(var(--primary))"/><text x="285" y="205">Чорногора</text></a>
-          </g>
-        </svg>
-      </figure>
+  <section class="page-hero" aria-labelledby="page-title">
+    <img src="assets/img/photos/hero-regions.webp" alt="" width="1920" height="989" fetchpriority="high" class="page-hero-photo object-[50%_40%]">
+    <div class="container-site pb-16 pt-12 md:pb-20 md:pt-16">
+      <h1 id="page-title" class="text-page">Регіони Карпат</h1>
+      <p class="mt-4 max-w-xl text-lg text-white/90">П'ять масивів, які найкраще підходять для першого походу: від лагідних полонин Боржави до двотисячників Чорногори.</p>
     </div>
   </section>
 
-  <div id="regions-list" class="container-site space-y-16 pb-16 pt-6 md:space-y-20 md:pb-20" aria-busy="true">
+  <!-- Карта: справжня підкладка OpenStreetMap, масиви обведено пунктиром -->
+  <section class="section pb-4" aria-labelledby="map-title">
+    <div class="container-site">
+      <h2 id="map-title" class="section-title">Де це на карті</h2>
+      <div class="mt-8 grid gap-6 lg:grid-cols-[1.7fr_1fr]">
+        <figure class="card overflow-hidden p-0">
+          <div id="regions-map" class="map-box h-[22rem] md:h-[28rem]" role="application" aria-label="Карта Українських Карпат із п'ятьма масивами">
+            <p class="grid h-full place-items-center p-6 text-center text-sm text-muted">Завантажуємо карту…</p>
+          </div>
+          <figcaption class="px-5 py-3 text-xs text-muted">Контури масивів орієнтовні. Натисни на регіон на карті чи у списку, щоб перейти до опису.</figcaption>
+        </figure>
+        <nav aria-label="Перейти до регіону">
+          <ul id="regions-legend" class="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+            <li><a class="region-link" href="#chornohora" data-region="chornohora"><span class="region-link-name">Чорногора</span><span class="region-link-meta">Говерла — 2061 м</span></a></li>
+            <li><a class="region-link" href="#gorgany" data-region="gorgany"><span class="region-link-name">Горгани</span><span class="region-link-meta">Сивуля — 1836 м</span></a></li>
+            <li><a class="region-link" href="#svydovets" data-region="svydovets"><span class="region-link-name">Свидовець</span><span class="region-link-meta">Близниця — 1881 м</span></a></li>
+            <li><a class="region-link" href="#borzhava" data-region="borzhava"><span class="region-link-name">Боржава</span><span class="region-link-meta">Стій — 1681 м</span></a></li>
+            <li><a class="region-link" href="#beskydy" data-region="beskydy"><span class="region-link-name">Бескиди</span><span class="region-link-meta">Парашка — 1268 м</span></a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+  <div id="regions-list" class="container-site space-y-16 pb-16 pt-10 md:space-y-20 md:pb-20" aria-busy="true">
     <p class="text-muted" role="status">Завантажуємо регіони…</p>
   </div>
 </main>

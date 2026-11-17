@@ -2,6 +2,7 @@
 // Уся математика — у planner-calc.js (покрита автотестами).
 import { validateTrip, calculateTrip, matchRoutes, formatUAH, LIMITS } from './planner-calc.js';
 import { loadData, el, icon, routeUrl, DIFFICULTY_LABELS, daysLabel, peopleLabel } from './data.js';
+import { track } from './analytics.js';
 
 const form = document.getElementById('planner-form');
 const result = document.getElementById('planner-result');
@@ -141,8 +142,8 @@ async function fillRoutes(slot, values) {
         link.href = routeUrl(route);
         const text = el('span', 'min-w-0 text-sm');
         text.append(
-          el('span', 'font-medium', route.name),
-          el('span', 'text-xs text-muted', ` (${DIFFICULTY_LABELS[route.difficulty]}, ${daysLabel(route.days)}, ${route.distanceKm} км)`),
+          el('span', 'block font-medium', route.name),
+          el('span', 'block text-xs text-muted', `${DIFFICULTY_LABELS[route.difficulty]} · ${daysLabel(route.days)} · ${route.distanceKm} км`),
         );
         link.append(text, icon('arrow', 'h-4 w-4'));
         const item = el('li');
@@ -187,7 +188,10 @@ form.addEventListener('submit', (event) => {
   event.preventDefault();
   if (!calculate({ scroll: true })) {
     form.querySelector('[aria-invalid="true"]')?.focus();
+    return;
   }
+  const { values } = validateTrip(readForm());
+  track('planner_calculate', { days: values.days, people: values.people }); // скільки разів реально рахують похід
 });
 
 // Після першого розрахунку результат оновлюється одразу при зміні параметрів

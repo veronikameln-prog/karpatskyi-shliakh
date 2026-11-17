@@ -29,10 +29,20 @@
       if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches)) {
         document.documentElement.classList.add('dark');
       }
+      // Іншу мову підставляє i18n.js; до того сторінку не показуємо, щоб не «мигав» український текст
+      var l = localStorage.getItem('ks-lang');
+      if (l === 'en' || l === 'pl') {
+        document.documentElement.lang = l;
+        document.documentElement.classList.add('i18n-wait');
+        setTimeout(function () { document.documentElement.classList.remove('i18n-wait'); }, 2500);
+      }
     } catch (e) {}
   </script>
+  <style>.i18n-wait body{visibility:hidden}</style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Lora:wght@600;700&amp;display=swap">
+  <!-- Шрифти вантажаться, не блокуючи першу відмальовку (поки що — системний шрифт, потім плавна заміна) -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Lora:wght@600;700&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Lora:wght@600;700&amp;display=swap"></noscript>
 {{libsCss}}  <link rel="stylesheet" href="css/main.css">
 </head>

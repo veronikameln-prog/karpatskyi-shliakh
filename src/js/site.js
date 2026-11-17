@@ -1,9 +1,11 @@
 // Спільний код для всіх сторінок: тема, меню, рік у футері, анімація появи блоків.
 import { initTheme } from './theme.js';
 import { initMenu } from './menu.js';
+import { initLangSwitch } from './i18n.js';
 
 initTheme();
 initMenu();
+initLangSwitch();
 
 const year = document.querySelector('[data-year]');
 if (year) year.textContent = String(new Date().getFullYear());

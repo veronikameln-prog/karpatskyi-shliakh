@@ -253,35 +253,27 @@
 .hero-fade {
   background: linear-gradient(90deg, rgb(var(--bg)) 0%, rgb(var(--bg) / 0.9) 40%, rgb(var(--bg) / 0) 72%);
 }
+/* Великий номер поради — декоративний, тому малюється псевдоелементом (не читається й не перевіряється як текст) */
+.tip-num::before {
+  content: attr(data-num);
+}
 .photo-shade {
   background: linear-gradient(0deg, rgb(10 28 20 / 0.8) 0%, rgb(10 28 20 / 0.25) 55%, rgb(10 28 20 / 0) 100%);
 }
 @layer utilities {
-  /* ===== Заклик до дії: смуга на всю ширину ===== */
+  /* ===== Заклик до дії: фото світанку під темно-зеленим шаром ===== */
   .cta-band {
     @apply relative isolate overflow-hidden text-white;
-    background: linear-gradient(120deg, #163428 0%, #23513A 45%, #3C7C55 100%);
+    background: #163428;
   }
-  .dark .cta-band {
-    background: linear-gradient(120deg, #0B1912 0%, #163428 50%, #23513A 100%);
-  }
-  /* Два м'які кола, як у референсі */
-  .cta-band::before,
-  .cta-band::after {
-    content: '';
-    @apply pointer-events-none absolute -z-10 rounded-full;
-    background: rgb(255 255 255 / 0.06);
+  .cta-photo {
+    @apply absolute inset-0 -z-20 h-full w-full object-cover;
+    object-position: 50% 30%;
   }
   .cta-band::before {
-    width: 26rem; height: 26rem; left: -9rem; top: -10rem;
-  }
-  .cta-band::after {
-    width: 22rem; height: 22rem; right: -7rem; bottom: -9rem;
-  }
-  /* Силует хребта знизу */
-  .cta-ridge {
-    @apply pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-24 w-full md:h-32;
-    fill: rgb(255 255 255 / 0.05);
+    content: '';
+    @apply pointer-events-none absolute inset-0 -z-10;
+    background: linear-gradient(180deg, rgb(13 33 23 / 0.78) 0%, rgb(13 33 23 / 0.55) 45%, rgb(13 33 23 / 0.88) 100%);
   }
   .cta-pill {
     @apply inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm font-semibold text-white backdrop-blur-sm;
@@ -318,21 +310,133 @@
   }
 }
 
-/* Футер: світлий, внизу смереки в тумані. Зверху — плавний перехід від кольору сторінки до білого неба на фото */
+/* Футер: світлий, текст лягає на туманні пагорби, а смереки лишаються під ним */
 .site-footer {
   background-color: #fff;
   background-image:
-    linear-gradient(to bottom, rgb(var(--bg)) 0, rgb(255 255 255 / 0) 9rem),
+    linear-gradient(to bottom, rgb(var(--bg)) 0, rgb(255 255 255 / 0) 7rem),
     url('../assets/img/photos/footer-forest-mist.webp');
   background-repeat: no-repeat;
   background-position: top center, bottom center;
-  background-size: 100% auto, max(100%, 56rem) auto;
+  background-size: 100% auto, max(100%, 60rem) auto;
 }
-/* Нічна тема: те саме фото, «помножене» на темну хвою — біле небо стає темним, смереки ледь видно */
 .dark .site-footer {
   background-color: rgb(var(--footer));
   background-image: linear-gradient(to bottom, rgb(var(--bg)) 0, rgb(var(--bg) / 0) 9rem), url('../assets/img/photos/footer-forest-mist.webp');
   background-blend-mode: normal, multiply;
+}
+
+/* Дрібний текст футера лежить на фото — світлий ореол тримає його читабельним над смереками */
+.footer-note {
+  text-shadow: 0 0 6px #fff, 0 0 12px #fff, 0 0 2px #fff;
+}
+.dark .footer-note {
+  text-shadow: 0 0 6px rgb(var(--footer)), 0 0 12px rgb(var(--footer));
+}
+
+/* ===== Герой внутрішніх сторінок: фото на всю ширину під плаваючою шапкою ===== */
+.page-hero {
+  @apply relative isolate -mt-20 overflow-hidden pt-20 text-white;
+  background: #163428;
+}
+.page-hero-photo {
+  @apply absolute inset-0 -z-20 h-full w-full object-cover;
+}
+.page-hero::before {
+  content: '';
+  @apply pointer-events-none absolute inset-0 -z-10;
+  background:
+    linear-gradient(90deg, rgb(13 33 23 / 0.86) 0%, rgb(13 33 23 / 0.6) 42%, rgb(13 33 23 / 0.12) 100%),
+    linear-gradient(0deg, rgb(13 33 23 / 0.45) 0%, rgb(13 33 23 / 0) 45%);
+}
+.page-hero h1 {
+  color: #fff;
+}
+.page-hero :focus-visible {
+  outline-color: #fff;
+}
+.hero-chip {
+  @apply rounded-full border border-white/30 bg-white/15 px-4 py-1.5 text-sm font-medium text-white backdrop-blur-sm;
+}
+
+/* ===== Карти (Leaflet) ===== */
+.map-box {
+  width: 100%;
+  background: rgb(var(--surface-2));
+  z-index: 0; /* панелі карти не вилазять поверх плаваючої шапки */
+}
+.map-box.leaflet-container {
+  font-family: inherit;
+}
+.map-pin {
+  display: block;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: 3px solid #fff;
+  background: #2f6a48;
+  box-shadow: 0 2px 8px rgb(10 28 20 / 0.45);
+}
+.map-pin-start {
+  background: #fff;
+  border-color: #2f6a48;
+}
+.map-pin-region {
+  width: 16px;
+  height: 16px;
+  margin: 3px;
+}
+.leaflet-tooltip.map-label {
+  border: 0;
+  border-radius: 999px;
+  background: #fff;
+  padding: 0.2rem 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #163428;
+  box-shadow: 0 4px 14px -4px rgb(10 28 20 / 0.45);
+}
+.leaflet-tooltip.map-label::before {
+  display: none;
+}
+.map-region {
+  cursor: pointer;
+  transition: fill-opacity 0.25s ease;
+}
+.leaflet-container .leaflet-control-attribution {
+  background: rgb(255 255 255 / 0.8);
+  font-size: 10px;
+}
+.dark .leaflet-tooltip.map-label {
+  background: #15221c;
+  color: #e2eee5;
+}
+.dark .leaflet-container .leaflet-control-attribution {
+  background: rgb(13 22 18 / 0.8);
+  color: #a5b6ac;
+}
+.dark .leaflet-container .leaflet-control-attribution a {
+  color: #8cc8a0;
+}
+.dark .leaflet-bar a {
+  background: #15221c;
+  color: #e2eee5;
+  border-color: #2d4036;
+}
+
+/* Список регіонів біля карти */
+.region-link {
+  @apply flex items-center justify-between gap-4 rounded-2xl border border-line bg-surface px-5 py-4 transition duration-200 hover:-translate-y-0.5 hover:border-accent hover:shadow-[0_12px_26px_-18px_rgb(22_52_40/0.5)];
+}
+.region-link-name {
+  @apply flex items-center gap-3 font-serif text-lg font-bold text-heading;
+}
+.region-link-name::before {
+  content: '';
+  @apply h-3 w-3 shrink-0 rounded-full border-2 border-dashed border-primary;
+}
+.region-link-meta {
+  @apply text-sm text-muted;
 }
 
 /* Анімація появи: клас .js ставиться в <head>, .is-in додає GSAP / IntersectionObserver */
@@ -346,52 +450,172 @@
   transform: none;
 }
 
-/* «Як це працює»: без JS усі кроки звичайні; з JS (.how-live) підсвічується лише поточний крок */
-.how-step,
-.how-ico,
-.how-title,
-.how-arrow {
-  transition: opacity 0.45s ease, color 0.45s ease, background-color 0.45s ease, transform 0.45s ease, box-shadow 0.45s ease;
+/* ===== «Від долини до вершини»: шкала ліворуч і чотири шари-пояси праворуч ===== */
+.alt-list {
+  display: grid;
+  gap: 0.25rem;
+  padding-left: 2.75rem;
 }
-.how-ico {
-  background-color: rgb(var(--surface-2));
-  color: rgb(var(--accent));
+.alt-rail {
+  position: absolute;
+  left: 0.7rem;
+  top: 1.75rem;
+  bottom: 1.75rem;
+  width: 2px;
+  background: rgb(var(--line));
 }
-.how-arrow {
-  color: rgb(var(--primary) / 0.55);
+.alt-rail span {
+  display: block;
+  height: 100%;
+  background: rgb(var(--primary));
+  transform-origin: top;
+  transform: scaleY(var(--alt-progress, 1));
+  transition: transform 0.5s ease;
 }
-.how-live .how-step {
-  opacity: 0.45;
+.alt-step {
+  position: relative;
+  display: block;
+  width: 100%;
+  border-radius: 1rem;
+  padding: 0.85rem 1rem;
+  text-align: left;
+  transition: background-color 0.4s ease, opacity 0.4s ease, box-shadow 0.4s ease;
 }
-.how-live .how-step.is-active {
-  opacity: 1;
+.alt-dot {
+  position: absolute;
+  left: calc(-2.05rem - 9px);
+  top: 1.25rem;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  border: 2px solid rgb(var(--primary));
+  background: rgb(var(--bg));
+  transition: transform 0.4s ease, background-color 0.4s ease, box-shadow 0.4s ease;
 }
-.how-live .how-step.is-active .how-ico {
-  background-color: rgb(var(--primary));
-  color: rgb(var(--on-primary));
-  transform: scale(1.1);
-  box-shadow: 0 0 0 10px rgb(var(--primary) / 0.12), 0 14px 30px -12px rgb(var(--primary) / 0.6);
+.alt-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
 }
-.how-live .how-step.is-active .how-title {
-  color: rgb(var(--accent));
+.alt-height {
+  @apply font-serif text-2xl font-bold text-heading;
+  min-width: 6.2rem;
+  transform-origin: left center;
+  transition: transform 0.4s ease, color 0.4s ease;
 }
-.how-live .how-step.is-done .how-arrow {
-  color: rgb(var(--primary));
+.alt-name {
+  @apply text-ink;
+  transition: color 0.4s ease;
 }
-/* Сцена під кроками: видно лише картку поточного кроку, решта плавно гасне */
-.how-panel {
+.alt-text {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.45s ease, opacity 0.45s ease;
+}
+.alt-text > span {
+  @apply overflow-hidden text-sm text-muted;
+  padding-top: 0.35rem;
+}
+.alt-scene {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  height: clamp(21rem, 62vh, 35rem);
+  border-radius: 1.5rem;
+  background: rgb(var(--surface-2));
+  box-shadow: 0 24px 50px -26px rgb(22 52 40 / 0.5);
+}
+.alt-layer {
+  position: absolute;
+  inset-inline: 0;
+  filter: drop-shadow(0 -4px 7px rgb(10 28 20 / 0.35));
+}
+.alt-clip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.alt-clip img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.4s ease, filter 0.6s ease;
+}
+.alt-clip::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgb(var(--bg) / 0);
+  transition: background-color 0.6s ease;
+  pointer-events: none;
+}
+/* Пояси перекривають один одного; верхній край кожного — силует хребта, смерек чи пагорбів */
+.alt-layer-summit { top: 0; height: 34%; filter: none; }
+.alt-layer-summit img { object-position: 50% 24%; }
+.alt-layer-polonyna { top: 25%; height: 32%; }
+.alt-layer-polonyna img { object-position: 50% 60%; }
+.alt-layer-polonyna .alt-clip { clip-path: polygon(0 20%, 9% 12%, 20% 17%, 33% 5%, 44% 13%, 57% 3%, 69% 12%, 82% 6%, 100% 18%, 100% 100%, 0 100%); }
+.alt-layer-forest { top: 49%; height: 32%; }
+.alt-layer-forest img { object-position: 50% 45%; }
+.alt-layer-forest .alt-clip { clip-path: polygon(0 16%, 3% 6%, 6% 15%, 9% 3%, 12.5% 14%, 16% 5%, 19% 15%, 23% 2%, 27% 14%, 30% 7%, 33.5% 16%, 37% 4%, 41% 15%, 44% 6%, 48% 16%, 52% 1%, 56% 14%, 59% 7%, 62.5% 16%, 66% 4%, 70% 15%, 73% 6%, 77% 16%, 81% 2%, 85% 14%, 88% 7%, 91.5% 16%, 95% 5%, 100% 15%, 100% 100%, 0 100%); }
+.alt-layer-valley { top: 73%; height: 27%; }
+.alt-layer-valley img { object-position: 50% 70%; }
+.alt-layer-valley .alt-clip { clip-path: polygon(0 14%, 14% 5%, 30% 13%, 48% 3%, 64% 12%, 80% 4%, 100% 12%, 100% 100%, 0 100%); }
+.alt-tag {
+  position: absolute;
+  left: 1rem;
+  top: 42%;
+  z-index: 1;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.92);
+  padding: 0.3rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #163428;
   opacity: 0;
-  transition: opacity 0.6s ease;
+  transform: translateY(6px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
 }
-.how-panel img {
-  transform: scale(1.06);
-  transition: transform 1.2s ease;
+.alt-layer-summit .alt-tag { top: 1rem; }
+/* З JS (.alt-live): яскравий лише поточний пояс, решта вицвітає в туман */
+.alt-live .alt-step:not(.is-active) { opacity: 0.75; } /* 0.75 — щоб підписи лишались контрастними (Lighthouse) */
+.alt-live .alt-step:not(.is-active):hover { opacity: 0.9; }
+.alt-live .alt-step:not(.is-active) .alt-text { grid-template-rows: 0fr; opacity: 0; }
+.alt-live .alt-step.is-active { background: rgb(var(--surface)); box-shadow: 0 10px 30px -18px rgb(22 52 40 / 0.45); }
+.alt-live .alt-step.is-active .alt-dot {
+  transform: scale(1.45);
+  background: rgb(var(--primary));
+  box-shadow: 0 0 0 5px rgb(var(--primary) / 0.18);
 }
-.how-panel.is-active {
-  opacity: 1;
+.alt-live .alt-step.is-active .alt-height { transform: scale(1.18); color: rgb(var(--accent)); }
+.alt-live .alt-step.is-active .alt-name { color: rgb(var(--heading)); font-weight: 600; }
+.alt-live .alt-clip img { filter: grayscale(0.85) brightness(1.04) contrast(0.88); }
+.alt-live .alt-clip::after { background: rgb(var(--bg) / 0.5); }
+.alt-live .alt-layer.is-active .alt-clip img { filter: none; transform: scale(1.06); }
+.alt-live .alt-layer.is-active .alt-clip::after { background: rgb(var(--bg) / 0); }
+.alt-live .alt-layer.is-active .alt-tag { opacity: 1; transform: none; }
+
+/* ===== «Як це працює»: три зупинки на стежці ===== */
+.how-num {
+  @apply absolute left-6 z-10 grid h-11 w-11 place-items-center rounded-full bg-primary font-serif text-lg font-bold text-on-primary;
+  top: -1.375rem;
+  box-shadow: 0 0 0 6px rgb(var(--bg));
 }
-.how-panel.is-active img {
-  transform: scale(1);
+@media (min-width: 768px) {
+  .how-trail {
+    position: relative;
+  }
+  /* Пунктир між маркерами — як розмітка стежки */
+  .how-trail::before {
+    content: '';
+    position: absolute;
+    left: 3rem;
+    right: 0;
+    top: 0;
+    border-top: 2px dashed rgb(var(--primary) / 0.4);
+    -webkit-mask-image: linear-gradient(90deg, #000 78%, transparent);
+    mask-image: linear-gradient(90deg, #000 78%, transparent);
+  }
 }
 
 /* Відгуки: безперервна стрічка, як на PrompterMind. Список повторено двічі, тож зсув на -50% замикає коло без стрибка */
@@ -445,4 +669,151 @@
   .reviews-marquee {
     overflow-x: auto;
   }
+}
+
+/* Номер кроку у формі конструктора */
+.step-num {
+  display: inline-grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  margin-right: 0.6rem;
+  border-radius: 999px;
+  background: rgb(var(--primary));
+  color: rgb(var(--on-primary));
+  font-size: 0.8rem;
+  font-weight: 700;
+  vertical-align: middle;
+}
+
+/* ===== Нічна тема: доопрацювання =====
+   Ідея — сутінки в горах: глибока хвоя замість чорного, туман лишається світлішим за ліс. */
+.dark {
+  --bg: 15 24 20;             /* #0F1814 */
+  --surface: 23 35 30;        /* #17231E */
+  --surface-2: 32 48 41;      /* #203029 */
+  --line: 44 62 53;
+  --text: 226 234 228;
+  --text-muted: 160 178 168;
+  --primary: 143 199 160;     /* #8FC7A0 */
+  --accent: 152 206 170;
+  --footer: 15 24 20;
+}
+.dark .card {
+  box-shadow: 0 10px 30px -18px rgb(0 0 0 / 0.7);
+}
+/* Герой головної: те саме фото в сутінках */
+.dark .hero-photo {
+  filter: brightness(0.5) saturate(0.85) contrast(1.05);
+}
+.dark .hero-mist {
+  background: linear-gradient(to bottom, rgb(15 24 20 / 0.75), rgb(15 24 20 / 0.2) 60%, transparent);
+}
+/* Футер уночі: темні смереки на тлі світлішого туману */
+.dark .site-footer {
+  background-color: #0f1814;
+  background-image:
+    linear-gradient(to bottom, rgb(var(--bg)) 0, rgb(var(--bg) / 0) 8rem),
+    url('../assets/img/photos/footer-forest-mist.webp'),
+    linear-gradient(to bottom, #0f1814 0%, #1c342b 55%, #2b4a3e 100%);
+  background-repeat: no-repeat;
+  background-position: top center, bottom center, center;
+  background-size: 100% auto, max(100%, 60rem) auto, 100% 100%;
+  background-blend-mode: normal, multiply, normal;
+}
+.dark .footer-note {
+  text-shadow: 0 0 6px #14251e, 0 0 14px #14251e;
+}
+/* Висотна шкала: неактивні пояси тонуть у темряві, а не в тумані */
+.dark .alt-live .alt-clip img {
+  filter: grayscale(0.7) brightness(0.55);
+}
+.dark .alt-live .alt-clip::after {
+  background: rgb(var(--bg) / 0.35);
+}
+.dark .alt-live .alt-layer.is-active .alt-clip img {
+  filter: none;
+}
+.dark .alt-scene {
+  box-shadow: 0 24px 50px -26px rgb(0 0 0 / 0.9);
+}
+.dark .how-num {
+  box-shadow: 0 0 0 6px rgb(var(--bg));
+}
+/* Карта: плитки притлумлені, щоб не світили серед темної сторінки */
+.dark .leaflet-tile-pane {
+  filter: brightness(0.62) saturate(0.75) contrast(1.1);
+}
+.dark .map-pin {
+  border-color: #e2eee5;
+}
+.dark .page-hero-photo,
+.dark .cta-photo {
+  filter: brightness(0.8);
+}
+
+/* Перемикач мови */
+.lang-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.6rem);
+  z-index: 50;
+  min-width: 10.5rem;
+  border-radius: 1rem;
+  border: 1px solid rgb(var(--line));
+  background: rgb(var(--surface));
+  padding: 0.4rem;
+  box-shadow: 0 18px 40px -18px rgb(10 28 20 / 0.45);
+}
+.lang-option {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  border-radius: 0.7rem;
+  padding: 0.55rem 0.8rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgb(var(--text));
+  transition: background-color 0.2s ease;
+}
+.lang-option:hover {
+  background: rgb(var(--surface-2));
+}
+.lang-option[aria-pressed='true'] {
+  background: rgb(var(--surface-2));
+  color: rgb(var(--heading));
+  font-weight: 700;
+}
+/* Контури на картах у нічній темі світліші */
+.dark .map-region {
+  stroke: #a9ddb8;
+  fill: #0f1814;
+}
+.dark .map-route {
+  stroke: #cdeed6;
+}
+.dark .hero-photo {
+  filter: brightness(0.6) saturate(0.85) contrast(1.05);
+}
+
+/* Іконки складності в пошуку героя: PNG-маска, колір задає background */
+.diff-ico {
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.diff-ico-easy {
+  -webkit-mask-image: url('../assets/img/icons/difficulty-easy.png');
+  mask-image: url('../assets/img/icons/difficulty-easy.png');
+}
+.diff-ico-medium {
+  -webkit-mask-image: url('../assets/img/icons/difficulty-medium.png');
+  mask-image: url('../assets/img/icons/difficulty-medium.png');
+}
+.diff-ico-hard {
+  -webkit-mask-image: url('../assets/img/icons/difficulty-hard.png');
+  mask-image: url('../assets/img/icons/difficulty-hard.png');
 }

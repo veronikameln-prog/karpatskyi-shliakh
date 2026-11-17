@@ -2,6 +2,8 @@
 // Дані нікуди не надсилаються — це демо. Для справжньої відправки потрібен сервер
 // (або сервіс на кшталт Netlify Forms), який би приймав і захищав дані.
 
+import { track } from './analytics.js';
+
 export const PATTERNS = {
   // Літера на початку, далі літери (укр/лат), пробіл, апостроф, дефіс; загалом 2–50 символів
   name: /^[A-Za-zА-ЩЬЮЯҐЄІЇа-щьюяґєії][A-Za-zА-ЩЬЮЯҐЄІЇа-щьюяґєії'ʼ’ -]{1,49}$/,
@@ -138,6 +140,7 @@ if (form) {
     FIELDS.forEach((n) => showError(n, ''));
     updateCounter();
     success?.showModal();
+    track('contact_form_sent'); // лише сам факт, без даних із форми
   });
 
   success?.addEventListener('click', (event) => {

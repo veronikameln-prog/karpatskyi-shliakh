@@ -2,15 +2,17 @@
 title: Маршрут — Карпатський шлях
 description: Опис маршруту в Карпатах: тривалість, відстань, набір висоти, як дістатися, найкращий сезон і поради.
 nav: routes
-libs: gsap
+libs: gsap, leaflet
 script: route.js
 -->
 <main id="main" aria-busy="true">
   <!-- Герой: заповнюється з data.json за параметром ?id= -->
-  <section class="relative isolate flex min-h-[26rem] items-end overflow-hidden bg-[#163428] md:min-h-[32rem]" aria-labelledby="route-title">
-    <img id="route-hero" src="assets/img/photos/hoverla-hero.jpg" alt="" width="1440" height="360" fetchpriority="high" class="absolute inset-0 -z-10 h-full w-full object-cover">
+  <section class="relative isolate -mt-20 flex min-h-[28rem] items-end overflow-hidden bg-[#163428] md:min-h-[36rem]" aria-labelledby="route-title">
+    <img id="route-hero" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="" width="1920" height="1280" fetchpriority="high" class="absolute inset-0 -z-10 h-full w-full object-cover object-[50%_35%]">
+    <!-- Фото героя починає вантажитись одразу, не чекаючи JS і data.json (список фото підставляє збірка) -->
+    <script>{{routeHeroes}}</script>
     <div class="photo-shade absolute inset-0 -z-10"></div>
-    <div class="container-site pb-10 pt-24 text-white">
+    <div class="container-site pb-10 pt-32 text-white">
       <nav aria-label="Хлібні крихти">
         <ol class="flex flex-wrap items-center gap-2 text-sm text-white/85">
           <li><a href="routes.html" class="hover:underline">Маршрути</a></li>
@@ -22,29 +24,43 @@ script: route.js
       </nav>
       <p class="mt-4"><span id="route-badge" class="badge badge-medium">…</span></p>
       <h1 id="route-title" class="mt-3 text-page text-white">Завантажуємо маршрут…</h1>
-      <p id="route-subtitle" class="mt-3 max-w-2xl text-lg text-white/90"></p>
+      <p id="route-subtitle" class="mt-3 min-h-[1.75rem] max-w-2xl text-lg text-white/90"></p>
     </div>
   </section>
 
   <div id="route-content">
     <!-- Ключові цифри -->
     <section class="container-site -mt-0 pt-8" aria-label="Коротко про маршрут">
-      <dl id="route-stats" class="card grid grid-cols-2 gap-4 p-5 sm:grid-cols-3 lg:grid-cols-5 lg:divide-x lg:divide-line"></dl>
+      <!-- Заготовка тієї ж висоти, що й готові цифри: поки вантажиться data.json, сторінка не «стрибає» -->
+      <dl id="route-stats" class="card grid grid-cols-2 gap-4 p-5 sm:grid-cols-3 lg:grid-cols-5 lg:divide-x lg:divide-line">
+        <div class="relative flex min-h-9 flex-col justify-center pl-10 lg:pl-14 lg:pr-4 lg:first:pl-10"><dt class="text-xs text-muted">Тривалість</dt><dd class="font-semibold text-heading">…</dd></div>
+        <div class="relative flex min-h-9 flex-col justify-center pl-10 lg:pl-14 lg:pr-4 lg:first:pl-10"><dt class="text-xs text-muted">Відстань</dt><dd class="font-semibold text-heading">…</dd></div>
+        <div class="relative flex min-h-9 flex-col justify-center pl-10 lg:pl-14 lg:pr-4 lg:first:pl-10"><dt class="text-xs text-muted">Набір висоти</dt><dd class="font-semibold text-heading">…</dd></div>
+        <div class="relative flex min-h-9 flex-col justify-center pl-10 lg:pl-14 lg:pr-4 lg:first:pl-10"><dt class="text-xs text-muted">Найвища точка</dt><dd class="font-semibold text-heading">…</dd></div>
+        <div class="relative flex min-h-9 flex-col justify-center pl-10 lg:pl-14 lg:pr-4 lg:first:pl-10"><dt class="text-xs text-muted">Старт</dt><dd class="font-semibold text-heading">…</dd></div>
+      </dl>
     </section>
 
-    <!-- Як дістатися + схема -->
+    <!-- Як дістатися + карта -->
     <section class="section" aria-labelledby="access-title">
-      <div class="container-site grid items-center gap-10 lg:grid-cols-[1fr_1.4fr]">
-        <div>
-          <h2 id="access-title" class="section-title">Як дістатися</h2>
-          <ol id="route-access" class="relative mt-8 space-y-6 before:absolute before:bottom-4 before:left-4 before:top-4 before:w-0.5 before:bg-primary/30"></ol>
+      <div class="container-site">
+        <h2 id="access-title" class="section-title">Як дістатися</h2>
+        <div class="mt-8 grid items-stretch gap-8 lg:grid-cols-[1fr_1.5fr]">
+          <div class="flex flex-col">
+            <ol id="route-access" class="relative space-y-6 before:absolute before:bottom-4 before:left-4 before:top-4 before:w-0.5 before:bg-primary/30"></ol>
+            <p class="mt-8 rounded-2xl bg-surface-2 p-4 text-sm">Перед виходом завантаж офлайн-карту (наприклад, Mapy.cz): у горах зв'язок зникає вже за першим поворотом.</p>
+            <a id="route-directions" href="https://www.google.com/maps" target="_blank" rel="noopener" class="btn-ghost mt-5 self-start">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.1-7-11.5a7 7 0 0 1 14 0C19 14.9 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+              Прокласти дорогу до старту<span class="sr-only"> (Google Maps, нова вкладка)</span>
+            </a>
+          </div>
+          <figure class="card overflow-hidden p-0">
+            <div id="route-map" class="map-box h-[20rem] md:h-[26rem]" role="application" aria-label="Карта маршруту">
+              <p class="grid h-full place-items-center p-6 text-center text-sm text-muted">Завантажуємо карту…</p>
+            </div>
+            <figcaption id="route-map-note" class="px-5 py-3 text-xs text-muted">Позначки старту й цілі орієнтовні, пунктир показує лише напрямок, а не саму стежку.</figcaption>
+          </figure>
         </div>
-        <figure class="card overflow-hidden bg-[#E4EEE6] p-0 dark:bg-[#1B2E2A]">
-          <svg id="route-map" viewBox="0 0 640 300" class="h-auto w-full" role="img" aria-labelledby="route-map-title">
-            <title id="route-map-title">Схема маршруту</title>
-          </svg>
-          <figcaption class="px-5 pb-4 text-xs text-muted">Схема спрощена й не замінює карту. Перед виходом завантаж офлайн-карту (наприклад, Mapy.cz).</figcaption>
-        </figure>
       </div>
     </section>
 
@@ -52,20 +68,27 @@ script: route.js
     <section class="section pt-0" aria-labelledby="season-title">
       <div class="container-site">
         <h2 id="season-title" class="section-title">Найкращий сезон</h2>
-        <ol id="route-season" class="mt-8 grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-12"></ol>
-        <p id="route-season-note" class="mt-4 text-sm text-muted"></p>
+        <p id="route-season-note" class="mt-4 max-w-2xl text-lg"></p>
+        <ol id="route-season" class="mt-6 grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-12"></ol>
+        <ul class="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted" aria-hidden="true">
+          <li class="flex items-center gap-2"><span class="h-3 w-6 rounded-full bg-primary"></span>найкращий час</li>
+          <li class="flex items-center gap-2"><span class="h-3 w-6 rounded-full border border-dashed border-primary/60"></span>можливий сніг на вершинах</li>
+          <li class="flex items-center gap-2"><span class="h-3 w-6 rounded-full border border-line"></span>лише з досвідом і зимовим спорядженням</li>
+        </ul>
       </div>
     </section>
 
     <!-- Опис і що побачиш -->
     <section class="section pt-0" aria-labelledby="about-title">
-      <div class="container-site grid gap-10 lg:grid-cols-[1fr_1.6fr]">
-        <div>
-          <h2 id="about-title" class="section-title">Опис і що побачиш</h2>
-          <p id="route-description" class="mt-6 text-lg"></p>
-          <ul id="route-highlights" class="mt-5 space-y-2"></ul>
+      <div class="container-site">
+        <h2 id="about-title" class="section-title">Опис і що побачиш</h2>
+        <div class="mt-8 grid items-start gap-10 lg:grid-cols-[1fr_1.35fr]">
+          <div>
+            <p id="route-description" class="text-lg"></p>
+            <ul id="route-highlights" class="mt-6 space-y-3"></ul>
+          </div>
+          <ul id="route-gallery" class="grid grid-cols-2 gap-4"></ul>
         </div>
-        <ul id="route-gallery" class="grid grid-cols-2 gap-4 sm:grid-cols-4"></ul>
       </div>
     </section>
 
@@ -81,7 +104,7 @@ script: route.js
     <section class="pb-12 md:pb-16" aria-labelledby="cost-title">
       <div class="container-site">
         <div class="relative isolate overflow-hidden rounded-3xl bg-[#163428] p-6 text-white md:p-10">
-          <img src="assets/img/photos/banner-mountain.jpg" alt="" width="570" height="193" loading="lazy" class="absolute inset-y-0 right-0 -z-10 h-full w-1/2 object-cover opacity-60 mask-fade-left">
+          <img src="assets/img/photos/hero-sunrise.webp" alt="" width="1920" height="1280" loading="lazy" class="absolute inset-y-0 right-0 -z-10 h-full w-full object-cover opacity-50 md:w-3/5 md:opacity-70 md:mask-fade-left">
           <h2 id="cost-title" class="text-2xl text-white md:text-3xl">Скільки коштуватиме цей похід?</h2>
           <form id="route-cost" action="planner.html" class="mt-6 flex flex-wrap items-end gap-4">
             <input type="hidden" name="region">
@@ -122,8 +145,8 @@ script: route.js
   </div>
 
   <!-- Маршрут не знайдено -->
-  <section id="route-missing" class="container-site section text-center" hidden>
+  <div id="route-missing" class="container-site section text-center" hidden>
     <p class="text-lg">Такого маршруту немає в каталозі. Можливо, посилання застаріло.</p>
     <a href="routes.html" class="btn-primary mt-6">До всіх маршрутів</a>
-  </section>
+  </div>
 </main>

@@ -32,6 +32,21 @@ export function el(tag, className = '', text = '') {
   return node;
 }
 
+/**
+ * Ставить фото з легкою копією для телефонів: для кожного фото з assets/img/photos є файл «-sm» (720 px).
+ * Браузер сам обирає: телефон бере малу копію, великий екран — повну.
+ */
+export function setPhoto(img, src, sizes = '100vw') {
+  img.src = src;
+  const match = /^(assets\/img\/photos\/.+?)(\.(?:jpe?g|webp))$/.exec(src || '');
+  if (match) {
+    img.srcset = `${match[1]}-sm${match[2]} 720w, ${src} 1600w`;
+    img.sizes = sizes;
+  } else {
+    img.removeAttribute('srcset');
+  }
+}
+
 function plural(n, one, few, many) {
   const last = n % 10;
   const lastTwo = n % 100;
@@ -74,7 +89,7 @@ export function routeCard(route, regionNames = {}, { headingLevel = 'h3' } = {})
 
   const figure = el('div', 'relative aspect-[16/9] overflow-hidden');
   const img = el('img', 'h-full w-full object-cover transition duration-500 group-hover:scale-105');
-  img.src = route.image;
+  setPhoto(img, route.image, '(min-width: 768px) 33vw, 100vw');
   img.alt = '';
   img.width = 426;
   img.height = 240;

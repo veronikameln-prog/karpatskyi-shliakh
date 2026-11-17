@@ -19,6 +19,36 @@
         "Потяг до Ворохти",
         "Таксі або маршрутка до старту маршруту",
         "Вхід до Карпатського НПП, екозбір"
+      ],
+      "center": [
+        48.12,
+        24.53
+      ],
+      "outline": [
+        [
+          48.24,
+          24.36
+        ],
+        [
+          48.21,
+          24.56
+        ],
+        [
+          48.1,
+          24.7
+        ],
+        [
+          48,
+          24.68
+        ],
+        [
+          48.03,
+          24.52
+        ],
+        [
+          48.13,
+          24.38
+        ]
       ]
     },
     {
@@ -40,6 +70,44 @@
         "Потяг або автобус до Яремча",
         "Маршрутка чи таксі до старту маршруту",
         "Вхід до природного парку, екозбір"
+      ],
+      "center": [
+        48.52,
+        24.15
+      ],
+      "outline": [
+        [
+          48.75,
+          23.85
+        ],
+        [
+          48.68,
+          24.25
+        ],
+        [
+          48.5,
+          24.55
+        ],
+        [
+          48.36,
+          24.55
+        ],
+        [
+          48.33,
+          24.3
+        ],
+        [
+          48.45,
+          23.95
+        ],
+        [
+          48.56,
+          23.62
+        ],
+        [
+          48.68,
+          23.62
+        ]
       ]
     },
     {
@@ -61,6 +129,36 @@
         "Потяг до Ясіні",
         "Таксі або позашляховик до старту маршруту",
         "Реєстрація в рятувальників перед виходом"
+      ],
+      "center": [
+        48.25,
+        24.12
+      ],
+      "outline": [
+        [
+          48.36,
+          23.98
+        ],
+        [
+          48.33,
+          24.25
+        ],
+        [
+          48.22,
+          24.3
+        ],
+        [
+          48.14,
+          24.2
+        ],
+        [
+          48.18,
+          24.02
+        ],
+        [
+          48.28,
+          23.92
+        ]
       ]
     },
     {
@@ -83,6 +181,36 @@
         "Потяг до Воловця",
         "Маршрутка до Пилипця",
         "Реєстрація в рятувальників перед виходом"
+      ],
+      "center": [
+        48.63,
+        23.26
+      ],
+      "outline": [
+        [
+          48.75,
+          23.12
+        ],
+        [
+          48.72,
+          23.38
+        ],
+        [
+          48.6,
+          23.42
+        ],
+        [
+          48.5,
+          23.3
+        ],
+        [
+          48.55,
+          23.12
+        ],
+        [
+          48.66,
+          23.06
+        ]
       ]
     },
     {
@@ -104,6 +232,36 @@
         "Потяг до Сколе",
         "Пішки або таксі до старту маршруту",
         "Вхід до НПП «Сколівські Бескиди», екозбір"
+      ],
+      "center": [
+        49,
+        23.45
+      ],
+      "outline": [
+        [
+          49.15,
+          23.3
+        ],
+        [
+          49.12,
+          23.65
+        ],
+        [
+          48.95,
+          23.7
+        ],
+        [
+          48.85,
+          23.5
+        ],
+        [
+          48.92,
+          23.25
+        ],
+        [
+          49.05,
+          23.2
+        ]
       ]
     }
   ],
@@ -127,7 +285,7 @@
       ],
       "image": "assets/img/photos/route-hoverla.jpg",
       "subtitle": "Найвища вершина України — за один день",
-      "hero": "assets/img/photos/hoverla-hero.jpg",
+      "hero": "assets/img/photos/route-hoverla-hero.webp",
       "access": [
         "Потяг до Ворохти",
         "Таксі або маршрутка до Заросляка, 18 км",
@@ -135,20 +293,20 @@
       ],
       "gallery": [
         {
-          "src": "assets/img/photos/see-clouds.jpg",
+          "src": "assets/img/photos/see-forest.webp",
+          "caption": "Смерековий ліс на початку стежки"
+        },
+        {
+          "src": "assets/img/photos/see-sign.webp",
+          "caption": "Вказівники й маркування"
+        },
+        {
+          "src": "assets/img/photos/see-meadow.webp",
           "caption": "Схили над хмарами"
         },
         {
-          "src": "assets/img/photos/see-prut.jpg",
-          "caption": "Витоки Пруту"
-        },
-        {
-          "src": "assets/img/photos/see-cross.jpg",
-          "caption": "Вершинний хрест і прапори"
-        },
-        {
-          "src": "assets/img/photos/see-panorama.jpg",
-          "caption": "Панорама Чорногірського хребта"
+          "src": "assets/img/photos/see-summit.webp",
+          "caption": "Прапор на вершині"
         }
       ],
       "tips": [
@@ -156,7 +314,18 @@
         "Візьми 1,5 л води на людину.",
         "Вітрівка навіть у спеку — на вершині холодно й вітряно.",
         "У вихідні багато людей — краще будній день."
-      ]
+      ],
+      "coords": {
+        "start": [
+          48.1647,
+          24.5403
+        ],
+        "peak": [
+          48.1602,
+          24.5003
+        ],
+        "peakName": "Говерла"
+      }
     },
     {
       "id": "pip-ivan",
@@ -175,7 +344,19 @@
         "світанок над хмарами",
         "дикі схили Чорногори"
       ],
-      "image": "assets/img/photos/route-pip-ivan.jpg"
+      "image": "assets/img/photos/route-pip-ivan.jpg",
+      "coords": {
+        "start": [
+          48.077,
+          24.659
+        ],
+        "peak": [
+          48.0469,
+          24.6278
+        ],
+        "peakName": "Піп Іван"
+      },
+      "hero": "assets/img/photos/route-pip-ivan.jpg"
     },
     {
       "id": "chornohora-traverse",
@@ -194,7 +375,24 @@
         "озера Несамовите й Бребенескул",
         "ночівлі на хребті"
       ],
-      "image": "assets/img/photos/route-chornohora-traverse.jpg"
+      "image": "assets/img/photos/route-chornohora-traverse.webp",
+      "coords": {
+        "start": [
+          48.268,
+          24.404
+        ],
+        "peak": [
+          48.1602,
+          24.5003
+        ],
+        "peakName": "Говерла",
+        "end": [
+          48.0469,
+          24.6278
+        ],
+        "endName": "Піп Іван"
+      },
+      "hero": "assets/img/photos/route-chornohora-traverse-hero.webp"
     },
     {
       "id": "khomiak",
@@ -213,7 +411,24 @@
         "вид на Чорногору",
         "легко дістатися зі Львова"
       ],
-      "image": "assets/img/photos/route-khomiak.jpg"
+      "image": "assets/img/photos/route-khomiak.webp",
+      "coords": {
+        "start": [
+          48.357,
+          24.42
+        ],
+        "peak": [
+          48.4028,
+          24.4617
+        ],
+        "peakName": "Синяк",
+        "end": [
+          48.398,
+          24.497
+        ],
+        "endName": "Хом'як"
+      },
+      "hero": "assets/img/photos/route-khomiak-hero.webp"
     },
     {
       "id": "syvulia",
@@ -232,7 +447,19 @@
         "безлюдні хребти",
         "ночівля біля джерела"
       ],
-      "image": "assets/img/photos/route-syvulia.jpg"
+      "image": "assets/img/photos/route-syvulia.webp",
+      "coords": {
+        "start": [
+          48.666,
+          24.036
+        ],
+        "peak": [
+          48.5486,
+          24.1189
+        ],
+        "peakName": "Сивуля"
+      },
+      "hero": "assets/img/photos/route-syvulia-hero.webp"
     },
     {
       "id": "gereshaska",
@@ -251,7 +478,19 @@
         "вершина Близниця",
         "широкі полонини Свидовця"
       ],
-      "image": "assets/img/photos/route-gereshaska.jpg"
+      "image": "assets/img/photos/route-gereshaska.webp",
+      "coords": {
+        "start": [
+          48.2497,
+          24.2478
+        ],
+        "peak": [
+          48.2217,
+          24.2331
+        ],
+        "peakName": "Близниця"
+      },
+      "hero": "assets/img/photos/route-gereshaska-hero.webp"
     },
     {
       "id": "stii",
@@ -270,7 +509,19 @@
         "чорниця в серпні",
         "простора панорама"
       ],
-      "image": "assets/img/photos/route-stii.jpg"
+      "image": "assets/img/photos/route-stii.webp",
+      "coords": {
+        "start": [
+          48.667,
+          23.333
+        ],
+        "peak": [
+          48.6275,
+          23.264
+        ],
+        "peakName": "Стій"
+      },
+      "hero": "assets/img/photos/route-stii-hero.webp"
     },
     {
       "id": "parashka",
@@ -289,7 +540,19 @@
         "м'який підйом",
         "легко дістатися потягом"
       ],
-      "image": "assets/img/photos/route-parashka.jpg"
+      "image": "assets/img/photos/route-parashka.webp",
+      "coords": {
+        "start": [
+          49.0372,
+          23.5136
+        ],
+        "peak": [
+          49.0739,
+          23.4206
+        ],
+        "peakName": "Парашка"
+      },
+      "hero": "assets/img/photos/route-parashka-hero.webp"
     },
     {
       "id": "synevyr",
@@ -308,7 +571,19 @@
         "родинна прогулянка",
         "реабілітаційний центр бурого ведмедя поруч"
       ],
-      "image": "assets/img/photos/route-synevyr.jpg"
+      "image": "assets/img/photos/route-synevyr.jpg",
+      "coords": {
+        "start": [
+          48.5886,
+          23.6875
+        ],
+        "peak": [
+          48.6167,
+          23.6839
+        ],
+        "peakName": "Озеро Синевир"
+      },
+      "hero": "assets/img/photos/route-synevyr.jpg"
     },
     {
       "id": "svydovets-traverse",
@@ -327,7 +602,24 @@
         "дикі полонини",
         "ночівлі в наметі"
       ],
-      "image": "assets/img/photos/region-svydovets.jpg"
+      "image": "assets/img/photos/route-svydovets-traverse.webp",
+      "coords": {
+        "start": [
+          48.2797,
+          24.3586
+        ],
+        "peak": [
+          48.2217,
+          24.2331
+        ],
+        "peakName": "Близниця",
+        "end": [
+          48.3186,
+          23.9342
+        ],
+        "endName": "Усть-Чорна"
+      },
+      "hero": "assets/img/photos/route-svydovets-traverse-hero.webp"
     },
     {
       "id": "borzhava-traverse",
@@ -346,7 +638,24 @@
         "три вершини поспіль",
         "ночівля на полонині"
       ],
-      "image": "assets/img/photos/region-borzhava.jpg"
+      "image": "assets/img/photos/route-borzhava-traverse.webp",
+      "coords": {
+        "start": [
+          48.7117,
+          23.19
+        ],
+        "peak": [
+          48.6519,
+          23.3081
+        ],
+        "peakName": "Великий Верх",
+        "end": [
+          48.667,
+          23.333
+        ],
+        "endName": "Пилипець"
+      },
+      "hero": "assets/img/photos/route-borzhava-traverse-hero.webp"
     },
     {
       "id": "kamianka",
@@ -365,7 +674,19 @@
         "тінистий ліс",
         "до двох годин у дорозі"
       ],
-      "image": "assets/img/photos/region-beskydy.jpg"
+      "image": "assets/img/photos/route-kamianka.webp",
+      "coords": {
+        "start": [
+          49.0372,
+          23.5136
+        ],
+        "peak": [
+          48.975,
+          23.488
+        ],
+        "peakName": "Водоспад Кам'янка"
+      },
+      "hero": "assets/img/photos/route-kamianka-hero.webp"
     }
   ],
   "reviews": [
