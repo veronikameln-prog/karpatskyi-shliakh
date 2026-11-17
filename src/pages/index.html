@@ -152,7 +152,7 @@ script: home.js
   <section class="section pt-4" aria-labelledby="regions-title">
     <div class="container-site">
       <h2 id="regions-title" class="section-title">Регіони</h2>
-      <ul class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+      <ul id="home-regions" class="m-rail mt-6 grid gap-5 sm:grid-cols-2 md:mt-8 lg:grid-cols-5">
         <li data-reveal>
           <article class="card card-hover group relative h-full overflow-hidden">
             <img src="assets/img/photos/region-chornohora.jpg" alt="" width="1200" height="900" loading="lazy" class="aspect-[4/3] w-full object-cover">
@@ -215,7 +215,7 @@ script: home.js
         <a href="routes.html" class="text-sm font-semibold text-accent underline-offset-4 hover:underline">Усі маршрути →</a>
       </div>
       <p id="popular-status" class="sr-only" role="status"></p>
-      <ul id="popular-routes" class="mt-8 grid gap-6 md:grid-cols-3" aria-busy="true">
+      <ul id="popular-routes" class="m-rail mt-6 grid gap-6 md:mt-8 md:grid-cols-3" aria-busy="true">
         <li class="card h-80 animate-pulse bg-surface-2"></li>
         <li class="card h-80 animate-pulse bg-surface-2"></li>
         <li class="card h-80 animate-pulse bg-surface-2"></li>
@@ -228,7 +228,7 @@ script: home.js
   <section class="section pt-4" aria-labelledby="how-title">
     <div class="container-site">
       <h2 id="how-title" class="section-title">Як це працює</h2>
-      <ol class="how-trail mt-12 grid gap-10 md:grid-cols-3 md:gap-7">
+      <ol id="how-steps" data-rail-autoplay="3000" class="how-trail m-rail mt-5 grid gap-10 md:mt-12 md:grid-cols-3 md:gap-7">
         <li class="how-card group relative" data-reveal>
           <span class="how-num" aria-hidden="true">1</span>
           <article class="card card-hover relative flex h-full flex-col overflow-hidden">
@@ -286,14 +286,14 @@ script: home.js
   <!-- Світанок над полониною під темно-зеленим шаром: заголовок, дві кнопки й посилання на поради -->
   <section class="cta-band" aria-labelledby="cta-title">
     <img src="assets/img/photos/hero-sunrise.webp" alt="" width="1920" height="1280" loading="lazy" class="cta-photo">
-    <div class="container-site relative py-16 text-center md:py-24" data-reveal>
+    <div class="container-site relative py-12 text-center md:py-24" data-reveal>
       <span class="cta-pill">
         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg>
         Безкоштовно і без реєстрації
       </span>
       <h2 id="cta-title" class="mt-6 text-4xl !text-white md:text-6xl">Склади свій маршрут</h2>
       <p class="mx-auto mt-4 max-w-xl text-lg text-white/85">Обери складність, кількість днів і бюджет — конструктор підбере маршрут і порахує витрати.</p>
-      <div class="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
+      <div class="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row md:mt-9 md:gap-4">
         <a href="planner.html" class="btn-cta">
           <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 20 6-11 4 6 3-4 5 9z"/><path d="M9 9V4l4 1.5L9 7"/></svg>
           Відкрити конструктор

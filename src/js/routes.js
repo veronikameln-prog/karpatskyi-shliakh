@@ -5,11 +5,14 @@ import { loadData, el, routeCard, routesWord, loadError } from './data.js';
 import { revealOnScroll } from './site.js';
 import { estimatePerPerson } from './planner-calc.js';
 
-const PAGE_SIZE = 9;
+// Телефон: дві колонки, тож одразу всі 12 маршрутів (6 рядків); ширший екран — по 9 (3 ряди по 3)
+const PAGE_SIZE = window.matchMedia('(max-width: 639.98px)').matches ? 12 : 9;
 const grid = document.getElementById('routes-grid');
 const status = document.getElementById('routes-status');
 const form = document.getElementById('route-filters');
 const more = document.getElementById('routes-more');
+const filtersToggle = document.getElementById('filters-toggle');
+const filtersCount = document.getElementById('filters-count');
 
 let allRoutes = [];
 let regionNames = {};
@@ -116,7 +119,21 @@ function update() {
   shown = PAGE_SIZE;
   writeUrl();
   render();
+  countFilters();
 }
+
+// ---------- Телефон: фільтри під кнопкою ----------
+// На кнопці — скільки фільтрів увімкнено, щоб було видно, що каталог звужено, навіть коли панель згорнута
+function countFilters() {
+  const { region, difficulty, days, budget } = readFilters();
+  const count = [region !== 'all', difficulty !== 'all', days !== 'all', Boolean(budget)].filter(Boolean).length;
+  filtersCount.textContent = String(count);
+  filtersCount.hidden = count === 0;
+}
+filtersToggle.addEventListener('click', () => {
+  const open = form.classList.toggle('is-open');
+  filtersToggle.setAttribute('aria-expanded', String(open));
+});
 
 // ---------- Старт ----------
 async function init() {
@@ -128,6 +145,7 @@ async function init() {
     regionNames = data.regionNames;
     readUrl();
     render();
+    countFilters();
   } catch (error) {
     console.warn('Не вдалося завантажити data.json:', error);
     status.textContent = 'Не вдалося завантажити маршрути';

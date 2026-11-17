@@ -87,7 +87,7 @@ function stat(iconName, text, label) {
 export function routeCard(route, regionNames = {}, { headingLevel = 'h3' } = {}) {
   const article = el('article', 'card card-hover group relative flex h-full flex-col overflow-hidden');
 
-  const figure = el('div', 'relative aspect-[16/9] overflow-hidden');
+  const figure = el('div', 'rc-photo relative aspect-[16/9] overflow-hidden');
   const img = el('img', 'h-full w-full object-cover transition duration-500 group-hover:scale-105');
   setPhoto(img, route.image, '(min-width: 768px) 33vw, 100vw');
   img.alt = '';
@@ -97,24 +97,24 @@ export function routeCard(route, regionNames = {}, { headingLevel = 'h3' } = {})
   img.decoding = 'async';
   figure.append(img, el('span', `badge badge-${route.difficulty} absolute left-3 top-3 shadow-sm`, DIFFICULTY_LABELS[route.difficulty]));
 
-  const body = el('div', 'flex flex-1 flex-col p-5');
-  const title = el(headingLevel, 'font-sans text-lg font-bold text-heading');
+  const body = el('div', 'rc-body flex flex-1 flex-col p-5');
+  const title = el(headingLevel, 'rc-title font-sans text-lg font-bold text-heading');
   const link = el('a', 'after:absolute after:inset-0 after:content-[""] focus-visible:outline-none', route.name);
   link.href = routeUrl(route);
   title.append(link);
 
-  const stats = el('ul', 'mt-4 flex flex-wrap gap-x-5 gap-y-1 text-sm');
+  const stats = el('ul', 'rc-stats mt-4 flex flex-wrap gap-x-5 gap-y-1 text-sm');
   stats.append(
     stat('clock', daysLabel(route.days), 'Тривалість'),
     stat('pin', `${route.distanceKm} км`, 'Відстань'),
     stat('peak', `${route.peakM} м`, 'Найвища точка'),
   );
 
-  const more = el('span', 'btn-ghost btn-sm mt-5 self-center group-hover:border-primary group-focus-within:border-primary');
+  const more = el('span', 'rc-more btn-ghost btn-sm mt-5 self-center group-hover:border-primary group-focus-within:border-primary');
   more.setAttribute('aria-hidden', 'true');
   more.append(document.createTextNode('Детальніше'), icon('arrow'));
 
-  body.append(title, el('p', 'mt-1 text-sm text-muted', regionNames[route.region] || ''), stats, more);
+  body.append(title, el('p', 'rc-region mt-1 text-sm text-muted', regionNames[route.region] || ''), stats, more);
   article.append(figure, body);
   return article;
 }

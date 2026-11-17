@@ -2,6 +2,7 @@
 import { initTheme } from './theme.js';
 import { initMenu } from './menu.js';
 import { initLangSwitch } from './i18n.js';
+import { initRail } from './rail.js';
 
 initTheme();
 initMenu();
@@ -33,3 +34,7 @@ export function revealOnScroll(root = document) {
 }
 
 revealOnScroll();
+
+// ---------- Горизонтальні стрічки карток на телефоні (.m-rail) ----------
+// data-rail-autoplay="3000" — стрічка гортається сама кожні 3 с, доки людина її не торкнеться
+document.querySelectorAll('.m-rail').forEach((list) => initRail(list, { autoplay: Number(list.dataset.railAutoplay) || 0 }));

@@ -618,6 +618,124 @@
   }
 }
 
+/* ===== Горизонтальна стрічка карток на телефоні (.m-rail) =====
+   До 768 px список гортається пальцем убік, наступна картка трохи визирає справа — видно, що є ще.
+   Від 768 px діють звичайні класи сітки, тож планшет і десктоп не змінюються. Крапки під стрічкою — rail.js. */
+@media (max-width: 767.98px) {
+  .m-rail {
+    display: flex !important;
+    gap: 0.875rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    margin-inline: calc(-1 * clamp(1rem, 4vw, 3rem));
+    padding: 0.25rem clamp(1rem, 4vw, 3rem) 0.75rem;
+    scroll-padding-inline: clamp(1rem, 4vw, 3rem);
+    scrollbar-width: none;
+  }
+  .m-rail::-webkit-scrollbar {
+    display: none;
+  }
+  .m-rail > * {
+    flex: 0 0 78%;
+    scroll-snap-align: start;
+  }
+  /* Картки стрічки з'являються разом зі стрічкою, а не кожна окремо при горизонтальному гортанні */
+  .js .m-rail > [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+  /* «Як це працює»: місце над карткою для маркера кроку — стрічка обрізає все, що за її краєм */
+  .m-rail.how-trail {
+    padding-top: 1.75rem;
+  }
+}
+.rail-dots {
+  @apply mt-2 flex justify-center gap-1 md:hidden;
+}
+.rail-dot {
+  @apply grid h-6 w-5 place-items-center;
+}
+.rail-dot::before {
+  content: '';
+  @apply h-2 w-2 rounded-full bg-line transition-all duration-300;
+}
+.rail-dot[aria-current='true'] {
+  @apply w-8;
+}
+.rail-dot[aria-current='true']::before {
+  @apply w-6 bg-primary;
+}
+
+/* ===== Конструктор, «Як ми рахуємо»: на телефоні — компактні рядки (іконка ліворуч, текст праворуч) ===== */
+@media (max-width: 767.98px) {
+  .cost-list > li {
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    column-gap: 0.875rem;
+    align-items: center;
+    padding: 0.875rem 1rem;
+    text-align: left;
+  }
+  .cost-list > li > svg {
+    grid-row: span 2;
+    width: 2rem;
+    height: 2rem;
+    margin: 0;
+  }
+  .cost-list > li > h3 {
+    margin-top: 0;
+    font-size: 1rem;
+  }
+  .cost-list > li > p {
+    margin-top: 0;
+  }
+}
+
+/* ===== Каталог маршрутів на телефоні ===== */
+/* Кнопка «Фільтри» поруч із пошуком: решта фільтрів розгортається по натисканню */
+.filters-toggle {
+  @apply inline-flex shrink-0 items-center gap-2 rounded-full border border-line bg-surface px-4 py-2.5 text-sm font-semibold text-heading transition-colors;
+}
+.filters-toggle[aria-expanded='true'] {
+  @apply border-primary bg-primary/10;
+}
+.filters-count {
+  @apply grid h-5 min-w-[1.25rem] place-items-center rounded-full bg-primary px-1 text-xs text-on-primary;
+}
+@media (max-width: 767.98px) {
+  #route-filters:not(.is-open) .f-extra {
+    display: none;
+  }
+}
+/* Дві колонки карток до 640 px: менші відступи й шрифт, без кнопки «Детальніше» — уся картка й так посилання */
+@media (max-width: 639.98px) {
+  .rc-compact .rc-photo {
+    aspect-ratio: 4 / 3;
+  }
+  .rc-compact .badge {
+    @apply left-2 top-2 px-2 py-0.5 text-[0.7rem];
+  }
+  .rc-compact .rc-body {
+    @apply p-3;
+  }
+  .rc-compact .rc-title {
+    @apply text-[0.95rem] leading-snug;
+  }
+  .rc-compact .rc-region {
+    @apply mt-0.5 text-xs;
+  }
+  .rc-compact .rc-stats {
+    @apply mt-2 gap-x-2.5 gap-y-0.5 text-xs;
+  }
+  .rc-compact .rc-stats .inline-block {
+    @apply h-3.5 w-3.5;
+  }
+  .rc-compact .rc-more {
+    display: none;
+  }
+}
+
 /* Відгуки: безперервна стрічка, як на PrompterMind. Список повторено двічі, тож зсув на -50% замикає коло без стрибка */
 .reviews-marquee {
   -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%);
