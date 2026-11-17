@@ -28,10 +28,15 @@ function analyticsTag() {
   const config = match[1] === 'GTM' ? '' : `\n      gtag('config', '${GA_ID}');`;
   return `  <script>
     if (!/^(localhost|127\\.0\\.0\\.1)$/.test(location.hostname)) {
-      var gtagScript = document.createElement('script');
-      gtagScript.async = true;
-      gtagScript.src = 'https://www.googletagmanager.com/${lib}?id=${GA_ID}';
-      document.head.appendChild(gtagScript);
+      // Лічильник вантажиться вже після відмальовки сторінки, щоб не гальмувати перший екран.
+      // Події (gtag) до того часу збираються в dataLayer і не губляться.
+      var loadTag = function () {
+        var gtagScript = document.createElement('script');
+        gtagScript.async = true;
+        gtagScript.src = 'https://www.googletagmanager.com/${lib}?id=${GA_ID}';
+        document.head.appendChild(gtagScript);
+      };
+      addEventListener('load', function () { setTimeout(loadTag, 1500); });
       window.dataLayer = window.dataLayer || [];
       window.gtag = function () { dataLayer.push(arguments); };
       gtag('js', new Date());${config}

@@ -46,10 +46,15 @@
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Lora:wght@600;700&amp;display=swap"></noscript>
   <script>
     if (!/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
-      var gtagScript = document.createElement('script');
-      gtagScript.async = true;
-      gtagScript.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-5R2XLRNB';
-      document.head.appendChild(gtagScript);
+      // Лічильник вантажиться вже після відмальовки сторінки, щоб не гальмувати перший екран.
+      // Події (gtag) до того часу збираються в dataLayer і не губляться.
+      var loadTag = function () {
+        var gtagScript = document.createElement('script');
+        gtagScript.async = true;
+        gtagScript.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-5R2XLRNB';
+        document.head.appendChild(gtagScript);
+      };
+      addEventListener('load', function () { setTimeout(loadTag, 1500); });
       window.dataLayer = window.dataLayer || [];
       window.gtag = function () { dataLayer.push(arguments); };
       gtag('js', new Date());
