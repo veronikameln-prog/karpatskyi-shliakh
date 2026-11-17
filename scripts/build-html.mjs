@@ -6,7 +6,7 @@
 // title: Заголовок вкладки
 // description: Опис для пошуку й Open Graph
 // nav: routes            (який пункт меню підсвітити; 404 — без пункту)
-// libs: gsap, swiper     (бібліотеки з CDN)
+// libs: gsap, leaflet    (бібліотеки з CDN)
 // script: routes.js      (модуль сторінки з src/js)
 // -->
 import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
@@ -41,10 +41,6 @@ const CDN = {
       'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js',
       'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js',
     ],
-  },
-  swiper: {
-    css: ['https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.1.14/swiper-bundle.min.css'],
-    js: ['https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.1.14/swiper-bundle.min.js'],
   },
   leaflet: {
     css: ['https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css'],
