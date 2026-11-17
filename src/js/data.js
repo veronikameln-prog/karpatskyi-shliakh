@@ -33,14 +33,14 @@ export function el(tag, className = '', text = '') {
 }
 
 /**
- * Ставить фото з легкою копією для телефонів: для кожного фото з assets/img/photos є файл «-sm» (720 px).
+ * Ставить фото з легкою копією для телефонів: для кожного фото з assets/img/photos є «-sm» (720 px) і «-md» (1080 px).
  * Браузер сам обирає: телефон бере малу копію, великий екран — повну.
  */
 export function setPhoto(img, src, sizes = '100vw') {
   img.src = src;
   const match = /^(assets\/img\/photos\/.+?)(\.(?:jpe?g|webp))$/.exec(src || '');
   if (match) {
-    img.srcset = `${match[1]}-sm${match[2]} 720w, ${src} 1600w`;
+    img.srcset = `${match[1]}-sm${match[2]} 720w, ${match[1]}-md${match[2]} 1080w, ${src} 1600w`;
     img.sizes = sizes;
   } else {
     img.removeAttribute('srcset');

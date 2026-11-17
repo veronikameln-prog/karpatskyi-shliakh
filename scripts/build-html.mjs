@@ -80,9 +80,12 @@ function withSrcset(html) {
   return html.replace(/<img\b([^>]*?)\ssrc="(assets\/img\/photos\/([^"]+?)(\.(?:jpe?g|webp)))"([^>]*)>/g, (tag, before, src, name, ext, after) => {
     if (/\ssrcset=/.test(tag)) return tag;
     const small = `assets/img/photos/${name}-sm${ext}`;
+    const medium = `assets/img/photos/${name}-md${ext}`;
     if (!existsSync(join(root, small))) return tag;
+    // -md (1080 px) — для телефонів зі щільним екраном, щоб не тягнути повне фото 1600 px
+    const mid = existsSync(join(root, medium)) ? `, ${medium} 1080w` : '';
     const sizes = /\ssizes=/.test(tag) ? '' : ' sizes="100vw"';
-    return `<img${before} src="${src}" srcset="${small} 720w, ${src} 1600w"${sizes}${after}>`;
+    return `<img${before} src="${src}" srcset="${small} 720w${mid}, ${src} 1600w"${sizes}${after}>`;
   });
 }
 
@@ -97,7 +100,7 @@ function routeHeroesScript() {
       if (!src) return;
       var img = document.getElementById('route-hero');
       var m = /^(.+)(\\.(?:jpe?g|webp))$/.exec(src);
-      if (m) { img.srcset = m[1] + '-sm' + m[2] + ' 720w, ' + src + ' 1600w'; img.sizes = '100vw'; }
+      if (m) { img.srcset = m[1] + '-sm' + m[2] + ' 720w, ' + m[1] + '-md' + m[2] + ' 1080w, ' + src + ' 1600w'; img.sizes = '100vw'; }
       img.src = src;
     })();`;
 }
