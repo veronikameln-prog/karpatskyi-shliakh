@@ -16,7 +16,7 @@ import { fileURLToPath } from 'node:url';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SITE_URL = 'https://karpatskyi-shliakh.netlify.app';
 // Google Analytics 4: ідентифікатор потоку даних (G-XXXXXXXXXX) з analytics.google.com.
-// Можна вписати тут або задати змінною середовища GA_ID (у GitHub Actions — Settings → Secrets and variables → Variables).
+// Можна вписати тут або задати змінною середовища GA_ID (на Netlify — Project configuration → Environment variables).
 // Поки порожньо — лічильник у сторінки не додається.
 const GA_ID = process.env.GA_ID || '';
 

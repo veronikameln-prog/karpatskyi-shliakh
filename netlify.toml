@@ -1,5 +1,13 @@
-# Netlify: сайт публікує GitHub Actions (.github/workflows/deploy.yml) уже зібраним,
-# тому тут лише заголовки. Сторінку 404.html Netlify підхоплює сам.
+# Netlify збирає сайт сам після кожного push у main (репозиторій підключено в app.netlify.com).
+# Google Analytics: змінна GA_ID (G-XXXXXXXXXX) у Project configuration → Environment variables;
+# без неї сайт збирається без лічильника. Сторінку 404.html Netlify підхоплює сам.
+
+[build]
+  command = "npm run build && npm run dist"
+  publish = "_site"
+
+[build.environment]
+  NODE_VERSION = "20"
 
 [[headers]]
   for = "/assets/*"

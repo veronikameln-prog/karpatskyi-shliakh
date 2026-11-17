@@ -1,12 +1,8 @@
-# CI/CD: кожен push у main запускає автотести й збірку, а після успіху публікує сайт на Netlify.
-# Для pull request виконуються лише перевірки — без публікації.
-#
-# Секрети репозиторію (Settings → Secrets and variables → Actions):
-#   NETLIFY_AUTH_TOKEN — персональний токен Netlify
-#   NETLIFY_SITE_ID    — ідентифікатор сайту (Site configuration → Site ID)
-# Змінна репозиторію (вкладка Variables):
-#   GA_ID              — ідентифікатор потоку Google Analytics 4 (G-XXXXXXXXXX)
-name: CI/CD
+# CI: кожен push і pull request у main проходить автотести, збірку й перевірку посилань.
+# Публікує сайт сам Netlify (підключений до цього репозиторію): після push у main він збирає
+# сайт за налаштуваннями з netlify.toml і викладає на https://karpatskyi-shliakh.netlify.app.
+# Якщо перевірки тут червоні — це сигнал, що зламаний код не варто зливати в main.
+name: CI
 
 on:
   push:
@@ -15,7 +11,7 @@ on:
     branches: [main]
 
 concurrency:
-  group: deploy-${{ github.ref }}
+  group: ci-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -34,7 +30,7 @@ jobs:
       - name: Збірка сторінок і CSS
         run: npm run build
         env:
-          GA_ID: ${{ vars.GA_ID }} # ідентифікатор Google Analytics (Settings → Variables); порожній — без лічильника
+          GA_ID: ${{ vars.GA_ID }} # Google Analytics (Settings → Variables); порожній — без лічильника
       - name: Перевірка посилань, зображень і словників
         run: npm run check
       - name: Тека для публікації
@@ -44,19 +40,3 @@ jobs:
           name: site
           path: _site
           retention-days: 7
-
-  deploy:
-    name: Публікація на Netlify
-    needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: site
-          path: _site
-      - name: Deploy
-        run: npx --yes netlify-cli@17 deploy --prod --dir=_site --message "${{ github.sha }}"
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
